@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}تأكيد حذف المورد{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900" dir="rtl">
+    <div class="container mx-auto px-4 py-16">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-white mb-2">تأكيد الحذف</h1>
+            <p class="text-gray-400">هل أنت متأكد من حذف هذا المورد؟</p>
+        </div>
+
+        <!-- Confirmation Card -->
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-gradient-to-br from-slate-700 to-slate-800 rounded-lg shadow-xl overflow-hidden border border-slate-600">
+                <!-- Warning Icon -->
+                <div class="bg-red-900 bg-opacity-20 border-b border-red-800 px-8 py-6 flex items-center gap-4">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <p class="text-red-200">هذا الإجراء لا يمكن التراجع عنه</p>
+                </div>
+
+                <!-- Supplier Details -->
+                <div class="p-8">
+                    <h2 class="text-2xl font-bold text-white mb-6">بيانات المورد</h2>
+                    
+                    <div class="grid grid-cols-1 gap-4 mb-8">
+                        <!-- Name -->
+                        <div class="flex items-center justify-between bg-slate-900 bg-opacity-50 p-4 rounded-lg">
+                            <span class="text-gray-400">اسم المورد:</span>
+                            <span class="text-white font-semibold text-lg">{{ supplier.name }}</span>
+                        </div>
+
+                        <!-- Email -->
+                        {% if supplier.email %}
+                        <div class="flex items-center justify-between bg-slate-900 bg-opacity-50 p-4 rounded-lg">
+                            <span class="text-gray-400">البريد الإلكتروني:</span>
+                            <span class="text-white font-semibold">{{ supplier.email }}</span>
+                        </div>
+                        {% endif %}
+
+                        <!-- Phone -->
+                        {% if supplier.phone %}
+                        <div class="flex items-center justify-between bg-slate-900 bg-opacity-50 p-4 rounded-lg">
+                            <span class="text-gray-400">رقم الهاتف:</span>
+                            <span class="text-white font-semibold">{{ supplier.phone }}</span>
+                        </div>
+                        {% endif %}
+
+                        <!-- Status -->
+                        <div class="flex items-center justify-between bg-slate-900 bg-opacity-50 p-4 rounded-lg">
+                            <span class="text-gray-400">الحالة:</span>
+                            <span class="text-white font-semibold">
+                                {% if supplier.is_active %}
+                                    <span class="px-3 py-1 bg-green-900 bg-opacity-50 text-green-200 rounded-full text-sm">نشط</span>
+                                {% else %}
+                                    <span class="px-3 py-1 bg-red-900 bg-opacity-50 text-red-200 rounded-full text-sm">معطل</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Confirmation Message -->
+                    <div class="bg-red-900 bg-opacity-10 border border-red-800 rounded-lg p-4 mb-8">
+                        <p class="text-red-200 text-center">
+                            <strong>تحذير:</strong> سيؤدي حذف هذا المورد إلى حذف جميع البيانات المرتبطة به. تأكد من النسخ الاحتياطية قبل المتابعة.
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4 justify-center">
+                        <!-- Cancel Button -->
+                        <a href="{% url 'supplier_list' %}" class="px-6 py-3 bg-slate-600 hover:bg-slate-700 text-white font-semibold rounded-lg transition-colors duration-200">
+                            إلغاء
+                        </a>
+
+                        <!-- Delete Button -->
+                        <form method="POST" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors duration-200">
+                                نعم، حذف المورد
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="mt-8 text-center">
+                <p class="text-gray-500 text-sm">
+                    إذا كنت متأكداً من حذف هذا المورد، انقر على الزر الأحمر أعلاه.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

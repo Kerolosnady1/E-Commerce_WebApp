@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}نظام ERP{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Config -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                        "surface-dark": "#111722",
+                        "card-dark": "#1b2333",
+                        "border-dark": "#232f48"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "system-ui", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    
+    <!-- Base Styles -->
+    <style>
+        body {
+            font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        html.dark {
+            color-scheme: dark;
+        }
+        html {
+            color-scheme: light;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-background-dark text-slate-100 min-h-screen transition-colors">
+    
+    <!-- Header / Navbar -->
+    <header class="bg-surface-dark border-b border-border-dark sticky top-0 z-30 transition-colors">
+        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-4">
+                    <div class="p-2 bg-primary/20 rounded-lg">
+                        <span class="material-icons text-primary">dashboard</span>
+                    </div>
+                    <h1 class="text-xl font-bold text-white">نظام ERP</h1>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="/" class="text-slate-400 hover:text-primary transition-colors">الرئيسية</a>
+                    <a href="/invoices/" class="text-slate-400 hover:text-primary transition-colors">الفواتير</a>
+                    <a href="/customers/" class="text-slate-400 hover:text-primary transition-colors">العملاء</a>
+                    <a href="/settings/general/" class="text-slate-400 hover:text-primary transition-colors">الإعدادات</a>
+                </nav>
+                <div class="flex items-center gap-3"></div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}
+        <!-- Default content goes here -->
+        {% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-surface-dark border-t border-border-dark mt-16 transition-colors">
+        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-sm text-slate-400">
+                    نظام ERP المتكامل - الإصدار 4.2.0 • جميع الحقوق محفوظة © 2026
+                </p>
+                <div class="flex gap-6 text-xs text-slate-400 font-medium">
+                    <a class="hover:text-primary transition-colors" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'support_page' %}">الدعم الفني</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script>
+        // Show notification helper
+        function showNotification(message, type = 'info') {
+            const notif = document.createElement('div');
+            notif.className = 'fixed bottom-4 right-4 px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3 transition-all font-semibold animate-in fade-in slide-in-from-right-4';
+            
+            if (type === 'success') {
+                notif.classList.add('bg-green-500', 'text-slate-900');
+                notif.innerHTML = `<span class="material-icons">check_circle</span><span>${message}</span>`;
+            } else if (type === 'error') {
+                notif.classList.add('bg-red-500', 'text-slate-900');
+                notif.innerHTML = `<span class="material-icons">error</span><span>${message}</span>`;
+            } else {
+                notif.classList.add('bg-blue-500', 'text-slate-900');
+                notif.innerHTML = `<span class="material-icons">info</span><span>${message}</span>`;
+            }
+            
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.opacity = '0';
+                notif.style.transform = 'translateX(100%)';
+                setTimeout(() => notif.remove(), 300);
+            }, 3000);
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

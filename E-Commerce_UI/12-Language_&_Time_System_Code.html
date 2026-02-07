@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>اللغة والتوقيت - نظام ERP الموحد</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+            color: #e2e8f0;
+        }
+        header, aside, main, section {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+        }
+        h1, h2, h3, h4, h5, h6 { color: #fff !important; }
+        label { color: #9ca3af !important; }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+            color: #fff !important;
+        }
+        .bg-white, .bg-slate-50, .bg-background-light { background-color: #1f2937 !important; }
+        .border-gray-200, .border-[#dbe0e6], .border-[#f0f2f4] { border-color: #334155 !important; }
+        .nav-active, .active-nav {
+            color: #60a5fa !important;
+            background-color: #334155 !important;
+            border-right: 4px solid #3b82f6 !important;
+        }
+        
+        .search-highlight {
+            background-color: #fbbf24 !important;
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.3) !important;
+            border-radius: 8px !important;
+            animation: pulse-highlight 1s infinite;
+        }
+        
+        .search-highlight-parent {
+            background-color: rgba(251, 191, 36, 0.1) !important;
+            border: 2px solid #fbbf24 !important;
+            border-radius: 12px !important;
+            padding: 4px !important;
+        }
+        
+        @keyframes pulse-highlight {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.3);
+            }
+            50% {
+                opacity: 0.8;
+                box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.15);
+            }
+        }
+    </style>
+</head>
+<body class="bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] text-slate-100 font-display">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#dbe0e6] dark:border-[#343d48] bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">نظام ERP الموحد</h2>
+</div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#617289] flex border-none bg-[#f0f2f4] dark:bg-[#1c2632] items-center justify-center pr-4 rounded-r-lg">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input id="searchInput" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-l-lg text-[#111418] dark:text-white focus:outline-0 focus:ring-0 border-none bg-[#f0f2f4] dark:bg-[#1c2632] h-full placeholder:text-[#617289] px-4 text-base font-normal leading-normal text-right" placeholder="بحث..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-[#111418] dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="/dashboard/">الرئيسية</a>
+<a class="text-[#111418] dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="/reports/">التقارير</a>
+<a class="text-primary text-sm font-bold leading-normal" href="/settings/system/">الإعدادات</a>
+</div>
+<div class="flex gap-2">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#f0f2f4] dark:bg-[#1c2632] text-[#111418] dark:text-white px-2.5" onclick="window.location.href='/notifications/'" title="الإشعارات">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#f0f2f4] dark:bg-[#1c2632] text-[#111418] dark:text-white px-2.5" onclick="window.location.href='/settings/system/'" title="الإعدادات">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+{% if request.user.profile.avatar %}
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-gray-200" style='background-image: url("{{ request.user.profile.avatar.url }}");' title="{{ request.user.get_full_name|default:request.user.username }}"></div>
+            {% else %}
+            <div class="flex items-center justify-center rounded-full size-10 border border-gray-200 bg-primary/10 text-primary font-bold">
+                {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+            </div>
+            {% endif %}
+</div>
+</header>
+<main class="flex min-h-[calc(100vh-64px)] w-full">
+<!-- Side Navigation Bar -->
+<aside class="w-80 border-l border-solid border-[#f0f2f4] dark:border-[#343d48] bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] p-6 hidden lg:flex flex-col gap-8">
+<div class="flex flex-col">
+<h1 class="text-[#111418] dark:text-white text-base font-bold leading-normal mb-1">إعدادات النظام</h1>
+<p class="text-[#617289] text-sm font-normal leading-normal">إدارة التفضيلات العامة والمستخدمين</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1c2632] transition-colors group" href="/settings/system/">
+<span class="material-symbols-outlined text-[#617289] group-hover:text-primary">settings</span>
+<p class="text-[#111418] dark:text-white text-sm font-medium leading-normal">الإعدادات العامة</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg nav-active border border-primary/20" href="/locale-time/">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">language</span>
+<p class="text-sm font-bold leading-normal">اللغة والتوقيت</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1c2632] transition-colors group" href="/users/">
+<span class="material-symbols-outlined text-[#617289] group-hover:text-primary">group</span>
+<p class="text-[#111418] dark:text-white text-sm font-medium leading-normal">المستخدمين والصلاحيات</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1c2632] transition-colors group" href="/security/">
+<span class="material-symbols-outlined text-[#617289] group-hover:text-primary">security</span>
+<p class="text-[#111418] dark:text-white text-sm font-medium leading-normal">الأمان والخصوصية</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1c2632] transition-colors group" href="/notifications/">
+<span class="material-symbols-outlined text-[#617289] group-hover:text-primary">notifications_active</span>
+<p class="text-[#111418] dark:text-white text-sm font-medium leading-normal">تفضيلات الإشعارات</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1c2632] transition-colors group" href="/security/logs/">
+<span class="material-symbols-outlined text-[#617289] group-hover:text-primary">history</span>
+<p class="text-[#111418] dark:text-white text-sm font-medium leading-normal">سجل النشاطات</p>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<section class="flex-1 flex flex-col p-8 overflow-y-auto bg-[rgb(15_23_42/var(--tw-bg-opacity,1))]">
+<div class="max-w-[1000px] mx-auto w-full">
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between items-center gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h2 class="text-[#111418] dark:text-white text-3xl font-black leading-tight tracking-[-0.033em]">اللغة والتوقيت</h2>
+<p class="text-[#617289] text-base font-normal leading-normal">قم بتخصيص لغة النظام وتنسيقات الوقت والتاريخ المفضلة لديك.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-primary text-white text-sm font-bold leading-normal shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all" id="saveLocaleBtn" onclick="saveLocaleState()">
+<span>حفظ التغييرات</span>
+</button>
+</div>
+</div>
+<!-- Settings Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Language Section -->
+<div class="bg-white dark:bg-background-dark border border-[#f0f2f4] dark:border-[#343d48] rounded-xl p-6 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">language</span>
+<h3 class="text-[#111418] dark:text-white text-lg font-bold">إعدادات اللغة</h3>
+</div>
+<div class="flex flex-col gap-5">
+<label class="flex flex-col gap-2">
+<span class="text-sm font-bold text-[#111418] dark:text-white">لغة النظام الأساسية</span>
+<select class="form-select w-full rounded-lg border-[#dbe0e6] dark:border-[#343d48] dark:bg-[#1c2632] h-12 text-sm focus:border-primary focus:ring-primary" id="systemLanguage">
+<option value="ar" {% if system_language == 'ar' %}selected{% endif %}>العربية (الأصلية)</option>
+<option value="en" {% if system_language == 'en' %}selected{% endif %}>English (US)</option>
+<option value="fr" {% if system_language == 'fr' %}selected{% endif %}>Français</option>
+</select>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-sm font-bold text-[#111418] dark:text-white">لغة التقارير المطبوعة</span>
+<select class="form-select w-full rounded-lg border-[#dbe0e6] dark:border-[#343d48] dark:bg-[#1c2632] h-12 text-sm focus:border-primary focus:ring-primary" id="reportLanguage">
+<option value="ar" {% if report_language == 'ar' %}selected{% endif %}>العربية</option>
+<option value="en" {% if report_language == 'en' %}selected{% endif %}>English</option>
+<option value="dual" {% if report_language == 'dual' %}selected{% endif %}>ثنائي اللغة (Ar/En)</option>
+</select>
+</label>
+</div>
+</div>
+<!-- Timezone Section -->
+<div class="bg-white dark:bg-background-dark border border-[#f0f2f4] dark:border-[#343d48] rounded-xl p-6 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">schedule</span>
+<h3 class="text-[#111418] dark:text-white text-lg font-bold">المنطقة الزمنية والوقت</h3>
+</div>
+<div class="flex flex-col gap-5">
+<label class="flex flex-col gap-2">
+<span class="text-sm font-bold text-[#111418] dark:text-white">المنطقة الزمنية</span>
+<select class="form-select w-full rounded-lg border-[#dbe0e6] dark:border-[#343d48] dark:bg-[#1c2632] h-12 text-sm focus:border-primary focus:ring-primary" id="timezoneSelect">
+<option value="riyadh" {% if timezone == 'riyadh' %}selected{% endif %}>(GMT+03:00) الرياض، السعودية</option>
+<option value="dubai" {% if timezone == 'dubai' %}selected{% endif %}>(GMT+04:00) دبي، الإمارات</option>
+<option value="cairo" {% if timezone == 'cairo' %}selected{% endif %}>(GMT+02:00) القاهرة، مصر</option>
+</select>
+</label>
+<div class="flex items-center justify-between py-2 border-t border-[#f0f2f4] dark:border-[#343d48] mt-2">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#111418] dark:text-white">نظام 24 ساعة</span>
+<span class="text-xs text-[#617289]">عرض الوقت بصيغة 24 ساعة بدلاً من 12</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer h-6">
+<input {% if use_24hour_format %}checked{% endif %} class="sr-only peer" type="checkbox" id="format24Toggle"/>
+<div class="relative w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/30 rounded-full peer dark:bg-gray-600 peer-checked:bg-primary transition-all duration-300"></div>
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 peer-checked:left-6"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Date Format Section -->
+<div class="bg-white dark:bg-background-dark border border-[#f0f2f4] dark:border-[#343d48] rounded-xl p-6 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">calendar_month</span>
+<h3 class="text-[#111418] dark:text-white text-lg font-bold">تنسيق التاريخ</h3>
+</div>
+<div class="flex flex-col gap-5">
+<label class="flex flex-col gap-2">
+<span class="text-sm font-bold text-[#111418] dark:text-white">تنسيق التاريخ المفضل</span>
+<select class="form-select w-full rounded-lg border-[#dbe0e6] dark:border-[#343d48] dark:bg-[#1c2632] h-12 text-sm focus:border-primary focus:ring-primary" id="dateFormat">
+<option value="dmy" {% if date_format == 'dmy' %}selected{% endif %}>DD/MM/YYYY (٢٠/١٠/٢٠٢٣)</option>
+<option value="mdy" {% if date_format == 'mdy' %}selected{% endif %}>MM/DD/YYYY (١٠/٢٠/٢٠٢٣)</option>
+<option value="ymd" {% if date_format == 'ymd' %}selected{% endif %}>YYYY-MM-DD (٢٠٢٣-١٠-٢٠)</option>
+</select>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-sm font-bold text-[#111418] dark:text-white">نوع التقويم</span>
+<select class="form-select w-full rounded-lg border-[#dbe0e6] dark:border-[#343d48] dark:bg-[#1c2632] h-12 text-sm focus:border-primary focus:ring-primary" id="calendarType">
+<option value="gregorian" {% if calendar_type == 'gregorian' %}selected{% endif %}>ميلادي (Gregorian)</option>
+<option value="hijri" {% if calendar_type == 'hijri' %}selected{% endif %}>هجري (Hijri)</option>
+<option value="both" {% if calendar_type == 'both' %}selected{% endif %}>كلاهما</option>
+</select>
+</label>
+</div>
+</div>
+<!-- Preview Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Invoice Preview Section - 2 columns -->
+<div class="lg:col-span-2 bg-white dark:bg-[#1c2632] rounded-xl shadow-lg p-8">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Invoice Sample</span>
+<div class="h-2 w-12 bg-primary/20 rounded"></div>
+</div>
+<div id="qrCodeContainer" class="bg-gray-50 dark:bg-gray-800 p-2 rounded flex items-center justify-center" style="width: 120px; height: 120px; border: 2px solid #e0e0e0;"></div>
+</div>
+
+<!-- Invoice Details Grid -->
+<div class="grid grid-cols-2 gap-8">
+<!-- Column 1 -->
+<div class="space-y-5">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">رقم الفاتورة</span>
+<span class="text-lg font-bold text-primary" id="previewInvoiceNum">#INV-2026-001</span>
+</div>
+
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">اسم الشركة</span>
+<span class="text-sm font-semibold text-[#111418] dark:text-white invoice-company-name" id="previewCompanyName">{{ company_name_ar }}</span>
+</div>
+
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">رقم الضريبة</span>
+<span class="text-sm text-gray-600 dark:text-gray-400" id="previewVatNumber">----</span>
+</div>
+</div>
+
+<!-- Column 2 -->
+<div class="space-y-5">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">تاريخ الإصدار</span>
+<span class="text-sm font-semibold text-[#111418] dark:text-white" id="previewDate">٢٠/١٠/٢٠٢٣</span>
+</div>
+
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">وقت العملية</span>
+<span class="text-sm font-semibold text-[#111418] dark:text-white" id="previewTime">١٤:٣٠:١٥</span>
+</div>
+
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">نوع التقويم</span>
+<span class="text-sm text-gray-600 dark:text-gray-400" id="previewCalendarType">ميلادي</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Right Sidebar - Settings Summary -->
+<div class="bg-white dark:bg-[#1c2632] rounded-xl shadow-lg p-6 h-fit">
+<h3 class="text-base font-bold text-[#111418] dark:text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">settings</span>
+ملخص الإعدادات
+</h3>
+
+<div class="space-y-4">
+<div class="pb-4 border-b border-gray-200 dark:border-gray-700">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase block mb-2">لغة النظام</span>
+<span class="text-sm font-semibold text-[#111418] dark:text-white" id="summarySystemLang">العربية</span>
+</div>
+
+<div class="pb-4 border-b border-gray-200 dark:border-gray-700">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase block mb-2">لغة التقارير</span>
+<span class="text-sm font-semibold text-[#111418] dark:text-white" id="summaryReportLang">العربية</span>
+</div>
+
+<div class="pb-4 border-b border-gray-200 dark:border-gray-700">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase block mb-2">المنطقة الزمنية</span>
+<span class="text-sm font-semibold text-[#111418] dark:text-white" id="summaryTimezone">GMT+03:00</span>
+</div>
+
+<div class="pb-4 border-b border-gray-200 dark:border-gray-700">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase block mb-2">نظام الساعة</span>
+<span class="text-sm font-semibold text-[#111418] dark:text-white" id="summary24Hour">24 ساعة</span>
+</div>
+
+<div class="pb-4 border-b border-gray-200 dark:border-gray-700">
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase block mb-2">تنسيق التاريخ</span>
+<span class="text-sm font-semibold text-[#111418] dark:text-white" id="summaryDateFormat">DD/MM/YYYY</span>
+</div>
+
+<div>
+<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase block mb-2">نوع التقويم</span>
+<span class="text-sm font-semibold text-[#111418] dark:text-white" id="summaryCalendar">ميلادي</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="mt-10 flex justify-start gap-4">
+<button class="px-8 py-3 bg-primary text-white font-bold rounded-lg shadow-lg hover:shadow-primary/40 transition-all" id="saveAllLocaleBtn">
+                        حفظ جميع التغييرات
+                    </button>
+<button class="px-8 py-3 bg-white dark:bg-[#1c2632] text-[#111418] dark:text-white font-bold border border-[#dbe0e6] dark:border-[#343d48] rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all" id="resetLocaleBtn">
+                        إعادة ضبط المصنع
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<script>
+        const localeDefaults = {
+            systemLanguage: document.getElementById("systemLanguage")?.value,
+            reportLanguage: document.getElementById("reportLanguage")?.value,
+            timezoneSelect: document.getElementById("timezoneSelect")?.value,
+            format24Toggle: document.getElementById("format24Toggle")?.checked,
+            dateFormat: document.getElementById("dateFormat")?.value,
+            calendarType: document.getElementById("calendarType")?.value
+        };
+
+        function applyLocaleState(state) {
+            if (!state) return;
+            const systemLanguage = document.getElementById("systemLanguage");
+            const reportLanguage = document.getElementById("reportLanguage");
+            const timezoneSelect = document.getElementById("timezoneSelect");
+            const format24Toggle = document.getElementById("format24Toggle");
+            const dateFormat = document.getElementById("dateFormat");
+            const calendarType = document.getElementById("calendarType");
+
+            if (systemLanguage) systemLanguage.value = state.systemLanguage ?? systemLanguage.value;
+            if (reportLanguage) reportLanguage.value = state.reportLanguage ?? reportLanguage.value;
+            if (timezoneSelect) timezoneSelect.value = state.timezoneSelect ?? timezoneSelect.value;
+            if (format24Toggle) format24Toggle.checked = state.format24Toggle ?? format24Toggle.checked;
+            if (dateFormat) dateFormat.value = state.dateFormat ?? dateFormat.value;
+            if (calendarType) calendarType.value = state.calendarType ?? calendarType.value;
+        }
+
+        function formatArabicNumbers(num) {
+            const arabicNums = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+            return String(num).split('').map(digit => arabicNums[digit] || digit).join('');
+        }
+
+        function showSearchNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-6 right-6 p-4 rounded-lg text-white font-bold shadow-lg z-50 ${type === 'error' ? 'bg-red-500' : 'bg-green-500'}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        function performSearch() {
+            const searchTerm = document.getElementById("searchInput")?.value.trim() || '';
+            console.log('🔍 Searching for:', searchTerm);
+            if (!searchTerm) {
+                alert('الرجاء إدخال كلمة البحث');
+                return;
+            }
+            
+            // Define searchable items
+            const searchItems = [
+                { term: 'لغة', page: 'إعدادات اللغة', field: 'systemLanguage' },
+                { term: 'نظام', page: 'إعدادات اللغة', field: 'systemLanguage' },
+                { term: 'تقارير', page: 'لغة التقارير', field: 'reportLanguage' },
+                { term: 'منطقة', page: 'المنطقة الزمنية', field: 'timezoneSelect' },
+                { term: 'زمنية', page: 'المنطقة الزمنية', field: 'timezoneSelect' },
+                { term: 'وقت', page: 'نظام 24 ساعة', field: 'format24Toggle' },
+                { term: '24', page: 'نظام 24 ساعة', field: 'format24Toggle' },
+                { term: 'ساعة', page: 'نظام 24 ساعة', field: 'format24Toggle' },
+                { term: 'تاريخ', page: 'تنسيق التاريخ', field: 'dateFormat' },
+                { term: 'تقويم', page: 'نوع التقويم', field: 'calendarType' }
+            ];
+            
+            // Search for matches
+            const matches = searchItems.filter(item => 
+                item.term.includes(searchTerm) || searchTerm.includes(item.term)
+            );
+            console.log('✅ Matches found:', matches.length, matches);
+            
+            if (matches.length > 0) {
+                // Highlight all matching sections
+                matches.forEach(match => {
+                    const element = document.getElementById(match.field);
+                    if (element) {
+                        element.classList.add('search-highlight');
+                        element.parentElement?.classList.add('search-highlight-parent');
+                        setTimeout(() => {
+                            element.classList.remove('search-highlight');
+                            element.parentElement?.classList.remove('search-highlight-parent');
+                        }, 3000);
+                    }
+                });
+                
+                // Scroll to first matching section smoothly
+                const firstElement = document.getElementById(matches[0].field);
+                if (firstElement) {
+                    firstElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstElement.focus();
+                }
+            } else {
+                showSearchNotification('❌ لم يتم العثور على نتائج للبحث عن: ' + searchTerm, 'error');
+            }
+        }
+
+        function generateQRCode() {
+            const previewDate = document.getElementById("previewDate")?.textContent || '';
+            const previewTime = document.getElementById("previewTime")?.textContent || '';
+            const invoiceNum = document.getElementById("previewInvoiceNum")?.textContent || '#INV-2026-001';
+            
+            // Create QR code data
+            const qrData = `Invoice: ${invoiceNum}\nDate: ${previewDate}\nTime: ${previewTime}`;
+            
+            // Clear previous QR code
+            const qrContainer = document.getElementById("qrCodeContainer");
+            if (qrContainer) {
+                qrContainer.innerHTML = '';
+                
+                // Generate new QR code
+                try {
+                    new QRCode(qrContainer, {
+                        text: qrData,
+                        width: 100,
+                        height: 100,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                } catch (e) {
+                    console.log('QR Code generation error:', e);
+                }
+            }
+        }
+
+        function updateDatePreview() {
+            const dateFormat = document.getElementById("dateFormat")?.value || 'dmy';
+            const format24 = document.getElementById("format24Toggle")?.checked;
+            const calendarType = document.getElementById("calendarType")?.value || 'gregorian';
+            const today = new Date();
+            
+            let dateStr = '';
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            
+            // Format date based on selection
+            if (dateFormat === 'dmy') {
+                dateStr = `${day}/${month}/${year}`;
+            } else if (dateFormat === 'mdy') {
+                dateStr = `${month}/${day}/${year}`;
+            } else if (dateFormat === 'ymd') {
+                dateStr = `${year}-${month}-${day}`;
+            }
+            
+            // Convert to Arabic numbers
+            dateStr = formatArabicNumbers(dateStr);
+            
+            // Format time
+            let hours = String(today.getHours()).padStart(2, '0');
+            let minutes = String(today.getMinutes()).padStart(2, '0');
+            let seconds = String(today.getSeconds()).padStart(2, '0');
+            
+            // Convert to 12-hour format if needed
+            let timeStr;
+            if (!format24) {
+                let h = parseInt(hours);
+                const ampm = h >= 12 ? 'م' : 'ص';
+                h = h % 12;
+                h = h ? h : 12;
+                hours = String(h).padStart(2, '0');
+                timeStr = `${formatArabicNumbers(hours)}:${formatArabicNumbers(minutes)}:${formatArabicNumbers(seconds)} ${ampm}`;
+            } else {
+                timeStr = `${formatArabicNumbers(hours)}:${formatArabicNumbers(minutes)}:${formatArabicNumbers(seconds)}`;
+            }
+            
+            // Update calendar type label
+            let calendarLabel = 'ميلادي';
+            if (calendarType === 'hijri') {
+                calendarLabel = 'هجري';
+            } else if (calendarType === 'both') {
+                calendarLabel = 'ميلادي + هجري';
+            }
+            
+            document.getElementById("previewDate").textContent = dateStr;
+            document.getElementById("previewTime").textContent = timeStr;
+            document.getElementById("previewCalendarType").textContent = calendarLabel;
+            document.getElementById("previewInvoiceNum").textContent = `#INV-${new Date().getFullYear()}-001`;
+            
+            // Update settings summary sidebar
+            updateSettingsSummary();
+            
+            // Generate QR code
+            generateQRCode();
+        }
+
+        function updateSettingsSummary() {
+            // Update the settings summary sidebar
+            const langMap = {
+                'ar': 'العربية',
+                'en': 'English',
+                'fr': 'Français'
+            };
+            
+            const reportLangMap = {
+                'ar': 'العربية',
+                'en': 'English',
+                'dual': 'ثنائي (عربي + إنجليزي)'
+            };
+            
+            const tzMap = {
+                'riyadh': 'GMT+03:00 الرياض',
+                'dubai': 'GMT+04:00 دبي',
+                'cairo': 'GMT+02:00 القاهرة'
+            };
+            
+            const dateFormatMap = {
+                'dmy': 'DD/MM/YYYY',
+                'mdy': 'MM/DD/YYYY',
+                'ymd': 'YYYY-MM-DD'
+            };
+            
+            const calendarMap = {
+                'gregorian': 'ميلادي',
+                'hijri': 'هجري',
+                'both': 'كلاهما'
+            };
+            
+            document.getElementById("summarySystemLang").textContent = langMap[document.getElementById("systemLanguage")?.value] || 'العربية';
+            document.getElementById("summaryReportLang").textContent = reportLangMap[document.getElementById("reportLanguage")?.value] || 'العربية';
+            document.getElementById("summaryTimezone").textContent = tzMap[document.getElementById("timezoneSelect")?.value] || 'GMT+03:00';
+            document.getElementById("summary24Hour").textContent = document.getElementById("format24Toggle")?.checked ? '24 ساعة' : '12 ساعة';
+            document.getElementById("summaryDateFormat").textContent = dateFormatMap[document.getElementById("dateFormat")?.value] || 'DD/MM/YYYY';
+            document.getElementById("summaryCalendar").textContent = calendarMap[document.getElementById("calendarType")?.value] || 'ميلادي';
+        }
+
+        function loadCompanyInfo() {
+            // Fetch real company info from API
+            fetch('/api/settings/company/info/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update company name in preview
+                    const companyNameSpan = document.querySelector('.invoice-company-name');
+                    if (companyNameSpan && data.company_name_ar) {
+                        companyNameSpan.textContent = data.company_name_ar;
+                    }
+                    
+                    // Update VAT number in preview
+                    const vatSpan = document.getElementById("previewVatNumber");
+                    if (vatSpan && data.vat_number) {
+                        vatSpan.textContent = data.vat_number;
+                    } else if (vatSpan) {
+                        vatSpan.textContent = '----';
+                    }
+                }
+            })
+            .catch(error => console.log('Could not load company info:', error));
+        }
+
+        function saveLocaleState() {
+            const state = {
+                systemLanguage: document.getElementById("systemLanguage")?.value,
+                reportLanguage: document.getElementById("reportLanguage")?.value,
+                timezoneSelect: document.getElementById("timezoneSelect")?.value,
+                format24Toggle: document.getElementById("format24Toggle")?.checked,
+                dateFormat: document.getElementById("dateFormat")?.value,
+                calendarType: document.getElementById("calendarType")?.value
+            };
+            
+            // Save to API
+            fetch('/api/settings/locale/save/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                },
+                body: JSON.stringify(state)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(result.message);
+                } else {
+                    alert('خطأ: ' + result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                saveLocaleStateLocal(state);
+            });
+        }
+        
+        function saveLocaleStateLocal(state) {
+            localStorage.setItem("localeTimeSettings", JSON.stringify(state));
+        }
+
+        function loadLocaleState() {
+            const saved = localStorage.getItem("localeTimeSettings");
+            if (saved) {
+                applyLocaleState(JSON.parse(saved));
+            }
+        }
+
+        function resetLocaleState() {
+            localStorage.removeItem("localeTimeSettings");
+            applyLocaleState(localeDefaults);
+        }
+
+        document.getElementById("saveAllLocaleBtn")?.addEventListener("click", function() {
+            saveLocaleState();
+        });
+
+        document.getElementById("resetLocaleBtn")?.addEventListener("click", function() {
+            if (confirm("هل تريد إعادة تعيين جميع الإعدادات إلى الافتراضية؟")) {
+                // Reset to defaults
+                document.getElementById("systemLanguage").value = 'ar';
+                document.getElementById("reportLanguage").value = 'ar';
+                document.getElementById("timezoneSelect").value = 'riyadh';
+                document.getElementById("format24Toggle").checked = true;
+                document.getElementById("dateFormat").value = 'dmy';
+                document.getElementById("calendarType").value = 'gregorian';
+                
+                updateDatePreview();
+                saveLocaleState();
+                alert("تم إعادة تعيين الإعدادات ✓");
+            }
+        });
+
+        // Auto-save on change
+        document.getElementById("systemLanguage")?.addEventListener("change", function() {
+            saveLocaleState();
+        });
+        document.getElementById("reportLanguage")?.addEventListener("change", function() {
+            saveLocaleState();
+        });
+        document.getElementById("timezoneSelect")?.addEventListener("change", function() {
+            saveLocaleState();
+        });
+        document.getElementById("format24Toggle")?.addEventListener("change", function() {
+            updateDatePreview();
+            saveLocaleState();
+        });
+        document.getElementById("dateFormat")?.addEventListener("change", function() {
+            updateDatePreview();
+            saveLocaleState();
+        });
+        document.getElementById("calendarType")?.addEventListener("change", function() {
+            updateDatePreview();
+            saveLocaleState();
+        });
+
+        loadLocaleState();
+        updateDatePreview();
+        generateQRCode();
+        loadCompanyInfo();
+        updateSettingsSummary();
+        
+        // Add search functionality
+        const searchInput = document.getElementById("searchInput");
+        console.log('🔎 Search input element:', searchInput);
+        if (searchInput) {
+            searchInput.addEventListener("keypress", function(event) {
+                console.log('⌨️ Keypress detected on search input:', event.key);
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    console.log('🎯 Performing search...');
+                    performSearch();
+                }
+            });
+            searchInput.addEventListener("input", function() {
+                console.log('✏️ Search input changed:', this.value);
+            });
+        }
+    </script>
+<footer class="mt-auto px-10 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>{{ action }} مستخدم - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
+    <style>
+        body { 
+            font-family: "IBM Plex Sans Arabic", sans-serif;
+            background-color: rgb(15 23 42);
+            color: #e2e8f0;
+        }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+            color: #fff !important;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #11a4d4 !important;
+            box-shadow: 0 0 0 3px rgba(17, 164, 212, 0.1);
+        }
+        label {
+            color: #9ca3af !important;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-slate-900 min-h-screen">
+    <div class="min-h-screen p-8">
+        <div class="max-w-3xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <a href="{% url 'users_permissions' %}" class="text-primary hover:text-primary/80 flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    العودة إلى المستخدمين
+                </a>
+                <h1 class="text-3xl font-bold text-white">{{ action }} مستخدم</h1>
+                <p class="text-slate-400 mt-2">املأ البيانات أدناه {{ action|lower }} المستخدم</p>
+            </div>
+
+            <!-- Form -->
+            <div class="bg-[#1a222c] rounded-2xl shadow-lg p-8 border border-[#2a333c]">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="mb-6 p-4 rounded-xl {% if message.tags == 'success' %}bg-green-900/30 border border-green-700 text-green-300{% else %}bg-red-900/30 border border-red-700 text-red-300{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Username -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">account_circle</span>
+                            اسم المستخدم *
+                        </label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <p class="text-red-400 text-sm mt-1">{{ form.username.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- First Name -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">person</span>
+                            الاسم الأول *
+                        </label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <p class="text-red-400 text-sm mt-1">{{ form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Last Name -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">person</span>
+                            الاسم الأخير *
+                        </label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <p class="text-red-400 text-sm mt-1">{{ form.last_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">email</span>
+                            البريد الإلكتروني *
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <p class="text-red-400 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Group (Role) -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">badge</span>
+                            الدور الوظيفي
+                        </label>
+                        <select name="group_id" class="w-full">
+                            <option value="">-- اختر الدور --</option>
+                            {% for group in groups %}
+                            <option value="{{ group.id }}">{{ group.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">lock</span>
+                            كلمة المرور *
+                        </label>
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                            <p class="text-red-400 text-sm mt-1">{{ form.password1.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">lock</span>
+                            تأكيد كلمة المرور *
+                        </label>
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <p class="text-red-400 text-sm mt-1">{{ form.password2.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Active Status -->
+                    <div class="flex items-center gap-3 p-4 bg-slate-800/50 rounded-xl border border-slate-700">
+                        <input type="checkbox" name="is_active" id="is_active" checked class="w-5 h-5 text-primary rounded border-slate-600 bg-slate-700">
+                        <label for="is_active" class="text-sm font-medium text-slate-300 cursor-pointer">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">check_circle</span>
+                            حساب نشط
+                        </label>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex gap-3 pt-6 border-t border-slate-700">
+                        <button type="submit" class="flex-1 bg-primary text-white py-3 px-6 rounded-xl font-bold hover:bg-primary/90 transition-colors shadow-lg">
+                            <span class="material-symbols-outlined text-sm ml-2 align-middle">save</span>
+                            حفظ المستخدم
+                        </button>
+                        <a href="{% url 'users_permissions' %}" class="px-6 py-3 border border-slate-600 text-slate-300 rounded-xl font-medium hover:bg-slate-800 transition-colors">
+                            إلغاء
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

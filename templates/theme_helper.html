@@ -1,0 +1,68 @@
+<!-- Theme Helper and Utility Scripts -->
+<script>
+    // Dark Mode Toggle
+    window.toggleDarkMode = function() {
+        const html = document.documentElement;
+        const isDark = html.classList.contains('dark');
+        
+        if (isDark) {
+            html.classList.remove('dark');
+            localStorage.setItem('darkMode', 'false');
+        } else {
+            html.classList.add('dark');
+            localStorage.setItem('darkMode', 'true');
+        }
+    }
+    
+    // Load dark mode preference
+    window.addEventListener('DOMContentLoaded', function() {
+        const darkMode = localStorage.getItem('darkMode');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (darkMode === 'true' || (darkMode === null && prefersDark)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    });
+
+    // Show notification helper
+    window.showNotification = function(message, type = 'info') {
+        const notif = document.createElement('div');
+        notif.className = 'fixed bottom-4 right-4 px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3 transition-all font-semibold animate-in fade-in slide-in-from-right-4';
+        
+        if (type === 'success') {
+            notif.classList.add('bg-green-500', 'text-slate-900');
+            notif.innerHTML = `<span class="material-icons">check_circle</span><span>${message}</span>`;
+        } else if (type === 'error') {
+            notif.classList.add('bg-red-500', 'text-slate-900');
+            notif.innerHTML = `<span class="material-icons">error</span><span>${message}</span>`;
+        } else {
+            notif.classList.add('bg-blue-500', 'text-slate-900');
+            notif.innerHTML = `<span class="material-icons">info</span><span>${message}</span>`;
+        }
+        
+        document.body.appendChild(notif);
+        
+        setTimeout(() => {
+            notif.style.opacity = '0';
+            notif.style.transform = 'translateX(100%)';
+            setTimeout(() => notif.remove(), 300);
+        }, 3000);
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

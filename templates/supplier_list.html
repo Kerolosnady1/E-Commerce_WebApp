@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الموردين - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-slate-100" style="background-color:#0f172a; color:#e2e8f0;">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-white">إدارة الموردين</h1>
+                <p class="text-sm text-slate-300">إدارة بيانات الموردين وربطها بطلبات الشراء</p>
+            </div>
+            <a href="/suppliers/create/" class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                <span class="material-symbols-outlined">add</span>
+                إضافة مورد جديد
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                <p class="text-sm text-slate-300">إجمالي الموردين</p>
+                <p class="text-2xl font-bold text-white">{{ total_suppliers }}</p>
+            </div>
+            <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                <p class="text-sm text-slate-300">الموردين النشطين</p>
+                <p class="text-2xl font-bold text-white">{{ active_suppliers }}</p>
+            </div>
+            <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                <p class="text-sm text-slate-300">غير نشط</p>
+                <p class="text-2xl font-bold text-white">{{ inactive_suppliers }}</p>
+            </div>
+        </div>
+
+        <form class="bg-slate-800 rounded-lg border border-slate-700 p-4 mb-6 flex flex-wrap items-end gap-4" action="/suppliers/" method="get">
+            <div class="flex-1 min-w-[220px]">
+                <label class="text-xs text-slate-300 mb-2 block">بحث</label>
+                <input class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100" name="search" value="{{ search_query }}" placeholder="اسم، بريد، هاتف" type="text"/>
+            </div>
+            <div class="min-w-[200px]">
+                <label class="text-xs text-slate-300 mb-2 block">الحالة</label>
+                <select class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100" name="status">
+                    <option value="" {% if not status_filter %}selected{% endif %}>الكل</option>
+                    <option value="active" {% if status_filter == "active" %}selected{% endif %}>نشط</option>
+                    <option value="inactive" {% if status_filter == "inactive" %}selected{% endif %}>غير نشط</option>
+                </select>
+            </div>
+            <div class="min-w-[200px]">
+                <label class="text-xs text-slate-300 mb-2 block">الترتيب</label>
+                <select class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100" name="order">
+                    <option value="" {% if not order_by %}selected{% endif %}>الأحدث</option>
+                    <option value="oldest" {% if order_by == "oldest" %}selected{% endif %}>الأقدم</option>
+                    <option value="name" {% if order_by == "name" %}selected{% endif %}>الاسم</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm" type="submit">تطبيق</button>
+                <a class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm" href="/suppliers/">إعادة تعيين</a>
+            </div>
+        </form>
+
+        <div class="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+            <table class="w-full text-right">
+                <thead class="bg-slate-900">
+                    <tr>
+                        <th class="px-4 py-3 text-sm text-slate-200">الاسم</th>
+                        <th class="px-4 py-3 text-sm text-slate-200">البريد</th>
+                        <th class="px-4 py-3 text-sm text-slate-200">الهاتف</th>
+                        <th class="px-4 py-3 text-sm text-slate-200">الحالة</th>
+                        <th class="px-4 py-3 text-sm text-slate-200">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for supplier in suppliers %}
+                    <tr class="border-t border-slate-700 hover:bg-slate-700/40">
+                        <td class="px-4 py-3 font-semibold text-white">{{ supplier.name }}</td>
+                        <td class="px-4 py-3 text-sm text-slate-300">{{ supplier.email|default:"—" }}</td>
+                        <td class="px-4 py-3 text-sm text-slate-300">{{ supplier.phone|default:"—" }}</td>
+                        <td class="px-4 py-3">
+                            {% if supplier.is_active %}
+                            <span class="text-xs bg-green-900/30 text-green-400 px-2 py-1 rounded">نشط</span>
+                            {% else %}
+                            <span class="text-xs bg-slate-700 text-slate-200 px-2 py-1 rounded">غير نشط</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-3">
+                            <div class="flex gap-2">
+                                <a href="/suppliers/{{ supplier.id }}/edit/" class="text-blue-400 hover:underline">تعديل</a>
+                                <form method="post" action="/suppliers/{{ supplier.id }}/delete/" onsubmit="return confirm('حذف المورد؟')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-400 hover:underline">حذف</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-4 py-8 text-center text-slate-400">لا يوجد موردين بعد</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6">
+            <a href="/purchases/" class="text-blue-400 hover:underline">العودة إلى المشتريات</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}لوحة التحكم{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <div>
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">لوحة التحكم</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400">نظرة عامة على الأداء والمبيعات والمخزون.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-5">
+            <p class="text-xs text-slate-500 dark:text-slate-400">إجمالي المبيعات</p>
+            <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ total_sales }}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-5">
+            <p class="text-xs text-slate-500 dark:text-slate-400">مبيعات هذا الشهر</p>
+            <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ sales_this_month }}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-5">
+            <p class="text-xs text-slate-500 dark:text-slate-400">إجمالي العملاء</p>
+            <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ total_customers }}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-5">
+            <p class="text-xs text-slate-500 dark:text-slate-400">المنتجات منخفضة المخزون</p>
+            <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ low_stock_items }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4">أحدث الفواتير</h2>
+            <ul class="space-y-3">
+                {% for invoice in recent_invoices %}
+                <li class="flex items-center justify-between text-sm">
+                    <span class="text-slate-700 dark:text-slate-300">{{ invoice.number }} - {{ invoice.customer.name }}</span>
+                    <span class="text-slate-500 dark:text-slate-400">{{ invoice.total }}</span>
+                </li>
+                {% empty %}
+                <li class="text-sm text-slate-500 dark:text-slate-400">لا توجد فواتير حديثة.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4">أحدث الإشعارات</h2>
+            <ul class="space-y-3">
+                {% for notification in recent_notifications %}
+                <li class="text-sm text-slate-700 dark:text-slate-300">{{ notification.title }}</li>
+                {% empty %}
+                <li class="text-sm text-slate-500 dark:text-slate-400">لا توجد إشعارات جديدة.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+        <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4">الطلبات المعلقة</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">عدد طلبات الشراء المعلقة: {{ pending_purchases }}</p>
+    </div>
+</div>
+{% endblock %}

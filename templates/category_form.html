@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - نظام إدارة الأعمال</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-slate-100" style="background-color: #0f172a; color: #e2e8f0;">
+    <style>
+        input[type="text"], input[type="number"], input[type="email"], input[type="url"], select, textarea {
+            background-color: #0f172a !important;
+            color: #e2e8f0 !important;
+            border: 1px solid #334155 !important;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, select:focus, textarea:focus {
+            outline: none !important;
+            border-color: #11a4d4 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35) !important;
+        }
+        option { background-color: #0f172a; color: #e2e8f0; }
+    </style>
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-3xl font-bold text-white mb-6">{{ title }}</h1>
+
+            <div class="bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-700">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-slate-300 mb-2">اسم الفئة <span class="text-red-500">*</span></label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-300 mb-2">الفئة الأب (اختياري)</label>
+                        {{ form.parent }}
+                        <p class="text-slate-400 text-sm mt-1">اترك فارغاً إذا كانت فئة رئيسية</p>
+                        {% if form.parent.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.parent.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        {{ form.is_active }}
+                        <label class="text-sm font-medium text-slate-300">الفئة نشطة</label>
+                    </div>
+
+                    <div class="flex gap-3 pt-4">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2">
+                            <span class="material-symbols-outlined">save</span>
+                            حفظ
+                        </button>
+                        <a href="{% url 'categories_list' %}" class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-2 rounded-lg flex items-center gap-2">
+                            <span class="material-symbols-outlined">cancel</span>
+                            إلغاء
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

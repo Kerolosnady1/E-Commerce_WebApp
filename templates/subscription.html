@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>خطة الاشتراك - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-dark": "#101d22",
+                        "surface-dark": "#111722",
+                        "card-dark": "#1b2333",
+                        "border-dark": "#232f48"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: "IBM Plex Sans Arabic", sans-serif; }
+        .material-symbols-outlined { vertical-align: middle; }
+    </style>
+</head>
+<body class="bg-background-dark text-slate-100">
+    <div class="min-h-screen p-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <a href="{% url 'accounts' %}" class="text-primary hover:text-blue-300 flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    العودة إلى الحسابات
+                </a>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-4xl font-bold text-white">خطة الاشتراك</h1>
+                        <p class="text-slate-400 mt-2">إدارة اشتراكك وترقية خطتك</p>
+                    </div>
+                    <span class="px-4 py-2 bg-primary text-white text-sm font-bold rounded-full">
+                        {{ subscription.get_plan_display }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Current Subscription Card -->
+            <div class="bg-surface-dark border border-border-dark rounded-2xl p-8 mb-8">
+                <div class="flex items-center justify-between border-b border-border-dark pb-6 mb-6">
+                    <h2 class="text-white text-2xl font-bold flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary text-3xl">credit_card</span>
+                        اشتراكك الحالي
+                    </h2>
+                    <span class="px-4 py-2 bg-green-500/20 text-green-400 text-sm font-bold rounded-full border border-green-500/30">
+                        ✓ {% if subscription.status == 'active' %}فعال - يتم التجديد تلقائياً{% else %}{{ subscription.status }}{% endif %}
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Subscription Details -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="flex justify-between items-center p-4 bg-border-dark rounded-xl">
+                            <span class="text-slate-400">موعد التجديد القادم</span>
+                            <span class="text-white font-bold">{{ subscription.renewal_date|date:"d/m/Y" }}</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 bg-border-dark rounded-xl">
+                            <span class="text-slate-400">المبلغ الشهري</span>
+                            <span class="text-white font-bold text-xl">{{ subscription.monthly_cost }} ر.س</span>
+                        </div>
+
+                        <!-- Storage Usage -->
+                        <div class="p-6 bg-border-dark rounded-xl">
+                            <div class="flex justify-between mb-3">
+                                <span class="text-sm font-medium text-slate-400">استهلاك مساحة التخزين</span>
+                                <span class="text-sm font-medium text-white">
+                                    {{ subscription.storage_percent }}% ({{ subscription.storage_used }}GB / {{ subscription.storage_total }}GB)
+                                </span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-3">
+                                <div class="bg-primary h-3 rounded-full transition-all" style="width: {{ subscription.storage_percent }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upgrade Card -->
+                    <div class="bg-border-dark p-6 rounded-xl flex flex-col justify-center items-center gap-4 text-center border border-white/5 shadow-inner">
+                        <span class="material-symbols-outlined text-5xl text-primary">auto_awesome</span>
+                        <div class="flex flex-col gap-2">
+                            <p class="text-white font-bold text-lg">هل تحتاج للمزيد؟</p>
+                            <p class="text-slate-400 text-sm">قم بترقية حسابك للحصول على مميزات غير محدودة.</p>
+                        </div>
+                        <button onclick="document.getElementById('plansSection').scrollIntoView({behavior: 'smooth'})" class="w-full py-3 bg-white text-background-dark text-sm font-bold rounded-xl hover:bg-slate-200 transition-colors shadow-lg">
+                            ترقية الاشتراك الآن
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Plans -->
+            <div class="mb-8" id="plansSection">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">workspace_premium</span>
+                    الخطط المتاحة
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {% for plan in available_plans %}
+                    {% if plan.id != subscription.plan %}
+                    <div class="bg-surface-dark border border-border-dark rounded-2xl p-6 hover:border-primary transition-all {% if plan.id == 'professional' %}ring-2 ring-primary{% endif %}">
+                        <div class="text-center mb-6">
+                            <h3 class="text-xl font-bold text-white mb-2">{{ plan.name }}</h3>
+                            <p class="text-slate-400 text-sm mb-4">{{ plan.name_en }}</p>
+                            <div class="flex items-baseline justify-center gap-1">
+                                <span class="text-4xl font-bold text-white">{{ plan.price }}</span>
+                                <span class="text-slate-400 text-sm">ر.س / شهرياً</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-center gap-2 text-slate-300 p-3 bg-border-dark rounded-lg">
+                                <span class="material-symbols-outlined text-primary text-sm">group</span>
+                                <span class="text-sm">{{ plan.users }} مستخدم</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-slate-300 p-3 bg-border-dark rounded-lg">
+                                <span class="material-symbols-outlined text-primary text-sm">storage</span>
+                                <span class="text-sm">{{ plan.storage }} GB تخزين</span>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-border-dark pt-4 mb-6">
+                            <p class="text-slate-400 text-xs font-bold mb-3">المميزات:</p>
+                            <ul class="space-y-2">
+                                {% for feature in plan.features %}
+                                <li class="flex items-center gap-2 text-slate-300 text-sm">
+                                    <span class="material-symbols-outlined text-green-400 text-xs">done</span>
+                                    {{ feature }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <button onclick="window.location.href='{% url 'upgrade_subscription' plan.id %}'" class="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-blue-600 transition-colors">
+                            {% if plan.price > subscription.monthly_cost %}ترقية إلى{% else %}التبديل إلى{% endif %} {{ plan.name }}
+                        </button>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% if subscription.plan == 'enterprise' %}
+                <div class="mt-6 p-6 bg-primary/10 border border-primary/30 rounded-xl text-center">
+                    <span class="material-symbols-outlined text-primary text-4xl mb-2">workspace_premium</span>
+                    <p class="text-white font-bold text-lg">أنت على الخطة المؤسسية!</p>
+                    <p class="text-slate-400 text-sm mt-2">تستمتع بجميع المميزات المتاحة في النظام</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="bg-surface-dark border border-border-dark rounded-2xl p-8">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">payments</span>
+                    طرق الدفع
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex items-center justify-between p-4 bg-border-dark rounded-xl border border-border-dark">
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined text-3xl text-primary">credit_card</span>
+                            <div>
+                                <p class="text-white font-bold">•••• •••• •••• 4532</p>
+                                <p class="text-slate-400 text-sm">تنتهي 12/2026</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 bg-green-500/20 text-green-400 text-xs font-bold rounded-full">افتراضي</span>
+                    </div>
+
+                    <button onclick="addPaymentMethod()" class="flex items-center justify-center gap-3 p-4 bg-border-dark rounded-xl border border-dashed border-border-dark hover:border-primary transition-colors">
+                        <span class="material-symbols-outlined text-slate-400">add</span>
+                        <span class="text-slate-400">إضافة طريقة دفع جديدة</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="mt-8 flex gap-4">
+                {% if subscription.auto_renew %}
+                <button onclick="pauseAutoRenewal()" class="px-6 py-3 bg-border-dark text-white rounded-xl font-medium hover:bg-slate-700 transition-colors border border-border-dark">
+                    <span class="material-symbols-outlined text-sm ml-2 align-middle">pause</span>
+                    إيقاف التجديد التلقائي
+                </button>
+                {% else %}
+                <button onclick="pauseAutoRenewal()" class="px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-blue-600 transition-colors">
+                    <span class="material-symbols-outlined text-sm ml-2 align-middle">play_arrow</span>
+                    تفعيل التجديد التلقائي
+                </button>
+                {% endif %}
+                <button onclick="cancelSubscription()" class="px-6 py-3 bg-red-500/10 text-red-400 rounded-xl font-medium hover:bg-red-500/20 transition-colors border border-red-500/30">
+                    <span class="material-symbols-outlined text-sm ml-2 align-middle">cancel</span>
+                    إلغاء الاشتراك
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addPaymentMethod() {
+            // Show modal or redirect to payment method form
+            alert('سيتم فتح نموذج إضافة طريقة دفع جديدة قريباً');
+            // In production, you would redirect to a payment gateway or show a modal
+            // window.location.href = '/payment/add/';
+        }
+
+        function pauseAutoRenewal() {
+            if (confirm('هل أنت متأكد من إيقاف التجديد التلقائي؟')) {
+                fetch('{% url "subscription" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ action: 'pause_renewal' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('تم إيقاف التجديد التلقائي بنجاح');
+                        location.reload();
+                    } else {
+                        alert('حدث خطأ: ' + (data.error || 'غير معروف'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ أثناء معالجة الطلب');
+                });
+            }
+        }
+
+        function cancelSubscription() {
+            if (confirm('⚠️ تحذير: سيتم إلغاء اشتراكك وفقدان الوصول إلى جميع المميزات. هل أنت متأكد؟')) {
+                window.location.href = '{% url "profile" %}';
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>لوحة التحكم - نظام ERP متكامل</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#11a4d4", // Inventory Blue
+                        secondary: "#10b981", // Success Green
+                        accent: "#11a4d4", // Inventory Blue accent
+                        background: "#f6f8f8",
+                        "surface": "#ffffff",
+                    },
+                    fontFamily: {
+                        sans: ["IBM Plex Sans Arabic", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-background text-slate-900 font-sans antialiased;
+            }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            @apply bg-slate-300 rounded-full;
+        }
+    </style>
+</head>
+<body style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-72 flex-shrink-0 bg-[#0f172a] text-slate-300 flex flex-col hidden lg:flex border-l border-slate-800">
+<div class="p-8 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-900/20">
+<span class="material-symbols-outlined">enterprise</span>
+</div>
+<span class="text-xl font-bold text-white tracking-wide">بيانات الأعمال</span>
+</div>
+<nav class="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
+<div class="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-widest">الرئيسية</div>
+<a class="flex items-center px-4 py-3 text-white bg-primary/20 border-r-4 border-primary rounded-l-xl transition-all" href="/">
+<span class="material-symbols-outlined ml-3 text-primary">dashboard</span>
+<span class="font-medium">لوحة التحكم</span>
+</a>
+<div class="px-4 py-6 text-xs font-semibold text-slate-500 uppercase tracking-widest">العمليات</div>
+<a class="flex items-center px-4 py-3 hover:bg-slate-800 rounded-xl transition-all group" href="/invoices/create/">
+<span class="material-symbols-outlined ml-3 group-hover:text-primary transition-colors">point_of_sale</span>
+<span class="font-medium">نقاط البيع</span>
+</a>
+<a class="flex items-center px-4 py-3 hover:bg-slate-800 rounded-xl transition-all group" href="/inventory/">
+<span class="material-symbols-outlined ml-3 group-hover:text-primary transition-colors">inventory_2</span>
+<span class="font-medium">المخزون</span>
+</a>
+<a class="flex items-center px-4 py-3 hover:bg-slate-800 rounded-xl transition-all group" href="/sales/">
+<span class="material-symbols-outlined ml-3 group-hover:text-primary transition-colors">receipt_long</span>
+<span class="font-medium">الفواتير والمبيعات</span>
+</a>
+<div class="px-4 py-6 text-xs font-semibold text-slate-500 uppercase tracking-widest">الإدارة</div>
+<a class="flex items-center px-4 py-3 hover:bg-slate-800 rounded-xl transition-all group" href="/customers/">
+<span class="material-symbols-outlined ml-3 group-hover:text-primary transition-colors">groups</span>
+<span class="font-medium">العملاء والموردين</span>
+</a>
+<a class="flex items-center px-4 py-3 hover:bg-slate-800 rounded-xl transition-all group" href="/accounts/">
+<span class="material-symbols-outlined ml-3 group-hover:text-primary transition-colors">account_balance</span>
+<span class="font-medium">المحاسبة المالية</span>
+</a>
+</nav>
+<div class="p-6 bg-slate-900/50">
+<div class="flex items-center gap-3 p-3 bg-slate-800 rounded-2xl">
+{% if request.user.profile.avatar %}
+<img alt="{{ request.user.get_full_name|default:request.user.username }}" class="w-10 h-10 rounded-full border border-slate-600 object-cover" src="{{ request.user.profile.avatar.url }}"/>
+{% else %}
+<div class="w-10 h-10 rounded-full border border-slate-600 bg-primary/10 flex items-center justify-center text-primary font-bold">
+{{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+</div>
+{% endif %}
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-white truncate">{{ request.user.get_full_name|default:request.user.username }}</p>
+<p class="text-xs text-slate-400 truncate">{{ request.user.profile.role|default:'مستخدم' }}</p>
+</div>
+<a class="text-slate-500 hover:text-white" href="/settings/system/"><span class="material-symbols-outlined text-sm">settings</span></a>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto relative" style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
+<header class="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-slate-200 px-8 py-5 flex items-center justify-between">
+<div>
+<h1 class="text-2xl font-bold text-slate-900">لوحة التحكم الاستراتيجية</h1>
+<p class="text-sm text-slate-500 mt-0.5">مرحباً بك، إليك آخر تحديثات نظامك اليوم</p>
+</div>
+<div class="flex items-center gap-4">
+<form class="hidden md:flex items-center bg-slate-100 rounded-full px-4 py-2 border border-slate-200" action="/sales/" method="get">
+<span class="material-symbols-outlined text-slate-400 ml-2 text-xl">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-64 text-right" name="search" placeholder="بحث سريع عن فاتورة أو عميل..." type="text"/>
+</form>
+<div class="flex gap-2">
+<a class="p-2.5 text-slate-500 bg-white border border-slate-200 rounded-full hover:bg-slate-50 relative" href="/notifications/">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+</a>
+<a class="p-2.5 text-slate-500 bg-white border border-slate-200 rounded-full hover:bg-slate-50" href="/locale-time/">
+<span class="material-symbols-outlined">calendar_today</span>
+</a>
+</div>
+</div>
+</header>
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<section class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+<a class="flex flex-col items-center justify-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-primary hover:shadow-lg transition-all group" href="/invoices/create/">
+<div class="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-3 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</div>
+<span class="text-sm font-bold text-slate-700">بيع جديد</span>
+</a>
+<a class="flex flex-col items-center justify-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-secondary hover:shadow-lg transition-all group" href="/customers/create/">
+<div class="w-12 h-12 rounded-xl bg-green-50 text-secondary flex items-center justify-center mb-3 group-hover:bg-secondary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<span class="text-sm font-bold text-slate-700">عميل جديد</span>
+</a>
+<a class="flex flex-col items-center justify-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-accent hover:shadow-lg transition-all group" href="/products/create/">
+<div class="w-12 h-12 rounded-xl bg-sky-50 text-accent flex items-center justify-center mb-3 group-hover:bg-accent group-hover:text-white transition-all">
+<span class="material-symbols-outlined">inventory</span>
+</div>
+<span class="text-sm font-bold text-slate-700">إضافة مخزون</span>
+</a>
+<a class="flex flex-col items-center justify-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-primary hover:shadow-lg transition-all group" href="/reports/">
+<div class="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-3 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">description</span>
+</div>
+<span class="text-sm font-bold text-slate-700">تقرير ضريبي</span>
+</a>
+<a class="hidden lg:flex flex-col items-center justify-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-slate-400 hover:shadow-lg transition-all group" href="/settings/system/">
+<div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center mb-3 group-hover:bg-slate-700 group-hover:text-white transition-all">
+<span class="material-symbols-outlined">settings_suggest</span>
+</div>
+<span class="text-sm font-bold text-slate-700">تخصيص</span>
+</a>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-primary rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-blue-200">
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-white/20 rounded-2xl backdrop-blur-md">
+<span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
+</div>
+<div class="flex items-center bg-green-400/20 text-green-300 px-3 py-1 rounded-full text-xs font-bold">
+<span class="material-symbols-outlined text-sm ml-1">trending_up</span> 14.2%
+                                </div>
+</div>
+<p class="text-blue-100 text-sm font-medium opacity-90">إجمالي الإيرادات (الشهر الحالي)</p>
+<div class="flex items-baseline gap-2 mt-2">
+<h2 class="text-4xl font-bold">{{ sales_this_month|floatformat:0 }}</h2>
+<span class="text-lg opacity-80">ر.س</span>
+</div>
+<div class="mt-8 pt-6 border-t border-white/10 flex items-center gap-4">
+<div class="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
+<div class="bg-white h-full rounded-full" style="width: 72%"></div>
+</div>
+<span class="text-xs font-medium">72% من المستهدف</span>
+</div>
+</div>
+<div class="absolute -bottom-10 -right-10 w-48 h-48 bg-white/5 rounded-full blur-3xl"></div>
+</div>
+<div class="rounded-3xl p-8 border border-slate-200 shadow-sm" style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-slate-50 text-slate-600 rounded-2xl border border-slate-100">
+<span class="material-symbols-outlined text-3xl">shopping_bag</span>
+</div>
+<div class="flex items-center bg-slate-100 text-slate-500 px-3 py-1 rounded-full text-xs font-bold">
+<span class="material-symbols-outlined text-sm ml-1">schedule</span> آخر 30 يوم
+                            </div>
+</div>
+<p class="text-slate-300 text-sm font-medium">عدد الطلبات المنفذة</p>
+<h2 class="text-4xl font-bold text-white mt-2">{{ total_invoices }}</h2>
+<div class="mt-8 flex items-center gap-2">
+<div class="flex -space-x-reverse space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[10px] font-bold text-primary">A</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-green-100 flex items-center justify-center text-[10px] font-bold text-secondary">B</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-amber-100 flex items-center justify-center text-[10px] font-bold text-amber-600">C</div>
+</div>
+<span class="text-xs text-slate-300 mr-2">+{{ new_customers_this_month }} عميل جديد هذا الشهر</span>
+</div>
+</div>
+<div class="rounded-3xl p-8 border border-red-100 shadow-sm" style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-red-50 text-red-500 rounded-2xl border border-red-50">
+<span class="material-symbols-outlined text-3xl">warning</span>
+</div>
+<span class="flex items-center text-xs font-bold text-red-600 bg-red-50 px-3 py-1 rounded-full animate-pulse">
+                                تنبيه حرج
+                            </span>
+</div>
+<p class="text-slate-300 text-sm font-medium">منتجات منخفضة المخزون</p>
+<h2 class="text-4xl font-bold text-white mt-2">{{ low_stock_items }}</h2>
+<div class="mt-8">
+<a class="w-full py-2.5 bg-red-50 text-red-600 rounded-xl text-sm font-bold hover:bg-red-100 transition-colors text-center block" href="/inventory/?stock_status=low">
+                                عرض قائمة النواقص
+                            </a>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 rounded-3xl p-8 border border-slate-200 shadow-sm" style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
+<div class="flex items-center justify-between mb-10">
+<div>
+<h3 class="text-xl font-bold text-white">ملخص مبيعات السنة</h3>
+<p class="text-sm text-slate-300">تحليل المبيعات الشهرية لعام 2024</p>
+</div>
+<div class="flex gap-2">
+<button class="sales-filter-btn px-4 py-2 text-sm font-bold bg-primary text-white rounded-xl shadow-lg shadow-blue-200" data-filter="all">الكل</button>
+<button class="sales-filter-btn px-4 py-2 text-sm font-medium text-slate-300 bg-slate-800 rounded-xl hover:bg-slate-700" data-filter="online">أونلاين</button>
+<button class="sales-filter-btn px-4 py-2 text-sm font-medium text-slate-300 bg-slate-800 rounded-xl hover:bg-slate-700" data-filter="store">المعرض</button>
+</div>
+</div>
+<div class="relative h-72 w-full flex items-end gap-4 px-2">
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-50">
+<div class="border-t border-slate-100 w-full"></div>
+<div class="border-t border-slate-100 w-full"></div>
+<div class="border-t border-slate-100 w-full"></div>
+<div class="border-t border-slate-100 w-full"></div>
+<div class="border-t border-slate-200 w-full"></div>
+</div>
+{% if monthly_sales %}
+    {% for item in monthly_sales %}
+    <div class="flex-1 flex flex-col items-center group relative">
+        <div class="w-full rounded-t-xl transition-all group-hover:bg-primary/20" style="height: {{ item.height }}%; background-color: {% if item.height > 80 %}#10b981{% elif item.height > 60 %}#1e40af{% else %}#e2e8f0{% endif %};"></div>
+        <span class="mt-4 text-xs font-medium text-slate-400">{{ item.month_name }}</span>
+        <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{{ item.total|floatformat:0 }} ر.س</div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="flex-1 flex items-center justify-center text-slate-400">لا توجد بيانات مبيعات حتى الآن</div>
+{% endif %}
+</div>
+</div>
+<div class="rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col" style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-xl font-bold text-white">آخر العمليات</h3>
+<a class="text-primary text-xs font-bold hover:underline" href="/sales/">عرض الكل</a>
+</div>
+<div class="flex-1 space-y-6">
+{% if recent_invoices %}
+    {% for invoice in recent_invoices %}
+    <a class="flex items-center justify-between group cursor-pointer" href="/invoices/{{ invoice.id }}/">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-slate-600 rounded-2xl flex items-center justify-center text-slate-300 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <span class="material-symbols-outlined">receipt_long</span>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-white">فاتورة #{{ invoice.number }}</p>
+                <p class="text-[11px] text-slate-400">{{ invoice.issued_date }} • {{ invoice.customer.name }}</p>
+            </div>
+        </div>
+        <p class="text-sm font-bold text-white">{{ invoice.total|floatformat:2 }} ر.س</p>
+    </a>
+    {% endfor %}
+{% else %}
+    <div class="text-sm text-slate-300">لا توجد عمليات حديثة حتى الآن.</div>
+{% endif %}
+</div>
+<a class="mt-8 py-3 w-full bg-primary text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all text-center" href="/download-statement/">
+                            تحميل كشف الحساب
+                        </a>
+</div>
+</div>
+<section class="rounded-3xl border border-slate-200 shadow-sm overflow-hidden" style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
+<div class="p-8 border-b border-slate-100 flex items-center justify-between">
+<div>
+<h3 class="text-xl font-bold text-white">تنبيهات المخزون المنخفض</h3>
+<p class="text-sm text-slate-300">المنتجات التي وصلت إلى حد إعادة الطلب</p>
+</div>
+<a class="px-5 py-2.5 bg-secondary text-white rounded-xl text-sm font-bold hover:bg-emerald-600 transition-all" href="/create-bulk-purchase/">
+                            إنشاء أمر شراء مجمع
+                        </a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-right">
+<thead>
+<tr class="bg-slate-900/30">
+<th class="px-8 py-4 text-xs font-bold text-slate-300 uppercase tracking-wider">المنتج</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-300 uppercase tracking-wider">التصنيف</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-300 uppercase tracking-wider">الكمية الحالية</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-300 uppercase tracking-wider">الحد الأدنى</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-300 uppercase tracking-wider">الحالة</th>
+<th class="px-8 py-4 text-xs font-bold text-slate-300 uppercase tracking-wider text-left">الإجراء</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-700">
+{% if low_stock_list %}
+    {% for item in low_stock_list %}
+    <tr>
+        <td class="px-8 py-5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                    <span class="material-symbols-outlined text-slate-400">image</span>
+                </div>
+                <span class="text-sm font-bold text-white">{{ item.product.name }}</span>
+            </div>
+        </td>
+        <td class="px-8 py-5 text-sm text-slate-300">{{ item.product.category.name|default:"بدون تصنيف" }}</td>
+        <td class="px-8 py-5 text-sm font-bold text-red-600">{{ item.quantity }} قطع</td>
+        <td class="px-8 py-5 text-sm text-slate-300">{{ item.reorder_level }} قطع</td>
+        <td class="px-8 py-5">
+            {% if item.quantity == 0 %}
+                <span class="px-2.5 py-1 bg-red-50 text-red-600 text-[11px] font-bold rounded-full border border-red-100">نفاد</span>
+            {% elif item.quantity <= item.reorder_level %}
+                <span class="px-2.5 py-1 bg-amber-50 text-amber-600 text-[11px] font-bold rounded-full border border-amber-100">تحذير</span>
+            {% else %}
+                <span class="px-2.5 py-1 bg-green-50 text-green-600 text-[11px] font-bold rounded-full border border-green-100">جيد</span>
+            {% endif %}
+        </td>
+        <td class="px-8 py-5 text-left">
+            <a class="text-primary hover:bg-blue-50 p-2 rounded-lg transition-colors inline-flex" href="/inventory/{{ item.id }}/update/"><span class="material-symbols-outlined">add_circle</span></a>
+        </td>
+    </tr>
+    {% endfor %}
+{% else %}
+    <tr>
+        <td class="px-8 py-5 text-sm text-slate-300" colspan="6">لا توجد منتجات منخفضة المخزون حالياً.</td>
+    </tr>
+{% endif %}
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<button class="fixed bottom-8 left-8 w-14 h-14 bg-primary text-white rounded-2xl shadow-2xl flex items-center justify-center lg:hidden hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+</main>
+</div>
+
+<script>
+    document.querySelectorAll('.sales-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sales-filter-btn').forEach(b => {
+                b.classList.remove('bg-primary', 'text-white', 'shadow-lg', 'shadow-blue-200');
+                b.classList.add('bg-slate-800', 'text-slate-300');
+                b.classList.remove('font-bold');
+                b.classList.add('font-medium');
+            });
+
+            btn.classList.add('bg-primary', 'text-white', 'shadow-lg', 'shadow-blue-200', 'font-bold');
+            btn.classList.remove('bg-slate-800', 'text-slate-300', 'font-medium');
+        });
+    });
+</script>
+
+<footer class="mt-auto px-10 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</body></html>

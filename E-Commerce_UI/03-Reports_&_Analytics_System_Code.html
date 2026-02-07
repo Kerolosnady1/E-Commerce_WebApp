@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Noto+Sans+Arabic:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans Arabic", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+            color: #e2e8f0;
+        }
+        header, aside, main, section {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+        }
+        h1, h2, h3, h4, h5, h6 { color: #fff !important; }
+        label { color: #9ca3af !important; }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+            color: #fff !important;
+        }
+        .bg-white, .bg-slate-50, .bg-background-light { background-color: #1f2937 !important; }
+        .border-gray-200, .border-[#dbe0e6], .border-[#f0f3f4] { border-color: #334155 !important; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#dbe0e6] dark:border-[#2d3748] bg-white dark:bg-[#1a202c] px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<h2 class="text-[#111418] dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">نظام ERP المتكامل</h2>
+</div>
+<form method="get" class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full relative">
+<button type="submit" class="text-[#617289] absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer hover:text-primary">
+<span class="material-symbols-outlined text-lg">search</span>
+</button>
+<input name="search" class="form-input flex w-full min-w-0 flex-1 rounded-lg text-[#111418] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border-none bg-[#f0f2f4] dark:bg-[#2d3748] h-full placeholder:text-[#617289] pr-10 pl-4 text-sm font-normal" placeholder="البحث في الفواتير..." value="{{ search_query|default:'' }}"/>
+</div>
+</form>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-[#617289] dark:text-gray-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="{% url 'dashboard' %}">الرئيسية</a>
+<a class="text-[#617289] dark:text-gray-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="{% url 'sales' %}">المبيعات</a>
+<a class="text-[#617289] dark:text-gray-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="{% url 'inventory' %}">المخزون</a>
+<a class="text-primary text-sm font-bold transition-colors border-b-2 border-primary pb-1" href="{% url 'reports' %}">التقارير</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-[#2d3748] text-[#111418] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600" onclick="window.location.href='{% url 'notifications' %}'">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-[#2d3748] text-[#111418] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600" onclick="window.location.href='{% url 'system_settings' %}'">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+{% if request.user.profile.avatar %}
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" style='background-image: url("{{ request.user.profile.avatar.url }}");' title="{{ request.user.get_full_name|default:request.user.username }}"></div>
+{% else %}
+<div class="flex items-center justify-center rounded-full size-10 border-2 border-primary/20 bg-primary/10 text-primary font-bold">
+{{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+</div>
+{% endif %}
+</div>
+</header>
+<main class="flex-1 px-4 lg:px-10 py-8 max-w-[1440px] mx-auto w-full">
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between items-end gap-4 mb-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-[#617289] dark:text-gray-400 text-sm mb-1">
+<a href="{% url 'reports' %}" class="hover:text-primary transition-colors cursor-pointer">التقارير</a>
+<span class="material-symbols-outlined text-xs">chevron_left</span>
+<span class="text-primary font-semibold">التقارير المالية</span>
+</div>
+<h1 class="text-[#111418] dark:text-white text-3xl font-black leading-tight tracking-[-0.033em]">التقارير المالية المفصلة</h1>
+<p class="text-[#617289] dark:text-gray-400 text-base font-normal">عرض شامل للأداء المالي، الأرباح والخسائر وتحليل التدفقات النقدية</p>
+</div>
+<div class="flex gap-3">
+<form method="get" class="flex gap-3">
+<select name="quarter" onchange="this.form.submit()" class="flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-[#2d3748] border border-[#dbe0e6] dark:border-[#4a5568] text-[#111418] dark:text-white text-sm font-bold gap-2">
+<option value="current" {% if quarter == 'current' %}selected{% endif %}>الربع الحالي</option>
+<option value="q1" {% if quarter == 'q1' %}selected{% endif %}>الربع الأول</option>
+<option value="q2" {% if quarter == 'q2' %}selected{% endif %}>الربع الثاني</option>
+<option value="q3" {% if quarter == 'q3' %}selected{% endif %}>الربع الثالث</option>
+<option value="q4" {% if quarter == 'q4' %}selected{% endif %}>الربع الرابع</option>
+</select>
+</form>
+<div class="relative">
+<button onclick="document.getElementById('exportMenu').classList.toggle('hidden')" class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">file_download</span>
+<span>تصدير التقرير</span>
+</button>
+<div id="exportMenu" class="hidden absolute left-0 mt-2 w-48 bg-white dark:bg-[#2d3748] rounded-lg shadow-lg border border-[#dbe0e6] dark:border-[#4a5568] z-10">
+<a href="?export=csv&quarter={{ quarter }}" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg">تصدير CSV</a>
+<a href="?export=pdf&quarter={{ quarter }}" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-b-lg">تصدير PDF</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="border-b border-[#dbe0e6] dark:border-[#2d3748] mb-8 overflow-x-auto">
+<div class="flex gap-8">
+<a class="flex items-center gap-2 border-b-[3px] border-transparent text-[#617289] dark:text-gray-400 hover:text-primary hover:border-primary pb-3 font-bold text-sm whitespace-nowrap transition-all" href="{% url 'sales' %}">
+<span class="material-symbols-outlined text-lg">point_of_sale</span>
+                        المبيعات
+                    </a>
+<a class="flex items-center gap-2 border-b-[3px] border-transparent text-[#617289] dark:text-gray-400 hover:text-primary hover:border-primary pb-3 font-bold text-sm whitespace-nowrap transition-all" href="{% url 'inventory' %}">
+<span class="material-symbols-outlined text-lg">inventory_2</span>
+                        المخزون
+                    </a>
+<a class="flex items-center gap-2 border-b-[3px] border-primary text-primary pb-3 font-bold text-sm whitespace-nowrap transition-all" href="{% url 'reports' %}">
+<span class="material-symbols-outlined text-lg">analytics</span>
+                        التقارير المالية
+                    </a>
+<a class="flex items-center gap-2 border-b-[3px] border-transparent text-[#617289] dark:text-gray-400 hover:text-primary hover:border-primary pb-3 font-bold text-sm whitespace-nowrap transition-all" href="{% url 'purchases' %}">
+<span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+                        المصاريف
+                    </a>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a202c] border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-[#617289] dark:text-gray-400 text-sm font-medium">إجمالي الإيرادات</p>
+<div class="size-8 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-[#07883b]">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-bold leading-tight tabular-nums">${{ total_revenue|floatformat:0 }}</p>
+<div class="flex items-center gap-1">
+<span class="{% if revenue_change >= 0 %}text-[#07883b]{% else %}text-[#e73908]{% endif %} text-sm font-bold">{% if revenue_change >= 0 %}+{% endif %}{{ revenue_change|floatformat:1 }}%</span>
+<span class="text-[#617289] dark:text-gray-400 text-xs">مقارنة بالشهر السابق</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a202c] border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-[#617289] dark:text-gray-400 text-sm font-medium">إجمالي المصاريف</p>
+<div class="size-8 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-[#e73908]">
+<span class="material-symbols-outlined">payments</span>
+</div>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-bold leading-tight tabular-nums">${{ total_expenses|floatformat:0 }}</p>
+<div class="flex items-center gap-1">
+<span class="{% if expenses_change <= 0 %}text-[#07883b]{% else %}text-[#e73908]{% endif %} text-sm font-bold">{% if expenses_change >= 0 %}+{% endif %}{{ expenses_change|floatformat:1 }}%</span>
+<span class="text-[#617289] dark:text-gray-400 text-xs">مقارنة بالشهر السابق</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a202c] border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-[#617289] dark:text-gray-400 text-sm font-medium">صافي الربح</p>
+<div class="size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">savings</span>
+</div>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-bold leading-tight tabular-nums">${{ net_profit|floatformat:0 }}</p>
+<div class="flex items-center gap-1">
+<span class="{% if profit_change >= 0 %}text-[#07883b]{% else %}text-[#e73908]{% endif %} text-sm font-bold">{% if profit_change >= 0 %}+{% endif %}{{ profit_change|floatformat:1 }}%</span>
+<span class="text-[#617289] dark:text-gray-400 text-xs">مقارنة بالشهر السابق</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a202c] border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-[#617289] dark:text-gray-400 text-sm font-medium">هامش الربح</p>
+<div class="size-8 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-600">
+<span class="material-symbols-outlined">percent</span>
+</div>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-bold leading-tight tabular-nums">{{ profit_margin|floatformat:0 }}%</p>
+<div class="flex items-center gap-1">
+<span class="text-[#07883b] text-sm font-bold">مستقر</span>
+<span class="text-[#617289] dark:text-gray-400 text-xs">معدل جيد</span>
+</div>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<!-- Main Line Chart -->
+<div class="lg:col-span-2 rounded-xl bg-white dark:bg-[#1a202c] border border-[#dbe0e6] dark:border-[#2d3748] p-6 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-[#111418] dark:text-white text-lg font-bold">مقارنة الإيرادات الشهرية</h2>
+<select class="text-xs bg-gray-50 dark:bg-[#2d3748] border-none rounded-lg focus:ring-1 focus:ring-primary">
+<option>آخر 12 شهر</option>
+<option>السنة الحالية</option>
+</select>
+</div>
+<div class="w-full" style="height: 256px; max-height: 256px; position: relative;">
+<canvas id="revenueChart"></canvas>
+</div>
+</div>
+<!-- Donut Chart Simulated -->
+<div class="rounded-xl bg-white dark:bg-[#1a202c] border border-[#dbe0e6] dark:border-[#2d3748] p-6 shadow-sm">
+<h2 class="text-[#111418] dark:text-white text-lg font-bold mb-6">توزيع المصروفات</h2>
+<div class="w-full mb-6" style="height: 192px; max-height: 192px; position: relative;">
+<canvas id="expensesChart"></canvas>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span>مشتريات</span>
+</div>
+<span class="font-bold">${{ total_expenses|floatformat:0 }}</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-blue-300"></div>
+<span>إيرادات</span>
+</div>
+<span class="font-bold">${{ total_revenue|floatformat:0 }}</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-green-500"></div>
+<span>صافي الربح</span>
+</div>
+<span class="font-bold">30%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Table Section -->
+<div class="rounded-xl bg-white dark:bg-[#1a202c] border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-[#dbe0e6] dark:border-[#2d3748] flex flex-wrap justify-between items-center gap-4">
+<h2 class="text-[#111418] dark:text-white text-lg font-bold">آخر المعاملات المالية</h2>
+<div class="flex items-center gap-2">
+<form method="get" class="flex items-center gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">filter_alt</span>
+<select name="category" onchange="this.form.submit()" class="text-xs bg-gray-50 dark:bg-[#2d3748] border-[#dbe0e6] dark:border-[#4a5568] pr-8 pl-4 py-2 rounded-lg focus:ring-1 focus:ring-primary">
+<option value="all" {% if category_filter == 'all' %}selected{% endif %}>الكل</option>
+<option value="paid" {% if category_filter == 'paid' %}selected{% endif %}>مدفوعة</option>
+<option value="pending" {% if category_filter == 'pending' %}selected{% endif %}>معلقة</option>
+<option value="overdue" {% if category_filter == 'overdue' %}selected{% endif %}>متأخرة</option>
+</select>
+</div>
+</form>
+<a href="{% url 'reports' %}" class="p-2 border border-[#dbe0e6] dark:border-[#4a5568] rounded-lg text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined">refresh</span>
+</a>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-right border-collapse">
+<thead>
+<tr class="bg-[#f0f2f4]/50 dark:bg-[#2d3748]/50 text-[#617289] dark:text-gray-400 text-xs uppercase font-bold">
+<th class="px-6 py-4">رقم المعاملة</th>
+<th class="px-6 py-4">التاريخ</th>
+<th class="px-6 py-4">الوصف</th>
+<th class="px-6 py-4">الفئة</th>
+<th class="px-6 py-4">المبلغ</th>
+<th class="px-6 py-4">الحالة</th>
+<th class="px-6 py-4">الإجراء</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#dbe0e6] dark:divide-[#2d3748]">
+{% if recent_transactions %}
+    {% for transaction in recent_transactions %}
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">{{ transaction.number }}</td>
+<td class="px-6 py-4 text-sm">{{ transaction.issued_date|date:"Y-m-d" }}</td>
+<td class="px-6 py-4 text-sm">فاتورة مبيعات - {{ transaction.customer.name }}</td>
+<td class="px-6 py-4">
+    {% if transaction.status == 'paid' %}
+        <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] rounded-full font-bold">مدفوعة</span>
+    {% elif transaction.status == 'pending' %}
+        <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-[10px] rounded-full font-bold">معلقة</span>
+    {% else %}
+        <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-[10px] rounded-full font-bold">متأخرة</span>
+    {% endif %}
+</td>
+<td class="px-6 py-4 text-sm font-bold tabular-nums {% if transaction.status == 'paid' %}text-green-600{% else %}text-gray-600{% endif %}">${{ transaction.total|floatformat:2 }}</td>
+<td class="px-6 py-4">
+    {% if transaction.status == 'paid' %}
+        <span class="flex items-center gap-1 text-sm text-green-600"><span class="size-2 bg-green-600 rounded-full"></span> مكتمل</span>
+    {% elif transaction.status == 'pending' %}
+        <span class="flex items-center gap-1 text-sm text-yellow-600"><span class="size-2 bg-yellow-600 rounded-full animate-pulse"></span> قيد المعالجة</span>
+    {% else %}
+        <span class="flex items-center gap-1 text-sm text-red-600"><span class="size-2 bg-red-600 rounded-full"></span> متأخر</span>
+    {% endif %}
+</td>
+<td class="px-6 py-4">
+<a href="{% url 'invoice_detail' transaction.pk %}" class="text-gray-400 hover:text-primary"><span class="material-symbols-outlined text-lg">visibility</span></a>
+</td>
+</tr>
+    {% endfor %}
+{% else %}
+<tr>
+<td colspan="7" class="px-6 py-8 text-center text-[#617289] dark:text-gray-400">
+    <p>لا توجد معاملات في الفترة المحددة</p>
+</td>
+</tr>
+{% endif %}
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-[#dbe0e6] dark:border-[#2d3748] flex items-center justify-between">
+<p class="text-xs text-[#617289] dark:text-gray-400">عرض 1-4 من أصل 124 معاملة</p>
+<div class="flex gap-2">
+<button class="p-2 border border-[#dbe0e6] dark:border-[#4a5568] rounded-lg text-gray-400 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+<button class="px-3 py-1 bg-primary text-white text-xs font-bold rounded-lg">1</button>
+<button class="px-3 py-1 border border-[#dbe0e6] dark:border-[#4a5568] text-[#111418] dark:text-white text-xs font-bold rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">2</button>
+<button class="px-3 py-1 border border-[#dbe0e6] dark:border-[#4a5568] text-[#111418] dark:text-white text-xs font-bold rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">3</button>
+<button class="p-2 border border-[#dbe0e6] dark:border-[#4a5568] rounded-lg text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Footer (Minimal) -->
+<footer class="mt-auto px-10 py-6 border-t border-[#dbe0e6] dark:border-[#2d3748] bg-white dark:bg-[#1a202c]">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-[#617289] dark:text-gray-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-[#617289] dark:text-gray-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</div>
+<script>
+// Monthly Revenue Chart
+const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+const monthlyData = {{ monthly_data|safe }};
+
+const revenueChart = new Chart(revenueCtx, {
+    type: 'bar',
+    data: {
+        labels: monthlyData.map(item => item.month),
+        datasets: [{
+            label: 'الإيرادات الشهرية',
+            data: monthlyData.map(item => item.revenue),
+            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+            borderColor: 'rgb(59, 130, 246)',
+            borderWidth: 2,
+            borderRadius: 8,
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 2,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: '#9ca3af',
+                    callback: function(value) {
+                        return '$' + value.toLocaleString();
+                    }
+                },
+                grid: {
+                    color: 'rgba(148, 163, 184, 0.1)'
+                }
+            },
+            x: {
+                ticks: {
+                    color: '#9ca3af'
+                },
+                grid: {
+                    display: false
+                }
+            }
+        }
+    }
+});
+
+// Expenses Donut Chart
+const expensesCtx = document.getElementById('expensesChart').getContext('2d');
+const expensesChart = new Chart(expensesCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['المصاريف', 'الإيرادات'],
+        datasets: [{
+            data: [{{ total_expenses }}, {{ total_revenue }}],
+            backgroundColor: [
+                'rgba(59, 130, 246, 0.8)',
+                'rgba(147, 197, 253, 0.6)'
+            ],
+            borderColor: [
+                'rgb(59, 130, 246)',
+                'rgb(147, 197, 253)'
+            ],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+</script>
+</body></html>

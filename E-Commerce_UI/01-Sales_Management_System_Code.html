@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>إدارة المبيعات | نظام ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen">
+<div class="flex h-screen overflow-hidden">
+    <aside class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-l border-[#f0f3f4] dark:border-slate-800 flex flex-col justify-between p-4 h-full">
+        <div class="flex flex-col gap-8">
+            <div class="flex items-center gap-3 px-2">
+                <div class="bg-primary rounded-lg p-2 text-white">
+                    <span class="material-symbols-outlined text-2xl">grid_view</span>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-[#111618] dark:text-white text-base font-bold leading-tight">نظام ERP</h1>
+                    <p class="text-[#617f89] text-xs font-normal">إدارة المؤسسة الشاملة</p>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-1">
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-sm font-medium">لوحة القيادة</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary" href="/sales/">
+                    <span class="material-symbols-outlined">point_of_sale</span>
+                    <span class="text-sm font-bold">المبيعات</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/customers/">
+                    <span class="material-symbols-outlined">groups</span>
+                    <span class="text-sm font-medium">العملاء</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/inventory/">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                    <span class="text-sm font-medium">المخزون</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/warehouses/">
+                    <span class="material-symbols-outlined">warehouse</span>
+                    <span class="text-sm font-medium">المستودعات</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/reports/">
+                    <span class="material-symbols-outlined">bar_chart</span>
+                    <span class="text-sm font-medium">التقارير</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/settings/system/">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">الإعدادات</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-6">
+        <div class="flex flex-col gap-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">إدارة المبيعات</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">متابعة الفواتير وحالة السداد</p>
+                </div>
+                <a href="/invoices/create/" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">add</span>
+                    فاتورة جديدة
+                </a>
+            </div>
+
+            <form method="get" class="flex flex-col lg:flex-row lg:items-center gap-3 bg-white dark:bg-slate-900 border border-[#f0f3f4] dark:border-slate-800 rounded-xl p-4">
+                <div class="flex-1">
+                    <input name="search" value="{{ search_query|default:'' }}" placeholder="ابحث برقم الفاتورة أو اسم العميل" class="w-full h-10 rounded-lg bg-background-light dark:bg-background-dark/50 border border-primary/20 text-slate-700 dark:text-slate-200 text-sm px-3" />
+                </div>
+                <div class="flex gap-3">
+                    <input type="date" name="date_from" value="{{ date_from|default:'' }}" class="h-10 rounded-lg bg-background-light dark:bg-background-dark/50 border border-primary/20 text-slate-700 dark:text-slate-200 text-sm px-3" />
+                    <input type="date" name="date_to" value="{{ date_to|default:'' }}" class="h-10 rounded-lg bg-background-light dark:bg-background-dark/50 border border-primary/20 text-slate-700 dark:text-slate-200 text-sm px-3" />
+                    <select name="status" class="h-10 rounded-lg bg-background-light dark:bg-background-dark/50 border border-primary/20 text-slate-700 dark:text-slate-200 text-sm px-3">
+                        <option value="">كل الحالات</option>
+                        <option value="paid" {% if status_filter == 'paid' %}selected{% endif %}>مدفوع</option>
+                        <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>قيد الانتظار</option>
+                        <option value="overdue" {% if status_filter == 'overdue' %}selected{% endif %}>متأخر</option>
+                    </select>
+                    <button type="submit" class="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold">بحث</button>
+                </div>
+            </form>
+
+            <div class="flex flex-wrap gap-2">
+                <a class="flex items-center gap-2 h-10 px-4 rounded-lg {% if not status_filter %}bg-primary text-white{% else %}bg-background-light dark:bg-background-dark/50 border border-primary/20 text-slate-600 dark:text-slate-400{% endif %} text-sm font-medium hover:bg-primary/10 transition-colors" href="/sales/">
+                    <span class="material-symbols-outlined text-[20px]">filter_list</span>
+                    <span>الكل</span>
+                </a>
+                <a class="flex items-center gap-2 h-10 px-4 rounded-lg {% if status_filter == 'paid' %}bg-primary text-white{% else %}bg-background-light dark:bg-background-dark/50 border border-primary/20 text-slate-600 dark:text-slate-400{% endif %} text-sm font-medium hover:bg-primary/10 transition-colors" href="/sales/?status=paid">
+                    <span class="material-symbols-outlined text-[20px] text-primary">check_circle</span>
+                    <span>مدفوع</span>
+                </a>
+                <a class="flex items-center gap-2 h-10 px-4 rounded-lg {% if status_filter == 'pending' %}bg-primary text-white{% else %}bg-background-light dark:bg-background-dark/50 border border-primary/20 text-slate-600 dark:text-slate-400{% endif %} text-sm font-medium hover:bg-primary/10 transition-colors" href="/sales/?status=pending">
+                    <span class="material-symbols-outlined text-[20px] text-amber-500">hourglass_empty</span>
+                    <span>قيد الانتظار</span>
+                </a>
+                <a class="flex items-center gap-2 h-10 px-4 rounded-lg {% if status_filter == 'overdue' %}bg-primary text-white{% else %}bg-background-light dark:bg-background-dark/50 border border-primary/20 text-slate-600 dark:text-slate-400{% endif %} text-sm font-medium hover:bg-primary/10 transition-colors" href="/sales/?status=overdue">
+                    <span class="material-symbols-outlined text-[20px] text-red-500">priority_high</span>
+                    <span>متأخر</span>
+                </a>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-background-light dark:bg-background-dark/30 border-b border-primary/10">
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">رقم الفاتورة</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">العميل</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">التاريخ</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">المبلغ الإجمالي</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">الحالة</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-primary/5">
+                            {% if invoices %}
+                                {% for invoice in invoices %}
+                                <tr class="hover:bg-primary/5 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900 dark:text-white">#{{ invoice.number }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center gap-3">
+                                            <div class="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">{{ invoice.customer.name|slice:":2" }}</div>
+                                            <span class="text-sm font-medium text-slate-900 dark:text-white">{{ invoice.customer.name }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{{ invoice.issued_date }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900 dark:text-white">{{ invoice.total|floatformat:2 }} ر.س</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {% if invoice.status == "paid" %}
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">
+                                                <span class="size-1.5 rounded-full bg-primary"></span>
+                                                مدفوع
+                                            </span>
+                                        {% elif invoice.status == "pending" %}
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                                                <span class="size-1.5 rounded-full bg-amber-500"></span>
+                                                قيد الانتظار
+                                            </span>
+                                        {% else %}
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-500 border border-red-500/20">
+                                                <span class="size-1.5 rounded-full bg-red-500"></span>
+                                                {{ invoice.get_status_display }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center gap-2">
+                                            <a class="p-1 text-slate-400 hover:text-primary transition-colors" href="/invoices/{{ invoice.id }}/"><span class="material-symbols-outlined">visibility</span></a>
+                                            <a class="p-1 text-slate-400 hover:text-primary transition-colors" href="/invoices/{{ invoice.id }}/edit/"><span class="material-symbols-outlined">edit</span></a>
+                                            <a class="p-1 text-slate-400 hover:text-primary transition-colors" href="/invoices/{{ invoice.id }}/?print=1"><span class="material-symbols-outlined">print</span></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="px-6 py-6 text-sm text-slate-500 dark:text-slate-400">لا توجد فواتير لعرضها.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="px-6 py-4 border-t border-primary/10 bg-background-light dark:bg-background-dark/30 flex items-center justify-between">
+                    <p class="text-sm text-slate-500 dark:text-slate-400">إجمالي <span class="font-bold">{{ total_count }}</span> فاتورة</p>
+                    <div class="flex gap-2">
+                        <span class="text-xs text-slate-400">صفحة {{ current_page }} من {{ total_pages }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<footer class="mt-auto px-10 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>الأمان والصلاحيات - ERP System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+{% csrf_token %}
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+            color: #e2e8f0;
+        }
+        header, aside, main, section {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+        }
+        h1, h2, h3, h4, h5, h6 { color: #fff !important; }
+        label { color: #9ca3af !important; }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+            color: #fff !important;
+        }
+        .bg-white, .bg-slate-50, .bg-background-light { background-color: #1f2937 !important; }
+        .border-gray-200, .border-[#dbe0e6], .border-[#f0f2f4] { border-color: #334155 !important; }
+        .nav-active, .active-nav {
+            color: #60a5fa !important;
+            background-color: #334155 !important;
+            border-right: 4px solid #3b82f6 !important;
+        }
+        
+        /* Modal and Notification Animations */
+        @keyframes slide-in-from-bottom {
+            from {
+                opacity: 0;
+                transform: translateY(1rem);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slide-out-to-bottom {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(1rem);
+            }
+        }
+        
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .animate-in {
+            animation: slide-in-from-bottom 0.3s ease-out;
+        }
+        
+        .slide-in-from-bottom-5 {
+            animation: slide-in-from-bottom 0.3s ease-out;
+        }
+        
+        .slide-out-to-bottom-5 {
+            animation: slide-out-to-bottom 0.3s ease-in;
+        }
+        
+        /* Modal Backdrop Animation */
+        .backdrop-blur-sm {
+            animation: fade-in 0.2s ease-out;
+        }
+</style>
+</head>
+<body class="bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] font-display text-slate-100">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#f0f2f4] dark:border-gray-800 bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-[#111418] dark:text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 17.4264C16.7203 18.1174 20.2244 18.5217 24 18.5217C27.7756 18.5217 31.2797 18.1174 34.1739 17.4264C36.9144 16.7722 39.9967 15.2331 41.3563 14.1648L24.8486 40.6391C24.4571 41.267 23.5429 41.267 23.1514 40.6391L6.64374 14.1648C8.00331 15.2331 11.0856 16.7722 13.8261 17.4264Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">نظام ERP المتكامل</h2>
+</div>
+<label class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#617289] flex border-none bg-[#f0f2f4] dark:bg-gray-800 items-center justify-center px-3 rounded-r-lg">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input id="securitySearchInput" class="form-input flex w-full min-w-0 flex-1 border-none bg-[#f0f2f4] dark:bg-gray-800 focus:ring-0 h-full placeholder:text-[#617289] px-4 rounded-l-lg text-base font-normal" placeholder="بحث سريع..."/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="flex items-center gap-6">
+<a class="text-[#111418] dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="/">لوحة القيادة</a>
+<a class="text-[#111418] dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="/inventory/">المخزون</a>
+<a class="text-[#111418] dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="/sales/">المبيعات</a>
+<a class="text-[#111418] dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="/taxes/">المحاسبة</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary leading-normal py-1" href="/settings/general/">الإعدادات</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-gray-800 text-[#111418] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" onclick="window.location.href='/notifications/'">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-gray-800 text-[#111418] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" onclick="window.location.href='/settings/general/'">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+{% if request.user.profile.avatar %}
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-gray-200 dark:border-gray-700" style='background-image: url("{{ request.user.profile.avatar.url }}");' title="{{ request.user.get_full_name|default:request.user.username }}"></div>
+            {% else %}
+            <div class="flex items-center justify-center rounded-full size-10 border border-gray-200 dark:border-gray-700 bg-primary/10 text-primary font-bold">
+                {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+            </div>
+            {% endif %}
+</div>
+</header>
+<main class="flex max-w-[1440px] mx-auto min-h-[calc(100vh-64px)]">
+<!-- Sidebar Navigation -->
+<aside class="w-72 border-l border-[#f0f2f4] dark:border-gray-800 bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] p-6 flex flex-col gap-8">
+<div class="flex flex-col gap-4">
+<div>
+<h1 class="text-[#111418] dark:text-white text-base font-bold leading-normal">الأمان والصلاحيات</h1>
+<p class="text-[#617289] text-sm font-normal">إدارة وصول النظام والخصوصية</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg nav-active font-bold" href="/security/">
+<span class="material-symbols-outlined">shield</span>
+<span class="text-sm">الأدوار والمجموعات</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617289] hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-all" href="/users/">
+<span class="material-symbols-outlined">person</span>
+<span class="text-sm">إدارة المستخدمين</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617289] hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-all" href="/security/logs/">
+<span class="material-symbols-outlined">history</span>
+<span class="text-sm">سجلات الأمان</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617289] hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-all" href="/security/2fa/">
+<span class="material-symbols-outlined">key</span>
+<span class="text-sm">التوثيق الثنائي (2FA)</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617289] hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-all" href="/security/password-policy/">
+<span class="material-symbols-outlined">policy</span>
+<span class="text-sm">سياسات كلمات المرور</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-4 rounded-xl bg-primary/5 border border-primary/10">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-lg">health_and_safety</span>
+<p class="text-xs font-bold text-primary">حالة الأمان العامة</p>
+</div>
+<div class="w-full bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
+<div id="securityBar" class="bg-primary h-full w-[85%] transition-all duration-300"></div>
+</div>
+<p id="securityStatus" class="text-[10px] text-[#617289] mt-2 leading-relaxed">جاري تحميل حالة الأمان...</p>
+</div>
+</aside>
+<!-- Main Content Area -->
+<section class="flex-1 flex flex-col bg-[rgb(15_23_42/var(--tw-bg-opacity,1))]">
+<!-- Page Heading & Breadcrumbs -->
+<div class="px-8 pt-6">
+<div class="flex flex-wrap gap-2 mb-2">
+<a class="text-[#617289] text-xs font-medium" href="/settings/general/">الإعدادات</a>
+<span class="text-[#617289] text-xs">/</span>
+<span class="text-primary text-xs font-medium">الأمان والصلاحيات</span>
+</div>
+<!-- Role Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+<!-- Admin Users Card -->
+<div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800">
+<div class="flex items-center justify-between mb-3">
+<p class="text-sm font-bold text-blue-900 dark:text-blue-100">مدير النظام</p>
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400">security</span>
+</div>
+<p class="text-3xl font-bold text-blue-900 dark:text-blue-100">{{ admin_users }}</p>
+<p class="text-xs text-blue-700 dark:text-blue-300 mt-2">مستخدم نشط</p>
+</div>
+
+<!-- Sales Users Card -->
+<div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20 p-6 rounded-xl border border-green-200 dark:border-green-800">
+<div class="flex items-center justify-between mb-3">
+<p class="text-sm font-bold text-green-900 dark:text-green-100">قسم المبيعات</p>
+<span class="material-symbols-outlined text-green-600 dark:text-green-400">shopping_cart</span>
+</div>
+<p class="text-3xl font-bold text-green-900 dark:text-green-100">{{ sales_users }}</p>
+<p class="text-xs text-green-700 dark:text-green-300 mt-2">مستخدم نشط</p>
+</div>
+
+<!-- Accountant Users Card -->
+<div class="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/20 p-6 rounded-xl border border-orange-200 dark:border-orange-800">
+<div class="flex items-center justify-between mb-3">
+<p class="text-sm font-bold text-orange-900 dark:text-orange-100">المحاسب</p>
+<span class="material-symbols-outlined text-orange-600 dark:text-orange-400">calculate</span>
+</div>
+<p class="text-3xl font-bold text-orange-900 dark:text-orange-100">{{ accountant_users }}</p>
+<p class="text-xs text-orange-700 dark:text-orange-300 mt-2">مستخدم نشط</p>
+</div>
+
+<!-- Warehouse Users Card -->
+<div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/20 p-6 rounded-xl border border-purple-200 dark:border-purple-800">
+<div class="flex items-center justify-between mb-3">
+<p class="text-sm font-bold text-purple-900 dark:text-purple-100">مدير المستودع</p>
+<span class="material-symbols-outlined text-purple-600 dark:text-purple-400">inventory_2</span>
+</div>
+<p class="text-3xl font-bold text-purple-900 dark:text-purple-100">{{ warehouse_users }}</p>
+<p class="text-xs text-purple-700 dark:text-purple-300 mt-2">مستخدم نشط</p>
+</div>
+</div>
+<div class="flex justify-between items-end gap-3 pb-6">
+<div class="flex flex-col gap-1">
+<h2 class="text-[#111418] dark:text-white text-3xl font-black tracking-tight">الأدوار والمجموعات</h2>
+<p class="text-[#617289] text-sm">تحديد مصفوفة الصلاحيات والتحكم في الوصول للميزات المختلفة</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-[#f0f2f4] dark:bg-gray-800 text-[#111418] dark:text-white text-sm font-bold border border-transparent hover:border-gray-300 transition-all" onclick="exportRolesReport()">
+<span class="material-symbols-outlined ml-2 text-lg">file_download</span>
+تصدير التقرير
+</button>
+<button id="deleteRoleBtn" class="flex items-center justify-center rounded-lg h-10 px-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm font-bold border border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed" onclick="deleteCurrentRole()" disabled title="حذف الدور الحالي">
+<span class="material-symbols-outlined ml-2 text-lg">delete</span>
+حذف الدور
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 px-6 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:brightness-110 transition-all" onclick="openAddRoleModal()">
+<span class="material-symbols-outlined ml-2 text-lg">add</span>
+إضافة دور جديد
+</button>
+</div>
+</div>
+<!-- Role Tabs -->
+<div id="roleTabsContainer" class="flex border-b border-[#dbe0e6] dark:border-gray-800 gap-8 overflow-x-auto no-scrollbar">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#617289] pb-3 pt-4 px-2 hover:text-primary transition-colors" href="/security/?role=مدير النظام">
+<p class="text-sm font-bold">مدير النظام (Admin)</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#617289] pb-3 pt-4 px-2 hover:text-primary transition-colors" href="/security/?role=قسم المبيعات">
+<p class="text-sm font-bold">قسم المبيعات (Sales)</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#617289] pb-3 pt-4 px-2 hover:text-primary transition-colors" href="/security/?role=المحاسب">
+<p class="text-sm font-bold">المحاسب (Accountant)</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#617289] pb-3 pt-4 px-2 hover:text-primary transition-colors" href="/security/?role=مدير المستودع">
+<p class="text-sm font-bold">مدير المستودع (Warehouse)</p>
+</a>
+</div>
+</div>
+<!-- Permissions Matrix Content -->
+<div class="p-8 flex-1">
+<div class="bg-white dark:bg-gray-900 rounded-xl border border-[#f0f2f4] dark:border-gray-800 overflow-hidden shadow-sm">
+<div class="p-4 border-b border-[#f0f2f4] dark:border-gray-800 bg-[#fcfdfe] dark:bg-gray-900/50 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<span id="roleSettingsTitle" class="text-sm font-bold text-[#111418] dark:text-white">إعدادات قسم المبيعات</span>
+<div class="flex items-center gap-2 bg-green-50 text-green-700 px-2 py-1 rounded text-xs font-medium border border-green-100">
+<span class="material-symbols-outlined text-xs">verified_user</span>
+                                2FA إلزامي
+                            </div>
+</div>
+<div class="flex gap-2">
+<div class="flex items-center gap-2 text-xs text-[#617289]">
+<span class="w-3 h-3 bg-primary rounded-sm"></span> مفعل
+                             </div>
+<div class="flex items-center gap-2 text-xs text-[#617289] ml-4">
+<span class="w-3 h-3 bg-gray-200 dark:bg-gray-700 rounded-sm"></span> معطل
+                             </div>
+</div>
+</div>
+<table class="w-full text-right border-collapse">
+<thead class="bg-[#f8f9fa] dark:bg-gray-800/50">
+<tr>
+<th class="px-6 py-4 text-xs font-bold text-[#617289] uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">الوحدة البرمجية</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617289] uppercase tracking-wider text-center border-b border-gray-100 dark:border-gray-800">عرض</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617289] uppercase tracking-wider text-center border-b border-gray-100 dark:border-gray-800">إضافة</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617289] uppercase tracking-wider text-center border-b border-gray-100 dark:border-gray-800">تعديل</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617289] uppercase tracking-wider text-center border-b border-gray-100 dark:border-gray-800">حذف</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617289] uppercase tracking-wider text-center border-b border-gray-100 dark:border-gray-800">تصدير</th>
+</tr>
+</thead>
+<tbody id="permissionsTableBody" class="divide-y divide-gray-50 dark:divide-gray-800">
+<!-- Modules will be loaded here dynamically -->
+</tbody>
+</table>
+<!-- Sticky Save Bar inside card -->
+<div class="p-4 bg-background-light dark:bg-gray-800/50 flex justify-between items-center border-t border-[#f0f2f4] dark:border-gray-800">
+<div class="flex items-center gap-2 text-sm text-[#617289]">
+<span class="material-symbols-outlined text-sm">info</span>
+                            <span id="lastEditInfo">جاري التحديث...</span>
+                        </div>
+<div class="flex gap-3">
+<button class="px-6 py-2 rounded-lg text-sm font-bold text-[#617289] hover:text-[#111418] transition-all">إلغاء</button>
+<button class="px-8 py-2 rounded-lg bg-primary text-white text-sm font-bold shadow-md shadow-primary/20 hover:brightness-110 transition-all">حفظ التغييرات</button>
+</div>
+</div>
+</div>
+<!-- Recent Security Logs / Activity -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-white dark:bg-gray-900 p-6 rounded-xl border border-[#f0f2f4] dark:border-gray-800">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-sm font-bold">آخر سجلات الأمان</h3>
+<a class="text-xs text-primary font-bold" href="#">عرض الكل</a>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 items-start">
+<div class="w-8 h-8 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-lg">warning</span>
+</div>
+<div>
+<p class="text-xs font-bold">محاولة دخول فاشلة</p>
+<p class="text-[10px] text-[#617289]">IP: 192.168.1.45 | منذ 5 دقائق</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-lg">edit_note</span>
+</div>
+<div>
+<p class="text-xs font-bold">تعديل صلاحيات المحاسب</p>
+<p class="text-[10px] text-[#617289]">بواسطة: خالد العتيبي | منذ 3 ساعات</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-lg">vpn_key</span>
+</div>
+<div>
+<p class="text-xs font-bold">تفعيل 2FA لـ 3 مستخدمين جدد</p>
+<p class="text-[10px] text-[#617289]">تحديث تلقائي للنظام | منذ 6 ساعات</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900 p-6 rounded-xl border border-[#f0f2f4] dark:border-gray-800 flex flex-col justify-center items-center text-center">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary">
+<span class="material-symbols-outlined text-3xl">verified_user</span>
+</div>
+<h3 class="text-lg font-bold mb-2">تعزيز أمان الحسابات</h3>
+<p class="text-sm text-[#617289] max-w-xs mb-6">يمكنك تفعيل تسجيل الدخول الأحادي (SSO) لربط النظام مع خدمات Google أو Microsoft Azure.</p>
+<button onclick="openSSOModal()" class="px-6 py-2 rounded-lg border-2 border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-all">إعداد SSO</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- RTL Support Visual Fixes -->
+<style>
+        /* Custom scrollbar for tabs on mobile/small desktop */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Mirroring icons if needed, but material symbols usually handle RTL context well or stay neutral */
+        [dir="rtl"] .ml-2 { margin-left: 0; margin-right: 0.5rem; }
+    </style>
+
+<!-- Add Role Modal -->
+<div id="addRoleModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center">
+    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-2xl max-w-md w-full mx-4 border border-gray-200 dark:border-gray-800">
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-[#111418] dark:text-white">إضافة دور جديد</h3>
+            <button onclick="closeAddRoleModal()" class="text-[#617289] hover:text-[#111418] dark:hover:text-white transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="px-6 py-6 space-y-5">
+            <!-- Role Name Input -->
+            <div>
+                <label class="block text-sm font-bold text-[#111418] dark:text-white mb-2">اسم الدور</label>
+                <input type="text" id="roleName" placeholder="مثال: مدير المشاريع" class="w-full px-4 py-2.5 rounded-lg bg-[#f0f2f4] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#111418] dark:text-white placeholder-[#617289] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+            </div>
+            
+            <!-- Role Description Input -->
+            <div>
+                <label class="block text-sm font-bold text-[#111418] dark:text-white mb-2">وصف الدور</label>
+                <textarea id="roleDescription" placeholder="وصف مختصر لمسؤوليات الدور..." class="w-full px-4 py-2.5 rounded-lg bg-[#f0f2f4] dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#111418] dark:text-white placeholder-[#617289] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none h-20"></textarea>
+            </div>
+            
+            <!-- 2FA Requirement Checkbox -->
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
+                <input type="checkbox" id="role2FARequired" class="w-4 h-4 rounded text-primary focus:ring-primary/20 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800" checked/>
+                <label for="role2FARequired" class="text-sm font-medium text-[#111418] dark:text-white cursor-pointer">إلزام التوثيق الثنائي (2FA) لهذا الدور</label>
+            </div>
+            
+            <!-- Permissions Quick Select -->
+            <div>
+                <label class="block text-sm font-bold text-[#111418] dark:text-white mb-3">إذن سريع</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="rolePermissionLevel" value="limited" class="w-4 h-4 text-primary"/>
+                        <span class="text-sm text-[#111418] dark:text-white">صلاحيات محدودة</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="rolePermissionLevel" value="standard" class="w-4 h-4 text-primary" checked/>
+                        <span class="text-sm text-[#111418] dark:text-white">صلاحيات معيارية</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="rolePermissionLevel" value="advanced" class="w-4 h-4 text-primary"/>
+                        <span class="text-sm text-[#111418] dark:text-white">صلاحيات متقدمة</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="rolePermissionLevel" value="custom" class="w-4 h-4 text-primary"/>
+                        <span class="text-sm text-[#111418] dark:text-white">مخصص</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 bg-[#f8f9fa] dark:bg-gray-800/30 border-t border-gray-200 dark:border-gray-800 rounded-b-xl flex justify-end gap-3">
+            <button onclick="closeAddRoleModal()" class="px-6 py-2 rounded-lg text-sm font-bold text-[#617289] hover:text-[#111418] dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all">
+                إلغاء
+            </button>
+            <button onclick="submitAddRole()" class="px-8 py-2 rounded-lg bg-primary text-white text-sm font-bold shadow-md shadow-primary/20 hover:brightness-110 transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">add_circle</span>
+                إنشاء الدور
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification Container -->
+<div id="notificationContainer" class="fixed bottom-6 right-6 z-[200] space-y-3"></div>
+
+<script>
+    // ===== Global Variables =====
+    const COLOR_MAP = {
+        'blue': 'bg-blue-50 dark:bg-blue-900/20 text-primary',
+        'green': 'bg-green-50 dark:bg-green-900/20 text-green-600',
+        'purple': 'bg-purple-50 dark:bg-purple-900/20 text-purple-600',
+        'orange': 'bg-orange-50 dark:bg-orange-900/20 text-orange-600',
+        'red': 'bg-red-50 dark:bg-red-900/20 text-red-600',
+        'gray': 'bg-gray-50 dark:bg-gray-900/20 text-gray-600',
+    };
+    
+    const currentRoleName = 'قسم المبيعات';  // Default role
+    let currentModulesData = [];
+    let selectedRole = 'قسم المبيعات';  // Track currently selected role
+    
+    // ===== Load Permissions on Page Load =====
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Page loaded. Loading default role:', currentRoleName);
+        loadRolePermissions(currentRoleName);
+
+        const searchInput = document.getElementById('securitySearchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                applySecuritySearch(searchInput.value);
+            });
+        }
+        
+        // Handle role tab clicks
+        document.querySelectorAll('a[href*="?role="]').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                const roleParam = new URL(this.href).searchParams.get('role');
+                if (roleParam) {
+                    console.log('Tab clicked. Loading role:', roleParam);
+                    loadRolePermissions(roleParam);
+                }
+            });
+        });
+        
+        console.log('✅ Page initialization complete');
+    });
+    
+    // ===== Load Role Permissions =====
+    function loadRolePermissions(roleName) {
+        console.log('🔄 Loading permissions for role:', roleName);
+        console.log('   Encoded URL: /security/role-permissions/' + encodeURIComponent(roleName) + '/');
+        
+        const url = `/security/role-permissions/${encodeURIComponent(roleName)}/`;
+        
+        const csrfToken = getCookie('csrftoken') || 
+                         document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+        
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrfToken
+            },
+            credentials: 'include'  // مهم: يجب إرسال cookies للـ authentication
+        })
+            .then(response => {
+                console.log('📡 Response status:', response.status);
+                console.log('   Response headers:', {
+                    'content-type': response.headers.get('content-type'),
+                    'content-length': response.headers.get('content-length')
+                });
+                
+                if (!response.ok) {
+                    console.error('❌ Response not OK. Status:', response.status);
+                    if (response.status === 302 || response.status === 301) {
+                        console.error('   🔄 Redirect detected! Likely authentication issue.');
+                        console.error('   Location:', response.headers.get('location'));
+                    } else if (response.status === 404) {
+                        console.error('   404 Not Found. Check endpoint URL.');
+                    } else if (response.status === 403) {
+                        console.error('   403 Forbidden. Permission denied.');
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                return response.json();
+            })
+            .then(data => {
+                console.log('✅ Data received:', data);
+                
+                if (data && data.success) {
+                    console.log('✅ Success response. Modules:', data.modules ? data.modules.length : 0);
+                    console.log('   Updating UI...');
+                    
+                    selectedRole = roleName;  // تحديث الدور المختار
+                    console.log('   ✓ selectedRole = ' + selectedRole);
+                    
+                    currentModulesData = data.modules;
+                    console.log('   ✓ currentModulesData updated');
+                    
+                    renderPermissionsTable(data.modules);
+                    console.log('   ✓ renderPermissionsTable() done');
+
+                    const searchInput = document.getElementById('securitySearchInput');
+                    if (searchInput && searchInput.value.trim()) {
+                        applySecuritySearch(searchInput.value);
+                    }
+                    
+                    updateRoleTabsUI(roleName);
+                    console.log('   ✓ updateRoleTabsUI() done');
+                    
+                    showNotification('تم تحميل الصلاحيات بنجاح', 'success');
+                } else {
+                    console.error('❌ Error in response:', data);
+                    const msg = data && data.message ? data.message : 'حدث خطأ في تحميل البيانات';
+                    showNotification(msg, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('❌ Fetch error:', error);
+                console.error('   Message:', error.message);
+                console.error('   Stack:', error.stack);
+                showNotification('خطأ في الاتصال بالخادم: ' + error.message, 'error');
+            });
+    }
+    
+    // ===== Render Permissions Table =====
+    function renderPermissionsTable(modules) {
+        const tbody = document.getElementById('permissionsTableBody');
+        tbody.innerHTML = '';
+
+        if (!modules || modules.length === 0) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = `
+                <td colspan="6" class="px-6 py-8 text-center text-sm text-[#617289]">
+                    لا توجد نتائج مطابقة للبحث
+                </td>
+            `;
+            tbody.appendChild(emptyRow);
+            return;
+        }
+        
+        modules.forEach(module => {
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors';
+            row.dataset.moduleId = module.id;
+            
+            // Module info cell
+            const moduleCell = document.createElement('td');
+            moduleCell.className = 'px-6 py-4';
+            moduleCell.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded ${COLOR_MAP[module.color] || COLOR_MAP.blue} flex items-center justify-center">
+                        <span class="material-symbols-outlined text-sm">${module.icon}</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold">${module.name_ar}</p>
+                        <p class="text-[10px] text-[#617289]">${module.description_ar}</p>
+                    </div>
+                </div>
+            `;
+            row.appendChild(moduleCell);
+            
+            // Action checkboxes
+            ['view', 'add', 'change', 'delete', 'export'].forEach(action => {
+                const cell = document.createElement('td');
+                cell.className = 'px-6 py-4 text-center';
+                const isAllowed = module.permissions[action] || false;
+                cell.innerHTML = `
+                    <input ${isAllowed ? 'checked' : ''} 
+                           class="permission-checkbox w-5 h-5 rounded text-primary focus:ring-primary/20 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800" 
+                           type="checkbox" 
+                           data-module-id="${module.id}" 
+                           data-action="${action}" 
+                           onchange="onPermissionChange(this)"/>
+                `;
+                row.appendChild(cell);
+            });
+            
+            tbody.appendChild(row);
+        });
+    }
+
+    function applySecuritySearch(term) {
+        const query = (term || '').toLowerCase().trim();
+
+        // Filter role tabs
+        const roleTabs = document.querySelectorAll('#roleTabsContainer a');
+        roleTabs.forEach(tab => {
+            const text = (tab.textContent || '').toLowerCase();
+            tab.style.display = query && !text.includes(query) ? 'none' : '';
+        });
+
+        // Filter permissions table
+        if (!query) {
+            renderPermissionsTable(currentModulesData);
+            return;
+        }
+
+        const filteredModules = currentModulesData.filter(module => {
+            const name = (module.name_ar || '').toLowerCase();
+            const desc = (module.description_ar || '').toLowerCase();
+            return name.includes(query) || desc.includes(query);
+        });
+
+        renderPermissionsTable(filteredModules);
+    }
+    
+    // ===== Handle Permission Change =====
+    function onPermissionChange(checkbox) {
+        const moduleId = checkbox.dataset.moduleId;
+        const action = checkbox.dataset.action;
+        const isAllowed = checkbox.checked;
+        
+        // Update local data
+        const module = currentModulesData.find(m => m.id == moduleId);
+        if (module) {
+            module.permissions[action] = isAllowed;
+        }
+        
+        // Show visual feedback
+        checkbox.classList.add('transition-all');
+        
+        // Auto-save after 1 second of inactivity
+        clearTimeout(window.autoSaveTimer);
+        window.autoSaveTimer = setTimeout(() => {
+            saveRolePermissions();
+        }, 1000);
+    }
+    
+    // ===== Save Role Permissions =====
+    function saveRolePermissions() {
+        const permissionsData = {};
+        
+        currentModulesData.forEach(module => {
+            permissionsData[module.id] = module.permissions;
+        });
+        
+        fetch('/security/update-permissions/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+            },
+            body: JSON.stringify({
+                role_name: selectedRole,
+                permissions: permissionsData
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('تم حفظ الصلاحيات بنجاح!', 'success');
+            } else {
+                showNotification(data.message || 'حدث خطأ في الحفظ', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('خطأ في الاتصال بالخادم', 'error');
+        });
+    }
+    
+    // ===== Update Role Tabs UI =====
+    function updateRoleTabsUI(selectedRole) {
+        // تحديث الـ tabs - إزالة الـ active class من الكل
+        document.querySelectorAll('a[href*="?role="]').forEach(tab => {
+            tab.classList.remove('border-b-primary', 'border-b-[3px]', 'text-primary');
+            tab.classList.add('border-b-transparent', 'text-[#617289]');
+            
+            // البحث عن الـ role من الـ href
+            const roleParam = new URL(tab.href).searchParams.get('role');
+            if (roleParam === selectedRole) {
+                // إضافة active class
+                tab.classList.remove('border-b-transparent', 'text-[#617289]');
+                tab.classList.add('border-b-primary', 'border-b-[3px]', 'text-primary');
+                
+                console.log('Updated active tab to:', selectedRole);
+            }
+        });
+        
+        // تحديث العنوان
+        const titleElement = document.getElementById('roleSettingsTitle');
+        if (titleElement) {
+            titleElement.textContent = `إعدادات ${selectedRole}`;
+            console.log('Updated title to: إعدادات', selectedRole);
+        } else {
+            console.warn('Title element not found with ID "roleSettingsTitle"');
+        }
+    }
+    
+    // ===== Add Role Tab =====
+    function addRoleTab(roleName) {
+        console.log('➕ addRoleTab called with:', roleName);
+        
+        // البحث عن div التبويبات باستخدام ID
+        const tabsContainer = document.getElementById('roleTabsContainer');
+        if (!tabsContainer) {
+            console.error('❌ Tabs container with ID "roleTabsContainer" not found!');
+            console.log('   Available IDs:', Array.from(document.querySelectorAll('[id]')).map(el => el.id).slice(0, 10));
+            return;
+        }
+        
+        console.log('   ✓ Container found:', tabsContainer.className);
+        
+        // التحقق من عدم وجود tab بنفس الاسم
+        const existingTab = Array.from(tabsContainer.querySelectorAll('a')).find(tab => {
+            const href = tab.getAttribute('href') || '';
+            const hasRole = href.includes(`role=${encodeURIComponent(roleName)}`);
+            console.log(`   Checking tab: ${href} → ${hasRole}`);
+            return hasRole;
+        });
+        
+        if (existingTab) {
+            console.log('   ⚠️ Tab already exists for role:', roleName);
+            return;
+        }
+        
+        console.log('   ✓ Tab does not exist, creating new one...');
+        
+        // إنشاء tab جديد
+        const newTab = document.createElement('a');
+        newTab.href = `/security/?role=${encodeURIComponent(roleName)}`;
+        newTab.className = 'flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#617289] pb-3 pt-4 px-2 hover:text-primary transition-colors';
+        newTab.innerHTML = `<p class="text-sm font-bold">${roleName}</p>`;
+        
+        console.log('   ✓ New tab element created');
+        
+        // إضافة event listener
+        newTab.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('   🔗 Tab clicked. Loading role:', roleName);
+            loadRolePermissions(roleName);
+        });
+        
+        // إضافة إلى DOM
+        tabsContainer.appendChild(newTab);
+        console.log('   ✅ Tab added successfully to DOM');
+        console.log('   Total tabs now:', tabsContainer.querySelectorAll('a').length);
+    }
+    
+    // ===== Modal Functions =====
+    function openAddRoleModal() {
+        document.getElementById('addRoleModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeAddRoleModal() {
+        document.getElementById('addRoleModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        // Reset form
+        document.getElementById('roleName').value = '';
+        document.getElementById('roleDescription').value = '';
+        document.getElementById('role2FARequired').checked = true;
+        document.querySelector('input[name="rolePermissionLevel"][value="standard"]').checked = true;
+    }
+    
+    function submitAddRole() {
+        const roleName = document.getElementById('roleName').value.trim();
+        const roleDescription = document.getElementById('roleDescription').value.trim();
+        const role2FARequired = document.getElementById('role2FARequired').checked;
+        const permissionLevel = document.querySelector('input[name="rolePermissionLevel"]:checked').value;
+        
+        console.log('📝 submitAddRole called');
+        console.log('   roleName:', roleName);
+        
+        // Validation
+        if (!roleName) {
+            console.warn('   ⚠️ Empty role name');
+            showNotification('يرجى إدخال اسم الدور', 'error');
+            return;
+        }
+        
+        if (roleName.length < 3) {
+            console.warn('   ⚠️ Role name too short');
+            showNotification('اسم الدور يجب أن يكون 3 أحرف على الأقل', 'error');
+            return;
+        }
+        
+        // Get CSRF token
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                         document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || 
+                         getCookie('csrftoken') || '';
+        
+        console.log('   ✓ Validation passed');
+        console.log('   ✓ CSRF token:', csrfToken ? 'present' : 'MISSING!');
+        
+        // Create FormData
+        const formData = new FormData();
+        formData.append('name', roleName);
+        formData.append('description', roleDescription);
+        formData.append('require_2fa', role2FARequired ? 'on' : 'off');
+        formData.append('permission_level', permissionLevel);
+        
+        console.log('   ✓ FormData prepared');
+        console.log('   📤 Sending POST to /security/add-role/');
+        
+        // Send to backend
+        fetch('/security/add-role/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'  // مهم: يجب إرسال cookies
+        })
+        .then(response => {
+            console.log('   📡 Response status:', response.status);
+            return response.json().then(data => ({
+                status: response.status,
+                data: data
+            }));
+        })
+        .then(({status, data}) => {
+            console.log('   ✅ Response received:', data);
+            
+            if (data.success) {
+                console.log('   ✅ Success! Role created:', data.group_name);
+                
+                showNotification('تم إنشاء الدور الجديد بنجاح!', 'success');
+                closeAddRoleModal();
+                
+                // الدور الجديد
+                const newRoleName = data.group_name;
+                console.log('   ➕ Adding tab for:', newRoleName);
+                
+                // إضافة tab للدور الجديد
+                addRoleTab(newRoleName);
+                
+                // تحميل صلاحيات الدور الجديد مباشرة
+                console.log('   ⏳ Waiting 500ms before loading permissions...');
+                setTimeout(() => {
+                    console.log('   🔄 Now loading permissions for:', newRoleName);
+                    loadRolePermissions(newRoleName);
+                }, 500);
+            } else {
+                console.error('   ❌ Error response:', data);
+                showNotification(data.message || 'حدث خطأ في إنشاء الدور', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('   ❌ Fetch error:', error);
+            showNotification('خطأ في الاتصال بالخادم: ' + error.message, 'error');
+        });
+    }
+    
+    // ===== Delete Role =====
+    function deleteCurrentRole() {
+        if (!selectedRole) {
+            showNotification('لم يتم اختيار دور للحذف', 'error');
+            return;
+        }
+        
+        // لا يمكن حذف الأدوار الافتراضية
+        const defaultRoles = ['مدير النظام', 'قسم المبيعات', 'المحاسب', 'مدير المستودع'];
+        if (defaultRoles.includes(selectedRole)) {
+            showNotification('لا يمكن حذف الأدوار الافتراضية من النظام', 'error');
+            return;
+        }
+        
+        // تأكيد الحذف
+        const confirmed = confirm(`هل أنت متأكد من حذف الدور "${selectedRole}"؟\nلن يمكن استرجاعه بعد ذلك!`);
+        if (!confirmed) {
+            console.log('❌ Delete cancelled by user');
+            return;
+        }
+        
+        console.log('🗑️ deleteCurrentRole called');
+        console.log('   roleName:', selectedRole);
+        
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                         document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || 
+                         getCookie('csrftoken') || '';
+        
+        console.log('   ✓ CSRF token:', csrfToken ? 'present' : 'MISSING!');
+        console.log('   📤 Sending DELETE to /security/delete-role/');
+        
+        // Send delete request
+        fetch('/security/delete-role/', {
+            method: 'POST',
+            body: JSON.stringify({
+                role_name: selectedRole
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'include'
+        })
+        .then(response => {
+            console.log('   📡 Response status:', response.status);
+            return response.json().then(data => ({
+                status: response.status,
+                data: data
+            }));
+        })
+        .then(({status, data}) => {
+            console.log('   ✅ Response received:', data);
+            
+            if (data.success) {
+                console.log('   ✅ Success! Role deleted:', selectedRole);
+                
+                showNotification(`تم حذف الدور "${selectedRole}" بنجاح!`, 'success');
+                
+                // حذف الـ tab من الـ UI
+                const tabsContainer = document.getElementById('roleTabsContainer');
+                const deletedTab = Array.from(tabsContainer.querySelectorAll('a')).find(tab => {
+                    const href = tab.getAttribute('href') || '';
+                    return href.includes(`role=${encodeURIComponent(selectedRole)}`);
+                });
+                
+                if (deletedTab) {
+                    deletedTab.remove();
+                    console.log('   ✓ Tab removed from UI');
+                }
+                
+                // التبديل إلى الدور الافتراضي
+                const defaultRole = 'قسم المبيعات';
+                loadRolePermissions(defaultRole);
+                console.log('   ✓ Switched to default role: ' + defaultRole);
+            } else {
+                console.error('   ❌ Error response:', data);
+                showNotification(data.message || 'حدث خطأ في حذف الدور', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('   ❌ Fetch error:', error);
+            showNotification('خطأ في الاتصال بالخادم: ' + error.message, 'error');
+        });
+    }
+    
+    // ===== Update Delete Button State =====
+    function updateDeleteButtonState() {
+        const deleteBtn = document.getElementById('deleteRoleBtn');
+        if (!deleteBtn) return;
+        
+        const defaultRoles = ['مدير النظام', 'قسم المبيعات', 'المحاسب', 'مدير المستودع'];
+        const isDefaultRole = defaultRoles.includes(selectedRole);
+        
+        // تفعيل الزرار فقط للأدوار غير الافتراضية
+        if (isDefaultRole || !selectedRole) {
+            deleteBtn.disabled = true;
+            deleteBtn.title = 'لا يمكن حذف الأدوار الافتراضية';
+        } else {
+            deleteBtn.disabled = false;
+            deleteBtn.title = `حذف الدور: ${selectedRole}`;
+        }
+    }
+    
+    // تحديث حالة الزرار عند تحميل الصلاحيات
+    const originalLoadRolePermissions = loadRolePermissions;
+    loadRolePermissions = function(roleName) {
+        originalLoadRolePermissions(roleName);
+        setTimeout(() => updateDeleteButtonState(), 100);
+    };
+    
+    // تحديث حالة الزرار في البداية
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => updateDeleteButtonState(), 100);
+    });
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // ===== Export Report Function =====
+    function exportRolesReport() {
+        const timestamp = new Date().toLocaleDateString('ar-EG', { 
+            year: 'numeric', 
+            month: '2-digit', 
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "تقرير الأدوار والمجموعات\n";
+        csvContent += `التاريخ: ${timestamp}\n\n`;
+        csvContent += "اسم الدور,عدد المستخدمين,الصلاحيات,2FA مفعل\n";
+        
+        // Get statistics from visible cards
+        const adminCount = document.querySelector('[class*="from-blue"]')?.querySelector('.text-3xl')?.textContent || '0';
+        const salesCount = document.querySelector('[class*="from-green"]')?.querySelector('.text-3xl')?.textContent || '0';
+        const accountantCount = document.querySelector('[class*="from-orange"]')?.querySelector('.text-3xl')?.textContent || '0';
+        const warehouseCount = document.querySelector('[class*="from-purple"]')?.querySelector('.text-3xl')?.textContent || '0';
+        
+        csvContent += `مدير النظام,${adminCount},كل الصلاحيات,نعم\n`;
+        csvContent += `قسم المبيعات,${salesCount},المبيعات والعملاء,نعم\n`;
+        csvContent += `المحاسب,${accountantCount},المحاسبة والتقارير,نعم\n`;
+        csvContent += `مدير المستودع,${warehouseCount},المخزون والمستودعات,لا\n`;
+        
+        // Add permissions table data
+        csvContent += "\n\nمصفوفة الصلاحيات\n";
+        csvContent += "الوحدة البرمجية,عرض,إضافة,تعديل,حذف,تصدير\n";
+        
+        currentModulesData.forEach(module => {
+            const view = module.permissions['view'] ? '✓' : '✗';
+            const add = module.permissions['add'] ? '✓' : '✗';
+            const change = module.permissions['change'] ? '✓' : '✗';
+            const del = module.permissions['delete'] ? '✓' : '✗';
+            const exp = module.permissions['export'] ? '✓' : '✗';
+            
+            csvContent += `"${module.name_ar}",${view},${add},${change},${del},${exp}\n`;
+        });
+        
+        // Create download link
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', `تقرير-الأدوار-${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        
+        link.click();
+        document.body.removeChild(link);
+        
+        showNotification('تم تصدير التقرير بنجاح!', 'success');
+    }
+    
+    // ===== Toast Notification Function =====
+    function showNotification(message, type = 'info') {
+        const container = document.getElementById('notificationContainer');
+        const notification = document.createElement('div');
+        
+        let bgColor, borderColor, textColor, icon;
+        if (type === 'success') {
+            bgColor = 'bg-green-50 dark:bg-green-900/20';
+            borderColor = 'border-green-200 dark:border-green-800';
+            textColor = 'text-green-800 dark:text-green-200';
+            icon = 'check_circle';
+        } else if (type === 'error') {
+            bgColor = 'bg-red-50 dark:bg-red-900/20';
+            borderColor = 'border-red-200 dark:border-red-800';
+            textColor = 'text-red-800 dark:text-red-200';
+            icon = 'error';
+        } else {
+            bgColor = 'bg-blue-50 dark:bg-blue-900/20';
+            borderColor = 'border-blue-200 dark:border-blue-800';
+            textColor = 'text-blue-800 dark:text-blue-200';
+            icon = 'info';
+        }
+        
+        notification.className = `${bgColor} ${borderColor} ${textColor} px-5 py-4 rounded-lg border shadow-lg flex items-center gap-3 animate-in slide-in-from-bottom-5`;
+        notification.innerHTML = `
+            <span class="material-symbols-outlined text-xl shrink-0">${icon}</span>
+            <span class="text-sm font-medium">${message}</span>
+            <button onclick="this.parentElement.remove()" class="ml-auto text-lg leading-none opacity-70 hover:opacity-100 transition-opacity">×</button>
+        `;
+        
+        container.appendChild(notification);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slide-out-to-bottom-5 0.3s ease-in forwards';
+            setTimeout(() => notification.remove(), 300);
+        }, 5000);
+    }
+    
+    // ===== Close modal when clicking outside =====
+    document.getElementById('addRoleModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAddRoleModal();
+        }
+    });
+    
+    // ===== Close modal on Escape key =====
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !document.getElementById('addRoleModal').classList.contains('hidden')) {
+            closeAddRoleModal();
+        }
+        if (e.key === 'Escape' && !document.getElementById('ssoSetupModal').classList.contains('hidden')) {
+            closeSSOModal();
+        }
+    });
+</script>
+
+<!-- SSO Setup Modal -->
+<div id="ssoSetupModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800">
+        <!-- Modal Header -->
+        <div class="sticky top-0 px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center bg-white dark:bg-gray-900 z-10">
+            <div>
+                <h3 class="text-lg font-bold text-[#111418] dark:text-white">إعدادات تسجيل الدخول الأحادي (SSO)</h3>
+                <p class="text-xs text-[#617289] mt-1">ربط النظام مع مزودي الهوية الخارجيين لتعزيز الأمان</p>
+            </div>
+            <button onclick="closeSSOModal()" class="text-[#617289] hover:text-[#111418] dark:hover:text-white transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="px-6 py-6 space-y-6">
+            <!-- Google OAuth2 -->
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10 border border-blue-200 dark:border-blue-800 rounded-xl p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center shadow-sm">
+                            <span class="material-symbols-outlined text-blue-600">login</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-[#111418] dark:text-white">Google OAuth 2.0</h4>
+                            <p class="text-xs text-[#617289]">تسجيل الدخول باستخدام حسابات Google</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="googleEnabled" class="sr-only peer" onchange="toggleSSOProvider('google', this.checked)">
+                        <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                </div>
+                <div id="googleConfig" class="space-y-3 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Client ID</label>
+                        <input type="text" id="googleClientId" placeholder="xxx.apps.googleusercontent.com" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Client Secret</label>
+                        <input type="password" id="googleClientSecret" placeholder="••••••••••••••••" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Microsoft Azure AD -->
+            <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-900/20 dark:to-cyan-800/10 border border-cyan-200 dark:border-cyan-800 rounded-xl p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center shadow-sm">
+                            <span class="material-symbols-outlined text-cyan-600">cloud</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-[#111418] dark:text-white">Microsoft Azure AD</h4>
+                            <p class="text-xs text-[#617289]">تسجيل الدخول باستخدام حسابات Microsoft</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="azureEnabled" class="sr-only peer" onchange="toggleSSOProvider('azure', this.checked)">
+                        <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                </div>
+                <div id="azureConfig" class="space-y-3 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Tenant ID</label>
+                        <input type="text" id="azureTenantId" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Application (Client) ID</label>
+                        <input type="text" id="azureClientId" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Client Secret</label>
+                        <input type="password" id="azureClientSecret" placeholder="••••••••••••••••" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAML 2.0 -->
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/10 border border-purple-200 dark:border-purple-800 rounded-xl p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center shadow-sm">
+                            <span class="material-symbols-outlined text-purple-600">key</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-[#111418] dark:text-white">SAML 2.0</h4>
+                            <p class="text-xs text-[#617289]">تسجيل الدخول عبر بروتوكول SAML</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="samlEnabled" class="sr-only peer" onchange="toggleSSOProvider('saml2', this.checked)">
+                        <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                </div>
+                <div id="samlConfig" class="space-y-3 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Entity ID</label>
+                        <input type="text" id="samlEntityId" placeholder="https://yourdomain.com/saml/metadata/" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">SSO URL</label>
+                        <input type="url" id="samlSsoUrl" placeholder="https://idp.example.com/sso" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Certificate (X.509)</label>
+                        <textarea id="samlCertificate" placeholder="-----BEGIN CERTIFICATE-----&#10;...&#10;-----END CERTIFICATE-----" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm h-20 resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LDAP -->
+            <div class="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/10 border border-orange-200 dark:border-orange-800 rounded-xl p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center shadow-sm">
+                            <span class="material-symbols-outlined text-orange-600">dns</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-[#111418] dark:text-white">LDAP / Active Directory</h4>
+                            <p class="text-xs text-[#617289]">ربط مع خادم LDAP أو Active Directory</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="ldapEnabled" class="sr-only peer" onchange="toggleSSOProvider('ldap', this.checked)">
+                        <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                </div>
+                <div id="ldapConfig" class="space-y-3 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Server URI</label>
+                        <input type="text" id="ldapServerUri" placeholder="ldap://ldap.example.com:389" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Bind DN</label>
+                        <input type="text" id="ldapBindDn" placeholder="cn=admin,dc=example,dc=com" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">Bind Password</label>
+                        <input type="password" id="ldapBindPassword" placeholder="••••••••••••••••" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[#111418] dark:text-white mb-1">User Search Base</label>
+                        <input type="text" id="ldapUserSearchBase" placeholder="ou=users,dc=example,dc=com" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="sticky bottom-0 px-6 py-4 bg-[#f8f9fa] dark:bg-gray-800/30 border-t border-gray-200 dark:border-gray-800 rounded-b-xl flex justify-between items-center">
+            <div class="flex items-center gap-2 text-xs text-[#617289]">
+                <span class="material-symbols-outlined text-sm">info</span>
+                <span>سيتم حفظ الإعدادات في قاعدة البيانات بشكل آمن</span>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeSSOModal()" class="px-6 py-2 rounded-lg text-sm font-bold text-[#617289] hover:text-[#111418] dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all">
+                    إلغاء
+                </button>
+                <button onclick="saveSSOConfiguration()" class="px-8 py-2 rounded-lg bg-primary text-white text-sm font-bold shadow-md shadow-primary/20 hover:brightness-110 transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    حفظ الإعدادات
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ===== SSO Modal Functions =====
+    function openSSOModal() {
+        document.getElementById('ssoSetupModal').classList.remove('hidden');
+        // Load current SSO configuration
+        loadSSOConfiguration();
+    }
+    
+    function closeSSOModal() {
+        document.getElementById('ssoSetupModal').classList.remove('hidden');
+        document.getElementById('ssoSetupModal').classList.add('hidden');
+    }
+    
+    function toggleSSOProvider(provider, enabled) {
+        const configDiv = document.getElementById(provider + 'Config');
+        if (enabled) {
+            configDiv.classList.remove('hidden');
+        } else {
+            configDiv.classList.add('hidden');
+        }
+    }
+    
+    async function loadSSOConfiguration() {
+        console.log('🔄 Loading SSO configuration from database...');
+        try {
+            const response = await fetch('/api/sso/load/', {
+                credentials: 'include'
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('✅ SSO config loaded from database:', data);
+                
+                // Update UI with current configuration from database
+                if (data.google) {
+                    document.getElementById('googleEnabled').checked = data.google.is_enabled;
+                    document.getElementById('googleClientId').value = data.google.client_id || '';
+                    if (data.google.is_enabled) {
+                        document.getElementById('googleConfig').classList.remove('hidden');
+                    }
+                }
+                
+                if (data.azure) {
+                    document.getElementById('azureEnabled').checked = data.azure.is_enabled;
+                    document.getElementById('azureTenantId').value = data.azure.tenant_id || '';
+                    document.getElementById('azureClientId').value = data.azure.client_id || '';
+                    if (data.azure.is_enabled) {
+                        document.getElementById('azureConfig').classList.remove('hidden');
+                    }
+                }
+                
+                if (data.saml2) {
+                    document.getElementById('samlEnabled').checked = data.saml2.is_enabled;
+                    document.getElementById('samlEntityId').value = data.saml2.entity_id || '';
+                    document.getElementById('samlSsoUrl').value = data.saml2.sso_url || '';
+                    if (data.saml2.is_enabled) {
+                        document.getElementById('samlConfig').classList.remove('hidden');
+                    }
+                }
+                
+                if (data.ldap) {
+                    document.getElementById('ldapEnabled').checked = data.ldap.is_enabled;
+                    document.getElementById('ldapServerUri').value = data.ldap.server_uri || '';
+                    document.getElementById('ldapBindDn').value = data.ldap.bind_dn || '';
+                    document.getElementById('ldapUserSearchBase').value = data.ldap.user_search_base || '';
+                    if (data.ldap.is_enabled) {
+                        document.getElementById('ldapConfig').classList.remove('hidden');
+                    }
+                }
+            } else {
+                console.warn('⚠️ No SSO configuration found in database');
+            }
+        } catch (error) {
+            console.error('❌ Error loading SSO config from database:', error);
+        }
+    }
+    
+    // ===== Update Security Status =====
+    function updateSecurityStatus() {
+        fetch('/api/get-security-status/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const percentage = data.percentage || 85;
+                    const twoFACount = data.two_fa_enabled || 0;
+                    const totalUsers = data.total_users || 1;
+                    
+                    // Update progress bar
+                    document.getElementById('securityBar').style.width = percentage + '%';
+                    
+                    // Update status text
+                    const statusText = `${twoFACount} من ${totalUsers} مستخدمين (${percentage}%) قاموا بتفعيل التوثيق الثنائي`;
+                    document.getElementById('securityStatus').textContent = statusText;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching security status:', error);
+                // Keep default values if error
+            });
+    }
+    
+    // Update on page load
+    document.addEventListener('DOMContentLoaded', updateSecurityStatus);
+
+    // ===== Update Last Modified Info =====
+    function updateLastEditInfo() {
+        fetch('/api/get-current-user/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const userName = data.first_name && data.last_name 
+                        ? `${data.first_name} ${data.last_name}`
+                        : data.username;
+                    const timeStr = getTimeAgoString();
+                    document.getElementById('lastEditInfo').innerHTML = 
+                        `آخر تعديل بواسطة: ${userName} ${timeStr}`;
+                }
+            })
+            .catch(error => console.error('Error fetching user:', error));
+    }
+    
+    function getTimeAgoString() {
+        // يمكن تحسين هذا للحصول على وقت آخر تعديل فعلي من قاعدة البيانات
+        return 'منذ قليل';
+    }
+    
+    // Update on page load
+    document.addEventListener('DOMContentLoaded', updateLastEditInfo);
+
+    async function saveSSOConfiguration() {
+        console.log('💾 Saving SSO configuration...');
+        
+        // Check if user is authenticated
+        if (!document.querySelector('[name=csrfmiddlewaretoken]')?.value && !getCookie('csrftoken')) {
+            console.error('❌ لم يتم العثور على CSRF token - قد لا تكون مسجل دخول');
+            showNotification('⚠️ يجب تسجيل الدخول أولاً', 'error');
+            return;
+        }
+        
+        const ssoConfig = {
+            google: {
+                is_enabled: document.getElementById('googleEnabled').checked,
+                client_id: document.getElementById('googleClientId').value,
+                client_secret: document.getElementById('googleClientSecret').value,
+            },
+            azure: {
+                is_enabled: document.getElementById('azureEnabled').checked,
+                tenant_id: document.getElementById('azureTenantId').value,
+                client_id: document.getElementById('azureClientId').value,
+                client_secret: document.getElementById('azureClientSecret').value,
+            },
+            saml2: {
+                is_enabled: document.getElementById('samlEnabled').checked,
+                entity_id: document.getElementById('samlEntityId').value,
+                sso_url: document.getElementById('samlSsoUrl').value,
+                certificate: document.getElementById('samlCertificate').value,
+            },
+            ldap: {
+                is_enabled: document.getElementById('ldapEnabled').checked,
+                server_uri: document.getElementById('ldapServerUri').value,
+                bind_dn: document.getElementById('ldapBindDn').value,
+                bind_password: document.getElementById('ldapBindPassword').value,
+                user_search_base: document.getElementById('ldapUserSearchBase').value,
+            }
+        };
+        
+        console.log('📊 Config data:', ssoConfig);
+        
+        try {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken');
+            console.log('🔐 CSRF Token:', csrftoken ? 'Found ✓' : 'NOT FOUND ❌');
+            
+            const response = await fetch('/api/sso/save/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                credentials: 'include',
+                body: JSON.stringify(ssoConfig)
+            });
+            
+            console.log('📡 Response status:', response.status);
+            
+            const result = await response.json();
+            console.log('📋 Response data:', result);
+            
+            if (response.ok && result.success) {
+                console.log('✅ SSO configuration saved successfully');
+                showNotification('تم حفظ إعدادات SSO بنجاح ✓', 'success');
+                closeSSOModal();
+            } else {
+                const errorMsg = result.error || result.message || 'فشل حفظ إعدادات SSO';
+                console.error('❌ Failed to save:', errorMsg);
+                showNotification(`فشل: ${errorMsg}`, 'error');
+            }
+        } catch (error) {
+            console.error('❌ Error saving SSO config:', error);
+            showNotification(`خطأ: ${error.message}`, 'error');
+        }
+    }
+</script>
+
+<footer class="mt-auto px-10 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</body></html>

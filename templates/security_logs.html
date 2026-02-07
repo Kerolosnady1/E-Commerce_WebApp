@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سجلات الأمان - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "IBM Plex Sans Arabic", sans-serif;
+            background-color: rgb(15 23 42);
+            color: #e2e8f0;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        input, select {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+            color: #fff !important;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #11a4d4 !important;
+            box-shadow: 0 0 0 3px rgba(17, 164, 212, 0.1);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-slate-900">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-primary to-blue-600 text-white p-6 mb-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <a href="{% url 'users_permissions' %}" class="text-white/80 hover:text-white">
+                                <span class="material-symbols-outlined">arrow_back</span>
+                            </a>
+                            <h1 class="text-3xl font-bold">سجلات الأمان الكاملة</h1>
+                        </div>
+                        <p class="text-white/90 text-sm">سجل شامل لجميع أحداث الأمان والنشاطات في النظام</p>
+                    </div>
+                    <span class="material-symbols-outlined text-6xl text-white/20">shield</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 pb-6">
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-[#1a222c] p-5 rounded-xl border border-[#2a333c]">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-xs font-medium mb-1">إجمالي الأحداث</p>
+                            <p class="text-3xl font-bold text-white">{{ total_logs }}</p>
+                        </div>
+                        <span class="material-symbols-outlined text-4xl text-blue-500">data_usage</span>
+                    </div>
+                </div>
+                
+                <div class="bg-[#1a222c] p-5 rounded-xl border border-[#2a333c]">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-xs font-medium mb-1">ناجحة</p>
+                            <p class="text-3xl font-bold text-green-400">{{ success_logs }}</p>
+                        </div>
+                        <span class="material-symbols-outlined text-4xl text-green-500">check_circle</span>
+                    </div>
+                </div>
+                
+                <div class="bg-[#1a222c] p-5 rounded-xl border border-[#2a333c]">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-xs font-medium mb-1">تحذيرات</p>
+                            <p class="text-3xl font-bold text-yellow-400">{{ warning_logs }}</p>
+                        </div>
+                        <span class="material-symbols-outlined text-4xl text-yellow-500">warning</span>
+                    </div>
+                </div>
+                
+                <div class="bg-[#1a222c] p-5 rounded-xl border border-[#2a333c]">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-xs font-medium mb-1">فاشلة</p>
+                            <p class="text-3xl font-bold text-red-400">{{ failed_logs }}</p>
+                        </div>
+                        <span class="material-symbols-outlined text-4xl text-red-500">error</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-[#1a222c] p-6 rounded-xl border border-[#2a333c] mb-6">
+                <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Search -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-slate-400 mb-2">البحث</label>
+                        <input type="text" name="search" value="{{ search_query }}" placeholder="ابحث عن مستخدم أو حدث..." class="w-full px-4 py-2.5 border rounded-lg">
+                    </div>
+
+                    <!-- Status Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">الحالة</label>
+                        <select name="status" class="w-full px-4 py-2.5 border rounded-lg">
+                            <option value="">كل الحالات</option>
+                            {% for value, label in status_choices %}
+                            <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Action Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">نوع الحدث</label>
+                        <select name="action" class="w-full px-4 py-2.5 border rounded-lg">
+                            <option value="">كل الأنواع</option>
+                            {% for value, label in action_types %}
+                            <option value="{{ value }}" {% if action_filter == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="md:col-span-4 flex gap-3">
+                        <button type="submit" class="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                            <span class="material-symbols-outlined text-sm align-middle ml-2">search</span>
+                            بحث
+                        </button>
+                        <a href="{% url 'security_logs' %}" class="px-6 py-2.5 border border-slate-600 text-slate-300 rounded-lg font-medium hover:bg-slate-800 transition-colors">
+                            <span class="material-symbols-outlined text-sm align-middle ml-2">refresh</span>
+                            إعادة تعيين
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security Logs Table -->
+            <div class="bg-[#1a222c] rounded-xl border border-[#2a333c] overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-slate-800 border-b border-slate-700">
+                                <th class="px-6 py-4 text-right text-sm font-bold text-slate-300">الوقت</th>
+                                <th class="px-6 py-4 text-right text-sm font-bold text-slate-300">النوع</th>
+                                <th class="px-6 py-4 text-right text-sm font-bold text-slate-300">الحدث</th>
+                                <th class="px-6 py-4 text-right text-sm font-bold text-slate-300">المستخدم</th>
+                                <th class="px-6 py-4 text-right text-sm font-bold text-slate-300">IP / الجهاز</th>
+                                <th class="px-6 py-4 text-right text-sm font-bold text-slate-300">الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in logs %}
+                            <tr class="border-b border-slate-800 hover:bg-slate-800/30 transition-colors">
+                                <td class="px-6 py-4 text-slate-400 text-xs whitespace-nowrap">
+                                    {{ log.timestamp|date:"Y-m-d H:i" }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 text-xs font-bold rounded-full 
+                                        {% if log.status == 'success' %}bg-green-900/30 text-green-300
+                                        {% elif log.status == 'warning' %}bg-yellow-900/30 text-yellow-300
+                                        {% else %}bg-red-900/30 text-red-300{% endif %}">
+                                        {{ log.get_action_type_display }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-lg
+                                            {% if log.status == 'success' %}text-green-500
+                                            {% elif log.status == 'warning' %}text-yellow-500
+                                            {% else %}text-red-500{% endif %}">
+                                            {% if log.status == 'success' %}check_circle
+                                            {% elif log.status == 'warning' %}warning
+                                            {% else %}cancel{% endif %}
+                                        </span>
+                                        <span class="text-slate-200 text-sm">{{ log.description }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 font-medium text-white">
+                                    {{ log.username }}
+                                </td>
+                                <td class="px-6 py-4 text-xs text-slate-400">
+                                    <div>{{ log.ip_address|default:"-" }}</div>
+                                    <div class="text-slate-500">{{ log.device_type }} / {{ log.browser }}</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="material-symbols-outlined
+                                        {% if log.status == 'success' %}text-green-500
+                                        {% elif log.status == 'warning' %}text-yellow-500
+                                        {% else %}text-red-500{% endif %}">
+                                        {% if log.status == 'success' %}check_circle
+                                        {% elif log.status == 'warning' %}warning
+                                        {% else %}highlight_off{% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="px-6 py-12 text-center text-slate-400">
+                                    <span class="material-symbols-outlined text-6xl text-slate-600 mb-3 block">inbox</span>
+                                    <p class="text-lg font-medium">لا توجد سجلات أمان</p>
+                                    <p class="text-sm mt-1">سيتم عرض السجلات هنا عند حدوث نشاطات أمنية</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

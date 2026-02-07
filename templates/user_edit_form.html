@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>تعديل مستخدم - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: "IBM Plex Sans Arabic", sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900">
+    <div class="min-h-screen p-8">
+        <div class="max-w-3xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <a href="{% url 'users_permissions' %}" class="text-blue-400 hover:text-blue-300 flex items-center gap-2 mb-4 transition">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    العودة إلى المستخدمين
+                </a>
+                <h1 class="text-4xl font-bold text-white">تعديل مستخدم: {{ user.username }}</h1>
+                <p class="text-white mt-2">تحديث معلومات المستخدم</p>
+            </div>
+
+            <!-- Form -->
+            <div class="bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-600">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="mb-6 p-4 rounded-xl bg-{{ message.tags }}-900 bg-opacity-30 border border-{{ message.tags }}-700 text-{{ message.tags }}-200">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- First Name -->
+                    <div>
+                        <label class="block text-sm font-bold text-white mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">person</span>
+                            الاسم الأول
+                        </label>
+                        <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    </div>
+
+                    <!-- Last Name -->
+                    <div>
+                        <label class="block text-sm font-bold text-white mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">person</span>
+                            الاسم الأخير
+                        </label>
+                        <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-bold text-white mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">email</span>
+                            البريد الإلكتروني
+                        </label>
+                        <input type="email" name="email" value="{{ user.email }}" class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    </div>
+
+                    <!-- Role / Group -->
+                    <div>
+                        <label class="block text-sm font-bold text-white mb-2">
+                            <span class="material-symbols-outlined text-sm ml-1 align-middle">admin_panel_settings</span>
+                            الدور الوظيفي
+                        </label>
+                        <select name="group_id" class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                            <option value="" class="bg-slate-900 text-white">بدون دور</option>
+                            {% for group in groups %}
+                                <option value="{{ group.id }}" class="bg-slate-900 text-white" {% if user.groups.first and user.groups.first.id == group.id %}selected{% endif %}>
+                                    {{ group.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Is Active -->
+                    <div class="flex items-center gap-3 p-4 bg-slate-900 bg-opacity-50 rounded-xl border border-slate-600">
+                        <input type="checkbox" name="is_active" id="is_active" {% if user.is_active %}checked{% endif %} class="w-5 h-5 bg-slate-800 border-slate-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer">
+                        <label for="is_active" class="text-sm font-medium text-white cursor-pointer">
+                            مستخدم نشط
+                        </label>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex gap-3 pt-6 border-t border-slate-600">
+                        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-xl font-bold transition-all shadow-lg shadow-blue-900">
+                            <span class="material-symbols-outlined text-sm ml-2 align-middle">save</span>
+                            حفظ التعديلات
+                        </button>
+                        <a href="{% url 'users_permissions' %}" class="px-6 py-3 border border-slate-600 text-white rounded-xl font-medium hover:bg-slate-700 hover:border-slate-500 transition-colors">
+                            إلغاء
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

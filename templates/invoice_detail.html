@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>فاتورة #{{ invoice.number }} - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+    <!-- Header Actions (No Print) -->
+    <div class="no-print bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="/sales/" class="text-blue-400 hover:text-blue-300 flex items-center gap-2">
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                    العودة للمبيعات
+                </a>
+                <span class="text-slate-500">|</span>
+                <h1 class="text-xl font-bold">فاتورة #{{ invoice.number }}</h1>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="window.print()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-all">
+                    <span class="material-symbols-outlined">print</span>
+                    طباعة
+                </button>
+                <a href="/invoices/{{ invoice.id }}/edit/" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg flex items-center gap-2 transition-all">
+                    <span class="material-symbols-outlined">edit</span>
+                    تعديل
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Content -->
+    <div class="max-w-5xl mx-auto p-6">
+        <div class="bg-slate-800 text-slate-100 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+            <!-- Invoice Header -->
+            <div class="bg-gradient-to-l from-blue-600 to-blue-700 text-white p-8">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-5xl">receipt_long</span>
+                            <div>
+                                <h2 class="text-3xl font-black">فاتورة مبيعات</h2>
+                                <p class="text-blue-100">SALES INVOICE</p>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-sm text-blue-100">رقم الفاتورة</p>
+                            <p class="text-2xl font-bold">#{{ invoice.number }}</p>
+                        </div>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm text-blue-100 mb-1">التاريخ</p>
+                        <p class="text-xl font-bold">{{ invoice.issued_date|date:"Y-m-d" }}</p>
+                        <div class="mt-4">
+                            {% if invoice.status == 'paid' %}
+                            <span class="px-4 py-2 bg-green-500 rounded-full text-sm font-bold">مدفوعة</span>
+                            {% elif invoice.status == 'pending' %}
+                            <span class="px-4 py-2 bg-amber-500 rounded-full text-sm font-bold">معلقة</span>
+                            {% else %}
+                            <span class="px-4 py-2 bg-red-500 rounded-full text-sm font-bold">متأخرة</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer & Company Info -->
+            <div class="grid grid-cols-2 gap-8 p-8 border-b border-slate-700">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-400 uppercase mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">business</span>
+                        من الشركة
+                    </h3>
+                    <div class="space-y-1">
+                        <p class="text-lg font-bold">شركة Arkanzax</p>
+                        <p class="text-sm text-slate-400">المملكة العربية السعودية</p>
+                        <p class="text-sm text-slate-400">info@arkanzax.com</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-400 uppercase mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">person</span>
+                        إلى العميل
+                    </h3>
+                    <div class="space-y-1">
+                        <p class="text-lg font-bold">{{ invoice.customer.name }}</p>
+                        {% if invoice.customer.email %}
+                        <p class="text-sm text-slate-400">{{ invoice.customer.email }}</p>
+                        {% endif %}
+                        {% if invoice.customer.phone %}
+                        <p class="text-sm text-slate-400">{{ invoice.customer.phone }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Items Table -->
+            <div class="p-8">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b-2 border-slate-700">
+                            <th class="text-right py-4 px-4 text-sm font-bold text-slate-300 uppercase">#</th>
+                            <th class="text-right py-4 px-4 text-sm font-bold text-slate-300 uppercase">المنتج</th>
+                            <th class="text-center py-4 px-4 text-sm font-bold text-slate-300 uppercase">الكمية</th>
+                            <th class="text-center py-4 px-4 text-sm font-bold text-slate-300 uppercase">السعر</th>
+                            <th class="text-left py-4 px-4 text-sm font-bold text-slate-300 uppercase">المجموع</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/40">
+                            <td class="py-4 px-4 text-slate-300">{{ forloop.counter }}</td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center gap-3">
+                                    {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-12 h-12 rounded-lg object-cover border border-slate-700"/>
+                                    {% else %}
+                                    <div class="w-12 h-12 bg-slate-800 rounded-lg flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-slate-400">image</span>
+                                    </div>
+                                    {% endif %}
+                                    <div>
+                                        <p class="font-bold text-white">{{ item.product.name }}</p>
+                                        <p class="text-xs text-slate-400">{{ item.product.sku }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4 text-center font-medium">{{ item.quantity }}</td>
+                            <td class="py-4 px-4 text-center">{{ item.unit_price|floatformat:2 }} ر.س</td>
+                            <td class="py-4 px-4 text-left font-bold text-white">{{ item.subtotal|floatformat:2 }} ر.س</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totals -->
+            <div class="bg-slate-800 p-8 border-t-2 border-slate-700">
+                <div class="max-w-md ml-auto space-y-3">
+                    {% if subtotal %}
+                    <div class="flex justify-between items-center text-lg">
+                        <span class="text-slate-300">المجموع الفرعي:</span>
+                        <span class="font-bold">{{ subtotal|floatformat:2 }} ر.س</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if company_settings and company_settings.tax_enabled %}
+                    <div class="flex justify-between items-center text-lg">
+                        <span class="text-slate-300">
+                            ضريبة القيمة المضافة ({{ company_settings.default_tax_rate }}%):
+                        </span>
+                        <span class="font-bold">{{ vat_amount|floatformat:2 }} ر.س</span>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="flex justify-between items-center text-lg pt-3 border-t-2 border-slate-700">
+                        <span class="font-bold text-white">الإجمالي الكلي:</span>
+                        <span class="text-3xl font-black text-blue-600">{{ total|floatformat:2 }} ر.س</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Section -->
+            {% if invoice.notes %}
+            <div class="bg-blue-900/20 border-r-4 border-blue-600 p-6">
+                <h4 class="text-sm font-bold text-blue-300 uppercase mb-2 flex items-center gap-2">
+                    <span class="material-symbols-outlined">sticky_note_2</span>
+                    ملاحظات الفاتورة
+                </h4>
+                <p class="text-slate-200 whitespace-pre-wrap">{{ invoice.notes }}</p>
+            </div>
+            {% endif %}
+
+            <!-- Footer -->
+            <div class="bg-slate-800 p-6 text-center border-t border-slate-700">
+                <p class="text-sm text-slate-300">شكراً لتعاملكم معنا</p>
+                {% if company_settings %}
+                <p class="text-xs text-slate-500 mt-2">
+                    {{ company_settings.company_name_ar|default:"" }} 
+                    {% if company_settings.vat_number %}
+                    | الرقم الضريبي: {{ company_settings.vat_number }}
+                    {% endif %}
+                </p>
+                {% endif %}
+                <p class="text-xs text-slate-500 mt-1">تم الإنشاء بواسطة نظام ERP المتكامل</p>
+            </div>
+        </div>
+
+        <!-- Notes Section (No Print for now) -->
+        <div class="no-print mt-6 bg-slate-800 rounded-2xl p-6 border border-slate-700">
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined">info</span>
+                معلومات إضافية
+            </h3>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <span class="text-slate-400">تاريخ الإنشاء:</span>
+                    <span class="font-medium">{{ invoice.created_at|date:"Y-m-d H:i" }}</span>
+                </div>
+                <div>
+                    <span class="text-slate-400">نوع العميل:</span>
+                    <span class="font-medium">{{ invoice.customer.get_customer_type_display }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spacing for footer -->
+    <div class="h-20"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

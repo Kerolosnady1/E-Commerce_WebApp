@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}تفاصيل المستودع - {{ warehouse.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8 px-4">
+    <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-lg overflow-hidden">
+        <div class="bg-slate-900/50 px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-3xl">warehouse</span>
+                <h2 class="text-2xl font-bold text-white">{{ warehouse.name }}</h2>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="{% url 'warehouse_edit' warehouse.pk %}" class="bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                    تعديل
+                </a>
+                <a href="{% url 'warehouses' %}" class="bg-slate-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-slate-600 transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    رجوع
+                </a>
+            </div>
+        </div>
+        
+        <div class="p-6 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-900/30 p-4 rounded-lg border border-slate-700">
+                    <p class="text-slate-400 text-sm mb-1">الموقع</p>
+                    <p class="text-white text-lg font-medium flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">location_on</span>
+                        {{ warehouse.location }}
+                    </p>
+                </div>
+                
+                <div class="bg-slate-900/30 p-4 rounded-lg border border-slate-700">
+                    <p class="text-slate-400 text-sm mb-1">الحالة</p>
+                    <p class="text-white text-lg font-medium">
+                        {% if warehouse.status == 'active' %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-green-500/20 text-green-400 border border-green-500/30">
+                                <span class="material-symbols-outlined text-[18px] ml-1">check_circle</span>
+                                نشط
+                            </span>
+                        {% elif warehouse.status == 'inactive' %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-red-500/20 text-red-400 border border-red-500/30">
+                                <span class="material-symbols-outlined text-[18px] ml-1">cancel</span>
+                                غير نشط
+                            </span>
+                        {% elif warehouse.status == 'maintenance' %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                                <span class="material-symbols-outlined text-[18px] ml-1">build</span>
+                                صيانة
+                            </span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="bg-slate-900/30 p-6 rounded-lg border border-slate-700">
+                <p class="text-slate-400 text-sm mb-3">السعة الاستيعابية</p>
+                <div class="flex items-center gap-4">
+                    <div class="flex-1 bg-slate-700 rounded-full h-4">
+                        <div class="{% if warehouse.capacity >= 80 %}bg-green-500{% elif warehouse.capacity >= 50 %}bg-amber-500{% else %}bg-red-500{% endif %} h-4 rounded-full transition-all" style="width: {{ warehouse.capacity }}%"></div>
+                    </div>
+                    <span class="text-white text-2xl font-bold">{{ warehouse.capacity|floatformat:0 }}%</span>
+                </div>
+                {% if warehouse.capacity >= 80 %}
+                    <p class="text-green-400 text-sm mt-2 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">info</span>
+                        السعة مرتفعة
+                    </p>
+                {% elif warehouse.capacity >= 50 %}
+                    <p class="text-amber-400 text-sm mt-2 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">warning</span>
+                        السعة متوسطة
+                    </p>
+                {% else %}
+                    <p class="text-red-400 text-sm mt-2 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">error</span>
+                        السعة منخفضة
+                    </p>
+                {% endif %}
+            </div>
+            
+            {% if warehouse.description %}
+                <div class="bg-slate-900/30 p-4 rounded-lg border border-slate-700">
+                    <p class="text-slate-400 text-sm mb-2">الوصف</p>
+                    <p class="text-white">{{ warehouse.description }}</p>
+                </div>
+            {% endif %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-900/30 p-4 rounded-lg border border-slate-700">
+                    <p class="text-slate-400 text-sm mb-1">تاريخ الإنشاء</p>
+                    <p class="text-white">{{ warehouse.created_at|date:"Y/m/d - H:i" }}</p>
+                </div>
+                
+                <div class="bg-slate-900/30 p-4 rounded-lg border border-slate-700">
+                    <p class="text-slate-400 text-sm mb-1">آخر تحديث</p>
+                    <p class="text-white">{{ warehouse.updated_at|date:"Y/m/d - H:i" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+</style>
+{% endblock %}

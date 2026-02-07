@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}إعدادات المصادقة الثنائية{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+        <a href="{% url 'security' %}" class="text-primary hover:text-primary/80 flex items-center gap-2 mb-4 transition">
+            <span class="material-symbols-outlined">arrow_back</span>
+            العودة إلى الأمان والصلاحيات
+        </a>
+        <h1 class="text-3xl font-bold text-white">إعدادات المصادقة الثنائية (2FA)</h1>
+        <p class="text-slate-400 mt-2">تعزيز حماية الحساب والتحكم في إعدادات المصادقة الثنائية</p>
+    </div>
+
+    {% if messages %}
+        <div class="space-y-3 mb-6">
+            {% for message in messages %}
+                <div class="p-4 rounded-lg bg-slate-800 border border-slate-700 text-slate-200">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-surface-dark border border-border-dark rounded-xl p-6">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white mb-1">تفعيل المصادقة الثنائية</h2>
+                    <p class="text-sm text-slate-400">أضف طبقة حماية إضافية عند تسجيل الدخول</p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold {% if user_2fa_enabled %}bg-green-900/40 text-green-300 border border-green-700{% else %}bg-yellow-900/40 text-yellow-300 border border-yellow-700{% endif %}">
+                    {% if user_2fa_enabled %}مفعلة{% else %}معطلة{% endif %}
+                </span>
+            </div>
+
+            <div class="mt-6">
+                <form method="post" class="flex flex-wrap items-center gap-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="{% if user_2fa_enabled %}disable{% else %}enable{% endif %}">
+                    <button type="submit" class="px-6 py-3 rounded-lg font-bold text-slate-900 {% if user_2fa_enabled %}bg-red-500 hover:bg-red-600{% else %}bg-primary hover:bg-primary/90{% endif %} transition">
+                        {% if user_2fa_enabled %}تعطيل المصادقة الثنائية{% else %}تفعيل المصادقة الثنائية{% endif %}
+                    </button>
+                    <span class="text-xs text-slate-500">يمكنك تغيير الحالة في أي وقت</span>
+                </form>
+            </div>
+
+            <div class="mt-6 bg-card-dark border border-border-dark rounded-lg p-4">
+                <h3 class="text-sm font-bold text-white mb-2">ماذا يحدث عند التفعيل؟</h3>
+                <ul class="text-sm text-slate-400 space-y-2 list-disc pr-5">
+                    <li>سيُطلب منك رمز إضافي عند تسجيل الدخول.</li>
+                    <li>سيتم حماية حسابك من محاولات الدخول غير المصرّح بها.</li>
+                    <li>يمكنك تعطيلها لاحقًا من نفس الصفحة.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
+            <h2 class="text-lg font-bold text-white mb-4">مؤشر تفعيل 2FA</h2>
+            <div class="flex items-center justify-between text-sm text-slate-400 mb-2">
+                <span>المفعّلين</span>
+                <span>{{ two_fa_enabled }} / {{ total_users }}</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div class="bg-primary h-full" style="width: {{ percentage }}%"></div>
+            </div>
+            <p class="text-xs text-slate-500 mt-3">تم تفعيل المصادقة الثنائية لدى {{ percentage }}% من المستخدمين.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

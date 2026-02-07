@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>إعدادات الضرائب - ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Noto+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                        "emerald-erp": "#10b981",
+                        "navy-erp": "#1e293b"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans Arabic", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+            color: #e2e8f0;
+        }
+        header, aside, main, section {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+        }
+        h1, h2, h3, h4, h5, h6 { color: #fff !important; }
+        label { color: #9ca3af !important; }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+            color: #fff !important;
+        }
+        .bg-white, .bg-slate-50, .bg-background-light { background-color: #1f2937 !important; }
+        .border-gray-200, .border-[#dbe0e6], .border-[#f0f3f4] { border-color: #334155 !important; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e5e7eb] dark:border-b-[#2d3748] bg-white dark:bg-background-dark px-6 md:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 17.4264C16.7203 18.1174 20.2244 18.5217 24 18.5217C27.7756 18.5217 31.2797 18.1174 34.1739 17.4264C36.9144 16.7722 39.9967 15.2331 41.3563 14.1648L24.8486 40.6391C24.4571 41.267 23.5429 41.267 23.1514 40.6391L6.64374 14.1648C8.00331 15.2331 11.0856 16.7722 13.8261 17.4264Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 12.236C39.9944 12.2537 39.9875 12.2845 39.9748 12.3294C39.9436 12.4399 39.8949 12.5741 39.8346 12.7175C39.8168 12.7597 39.7989 12.8007 39.7813 12.8398C38.5103 13.7113 35.9788 14.9393 33.7095 15.4811C30.9875 16.131 27.6413 16.5217 24 16.5217C20.3587 16.5217 17.0125 16.131 14.2905 15.4811C12.0012 14.9346 9.44505 13.6897 8.18538 12.8168C8.17384 12.7925 8.16216 12.767 8.15052 12.7408C8.09919 12.6249 8.05721 12.5114 8.02977 12.411C8.00356 12.3152 8.00039 12.2667 8.00004 12.2612C8.00004 12.261 8 12.2607 8.00004 12.2612C8.00004 12.2359 8.0104 11.9233 8.68485 11.3686C9.34546 10.8254 10.4222 10.2469 11.9291 9.72276C14.9242 8.68098 19.1919 8 24 8C28.8081 8 33.0758 8.68098 36.0709 9.72276C37.5778 10.2469 38.6545 10.8254 39.3151 11.3686C39.9006 11.8501 39.9857 12.1489 39.998 12.236ZM4.95178 15.2312L21.4543 41.6973C22.6288 43.5809 25.3712 43.5809 26.5457 41.6973L43.0534 15.223C43.0709 15.1948 43.0878 15.1662 43.104 15.1371L41.3563 14.1648C43.104 15.1371 43.1038 15.1374 43.104 15.1371L43.1051 15.135L43.1065 15.1325L43.1101 15.1261L43.1199 15.1082C43.1276 15.094 43.1377 15.0754 43.1497 15.0527C43.1738 15.0075 43.2062 14.9455 43.244 14.8701C43.319 14.7208 43.4196 14.511 43.5217 14.2683C43.6901 13.8679 44 13.0689 44 12.2609C44 10.5573 43.003 9.22254 41.8558 8.2791C40.6947 7.32427 39.1354 6.55361 37.385 5.94477C33.8654 4.72057 29.133 4 24 4C18.867 4 14.1346 4.72057 10.615 5.94478C8.86463 6.55361 7.30529 7.32428 6.14419 8.27911C4.99695 9.22255 3.99999 10.5573 3.99999 12.2609C3.99999 13.1275 4.29264 13.9078 4.49321 14.3607C4.60375 14.6102 4.71348 14.8196 4.79687 14.9689C4.83898 15.0444 4.87547 15.1065 4.9035 15.1529C4.91754 15.1762 4.92954 15.1957 4.93916 15.2111L4.94662 15.223L4.95178 15.2312ZM35.9868 18.996L24 38.22L12.0131 18.996C12.4661 19.1391 12.9179 19.2658 13.3617 19.3718C16.4281 20.1039 20.0901 20.5217 24 20.5217C27.9099 20.5217 31.5719 20.1039 34.6383 19.3718C35.082 19.2658 35.5339 19.1391 35.9868 18.996Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-navy-erp dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">نظام ERP المتكامل</h2>
+</div>
+<label class="hidden lg:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full border border-[#dbe0e6] dark:border-[#4a5568]">
+<div class="text-[#617289] dark:text-gray-400 flex items-center justify-center pr-3">
+<span class="material-symbols-outlined text-lg">search</span>
+</div>
+<input id="searchInput" class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:outline-0 focus:ring-0 text-base font-normal leading-normal placeholder:text-[#617289] px-2" placeholder="ابحث عن فئة ضريبية..." onkeyup="searchTaxCategories()"/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-navy-erp dark:text-gray-200 text-sm font-semibold hover:text-primary transition-colors" href="/">لوحة التحكم</a>
+<a class="text-primary text-sm font-semibold border-b-2 border-primary pb-1" href="/taxes/">المحاسبة</a>
+<a class="text-navy-erp dark:text-gray-200 text-sm font-semibold hover:text-primary transition-colors" href="/inventory/">المخازن</a>
+<a class="text-navy-erp dark:text-gray-200 text-sm font-semibold hover:text-primary transition-colors" href="/sales/">المبيعات</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-[#2d3748] text-[#111418] dark:text-white hover:bg-primary/10 transition-colors" onclick="window.location.href='/notifications/'">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-[#2d3748] text-[#111418] dark:text-white hover:bg-primary/10 transition-colors" onclick="window.location.href='/settings/general/'">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+{% if request.user.profile.avatar %}
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" style='background-image: url("{{ request.user.profile.avatar.url }}");' title="{{ request.user.get_full_name|default:request.user.username }}"></div>
+            {% else %}
+            <div class="flex items-center justify-center rounded-full size-10 border-2 border-primary/20 bg-primary/10 text-primary font-bold">
+                {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+            </div>
+            {% endif %}
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex w-72 flex-col justify-between bg-white dark:bg-background-dark border-l border-[#e5e7eb] dark:border-l-[#2d3748] p-6 h-[calc(100vh-64px)] overflow-y-auto">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<h1 class="text-navy-erp dark:text-white text-lg font-bold">نظام المحاسبة</h1>
+<p class="text-[#617289] text-sm">الإعدادات المالية العامة</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-navy-erp dark:text-gray-300 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] transition-all" href="/settings/general/">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-semibold">الإعدادات العامة</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary transition-all" href="/taxes/">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">receipt_long</span>
+<span class="text-sm font-bold">إعدادات الضرائب</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-navy-erp dark:text-gray-300 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] transition-all" href="/accounts/">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="text-sm font-semibold">شجرة الحسابات</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-navy-erp dark:text-gray-300 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] transition-all" href="/print-templates/">
+<span class="material-symbols-outlined">article</span>
+<span class="text-sm font-semibold">قواعد الفوترة</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-navy-erp dark:text-gray-300 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] transition-all" href="/settings/system/">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm font-semibold">السنة المالية</span>
+</a>
+</nav>
+</div>
+<div class="pt-6 border-t border-gray-100 dark:border-gray-800">
+<a href="/logout/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-all">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-bold">تسجيل الخروج</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto bg-slate-900 p-6 lg:p-10 space-y-8">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-sm text-[#617289] dark:text-gray-400">
+<a class="hover:text-primary flex items-center gap-1" href="/">
+<span class="material-symbols-outlined text-base">home</span>
+                        الرئيسية
+                    </a>
+<span class="material-symbols-outlined text-xs">chevron_left</span>
+<a class="hover:text-primary" href="/settings/general/">الإعدادات</a>
+<span class="material-symbols-outlined text-xs">chevron_left</span>
+<span class="text-navy-erp dark:text-white font-semibold">إعدادات الضرائب</span>
+</nav>
+<!-- PageHeading -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 bg-white dark:bg-[#1a2332] p-8 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-gray-800">
+<div class="flex flex-col gap-3">
+<h1 class="text-navy-erp dark:text-white text-4xl font-black tracking-tight">إعدادات الضرائب</h1>
+<p class="text-[#617289] dark:text-gray-400 text-lg max-w-2xl">إدارة رقم التسجيل الضريبي، النسب الافتراضية، وفئات الضرائب المختلفة للشركة.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-6 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-navy-erp dark:text-white font-bold hover:bg-gray-200 transition-all" onclick="window.location.reload()">إلغاء التغييرات</button>
+<button class="px-6 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2" onclick="window.location.href='/taxes/'">
+<span class="material-symbols-outlined text-sm">save</span>
+                            حفظ التغييرات
+                        </button>
+</div>
+</div>
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="flex flex-col gap-3 rounded-2xl p-6 bg-white dark:bg-[#1a2332] border border-[#e5e7eb] dark:border-gray-800 hover:shadow-md transition-shadow group">
+<div class="flex items-center justify-between">
+<p class="text-[#617289] dark:text-gray-400 text-sm font-semibold">رقم التسجيل النشط</p>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">id_card</span>
+</div>
+<p class="text-navy-erp dark:text-white text-2xl font-bold font-display" id="displayVatNumber">{{ company_settings.vat_number|default:"غير محدد" }}</p>
+{% if company_settings and company_settings.tax_enabled %}
+<span class="text-emerald-erp text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> موثق وفعال
+                        </span>
+{% else %}
+<span class="text-yellow-400 text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">error</span> غير مفعل
+                        </span>
+{% endif %}
+</div>
+<div class="flex flex-col gap-3 rounded-2xl p-6 bg-white dark:bg-[#1a2332] border border-[#e5e7eb] dark:border-gray-800 hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<p class="text-[#617289] dark:text-gray-400 text-sm font-semibold">معدل الضريبة الافتراضي</p>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">percent</span>
+</div>
+<p class="text-navy-erp dark:text-white text-2xl font-bold font-display" id="displayTaxRate">{{ company_settings.default_tax_rate|default:"0" }}%</p>
+<p class="text-[#617289] text-xs">{{ default_tax.name|default:"ضريبة القيمة المضافة القياسية" }}</p>
+</div>
+<div class="flex flex-col gap-3 rounded-2xl p-6 bg-white dark:bg-[#1a2332] border border-[#e5e7eb] dark:border-gray-800 hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<p class="text-[#617289] dark:text-gray-400 text-sm font-semibold">فئات الضرائب المعرفة</p>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">category</span>
+</div>
+<p class="text-navy-erp dark:text-white text-2xl font-bold">{{ tax_count }} فئات نشطة</p>
+<p class="text-[#617289] text-xs">مقسمة حسب السلع والخدمات</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- General Settings Form -->
+<div class="lg:col-span-2 space-y-8">
+<section class="bg-white dark:bg-[#1a2332] p-8 rounded-2xl border border-[#e5e7eb] dark:border-gray-800 shadow-sm">
+<h2 class="text-xl font-bold text-navy-erp dark:text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">info</span>
+                                المعلومات الأساسية والافتراضية
+                            </h2>
+<form id="taxSettingsForm" class="space-y-6">
+{% csrf_token %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-[#111418] dark:text-gray-300">رقم التسجيل الضريبي (VAT ID)</label>
+<input class="form-input rounded-xl border-[#dbe0e6] dark:border-gray-700 dark:bg-[#101822] focus:border-primary focus:ring-primary h-12 text-lg px-4" type="text" id="vat_number" name="vat_number" value="{{ company_settings.vat_number|default:"" }}" onchange="saveTaxField('vat_number')" onblur="saveTaxField('vat_number')"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-[#111418] dark:text-gray-300">معدل الضريبة العام (%)</label>
+<div class="relative">
+<input class="form-input w-full rounded-xl border-[#dbe0e6] dark:border-gray-700 dark:bg-[#101822] focus:border-primary focus:ring-primary h-12 pr-4 pl-10" type="number" id="default_tax_rate" name="default_tax_rate" value="{{ company_settings.default_tax_rate|default:"0" }}" min="0" max="100" step="0.01" onchange="saveTaxField('default_tax_rate')" onblur="saveTaxField('default_tax_rate')"/>
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">%</span>
+</div>
+</div>
+<div class="flex flex-col gap-4 md:col-span-2 mt-4 p-4 bg-background-light dark:bg-[#101822] rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+<p class="text-sm font-bold text-navy-erp dark:text-white mb-2">منطق الحساب السعري</p>
+<div class="flex flex-wrap gap-6">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center">
+<input class="w-5 h-5 text-primary focus:ring-primary dark:bg-gray-800 dark:border-gray-700" id="prices_include_yes" name="prices_include_tax" value="true" type="radio" {% if company_settings and company_settings.prices_include_tax %}checked{% endif %} onchange="saveTaxSettings()"/>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#111418] dark:text-white">الأسعار شاملة الضريبة</span>
+<span class="text-xs text-[#617289]">سيتم استخراج الضريبة من السعر الإجمالي للمنتج</span>
+</div>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center">
+<input class="w-5 h-5 text-primary focus:ring-primary dark:bg-gray-800 dark:border-gray-700" id="prices_include_no" name="prices_include_tax" value="false" type="radio" {% if company_settings and not company_settings.prices_include_tax %}checked{% endif %} onchange="saveTaxSettings()"/>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#111418] dark:text-white">الأسعار غير شاملة الضريبة</span>
+<span class="text-xs text-[#617289]">سيتم إضافة الضريبة فوق سعر المنتج المعروض</span>
+</div>
+</label>
+</div>
+</div>
+</form>
+</section>
+<!-- Tax Categories Table -->
+<section class="bg-white dark:bg-[#1a2332] p-0 overflow-hidden rounded-2xl border border-[#e5e7eb] dark:border-gray-800 shadow-sm">
+<div class="p-8 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+<h2 class="text-xl font-bold text-navy-erp dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">layers</span>
+                                    فئات الضرائب المخصصة
+                                </h2>
+<a class="flex items-center gap-2 text-primary hover:text-primary/80 font-bold text-sm bg-primary/5 px-4 py-2 rounded-lg transition-all" href="/taxes/create/">
+<span class="material-symbols-outlined text-sm">add</span>
+                                    إضافة فئة جديدة
+                                </a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-right border-collapse">
+<thead>
+<tr class="bg-gray-50 dark:bg-gray-800/50">
+<th class="px-8 py-4 text-sm font-bold text-[#617289] dark:text-gray-400">اسم الفئة</th>
+<th class="px-8 py-4 text-sm font-bold text-[#617289] dark:text-gray-400 text-center">النسبة</th>
+<th class="px-8 py-4 text-sm font-bold text-[#617289] dark:text-gray-400 text-center">النوع</th>
+<th class="px-8 py-4 text-sm font-bold text-[#617289] dark:text-gray-400 text-center">الحالة</th>
+<th class="px-8 py-4 text-sm font-bold text-[#617289] dark:text-gray-400 text-center">الإجراءات</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+{% for tax in tax_rates %}
+<tr class="tax-row hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors" data-tax-name="{{ tax.name }}" data-tax-rate="{{ tax.rate }}">
+<td class="px-8 py-4 text-navy-erp dark:text-white font-semibold tax-name">{{ tax.name }}</td>
+<td class="px-8 py-4 text-center font-display font-bold">{{ tax.rate }}%</td>
+<td class="px-8 py-4 text-center text-sm">{{ tax.is_default|yesno:"افتراضي,مخصص" }}</td>
+<td class="px-8 py-4 text-center">
+{% if tax.is_default %}
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">افتراضي</span>
+{% else %}
+<span class="bg-emerald-erp/10 text-emerald-erp px-3 py-1 rounded-full text-xs font-bold">نشط</span>
+{% endif %}
+</td>
+<td class="px-8 py-4 text-center">
+<div class="flex items-center justify-center gap-2">
+<a class="p-2 text-gray-400 hover:text-primary transition-colors" href="/taxes/{{ tax.id }}/edit/"><span class="material-symbols-outlined text-lg">edit</span></a>
+<a class="p-2 text-gray-400 hover:text-red-500 transition-colors" href="/taxes/{{ tax.id }}/delete/"><span class="material-symbols-outlined text-lg">delete</span></a>
+</div>
+</td>
+</tr>
+{% empty %}
+<tr class="empty-state">
+<td class="px-8 py-8 text-center text-gray-400" colspan="5">لا توجد فئات ضرائب بعد.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Sidebar Info / Help -->
+<div class="space-y-6">
+<section class="bg-navy-erp text-white p-8 rounded-2xl shadow-xl relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">help</span>
+                                    تحتاج مساعدة؟
+                                </h3>
+<p class="text-gray-300 text-sm leading-relaxed mb-6">
+                                    إعدادات الضرائب هي جزء أساسي من الامتثال المالي للشركة. تأكد من مراجعة القوانين المحلية قبل تغيير النسب الافتراضية.
+                                </p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-sm text-gray-100">
+<span class="material-symbols-outlined text-emerald-erp text-base">check_circle</span>
+                                        التحقق من رقم التسجيل الضريبي بانتظام.
+                                    </li>
+<li class="flex items-start gap-3 text-sm text-gray-100">
+<span class="material-symbols-outlined text-emerald-erp text-base">check_circle</span>
+                                        ضبط معدلات ضريبة الصفر للصادرات.
+                                    </li>
+<li class="flex items-start gap-3 text-sm text-gray-100">
+<span class="material-symbols-outlined text-emerald-erp text-base">check_circle</span>
+                                        تفعيل منطق الحساب السعري الموحد.
+                                    </li>
+</ul>
+<a class="w-full py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition-all font-bold text-sm text-center block" href="/help/">
+                                    دليل المستخدم المالي
+                                </a>
+</div>
+<!-- Abstract decoration -->
+<div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl"></div>
+</section>
+<section class="bg-white dark:bg-[#1a2332] p-6 rounded-2xl border border-[#e5e7eb] dark:border-gray-800 shadow-sm">
+<h3 class="font-bold text-navy-erp dark:text-white mb-4">روابط سريعة</h3>
+<div class="flex flex-col gap-2">
+<a class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" href="/invoices/">
+<span class="text-sm font-semibold">إدارة الفواتير</span>
+<span class="material-symbols-outlined text-gray-400">arrow_back_ios</span>
+</a>
+<a class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" href="/reports/">
+<span class="text-sm font-semibold">تقارير الإقرار الضريبي</span>
+<span class="material-symbols-outlined text-gray-400">arrow_back_ios</span>
+</a>
+<a class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" href="/support/">
+<span class="text-sm font-semibold">تكامل الجمارك</span>
+<span class="material-symbols-outlined text-gray-400">arrow_back_ios</span>
+</a>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+</div>
+<footer class="mt-auto px-10 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+
+<script>
+function saveTaxSettings() {
+    const form = document.getElementById('taxSettingsForm');
+    const formData = new FormData(form);
+    
+    // Show loading state
+    showNotification('جاري الحفظ...', 'info');
+    
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    // Send to server
+    fetch('{% url "taxes_save" %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('تم حفظ الإعدادات بنجاح ✓', 'success');
+            // Update display cards
+            updateDisplayCards();
+        } else {
+            showNotification('حدث خطأ: ' + (data.message || 'فشل الحفظ'), 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('حدث خطأ في الحفظ', 'error');
+    });
+}
+
+function saveTaxField(fieldName) {
+    const value = document.getElementById(fieldName).value;
+    
+    if (!value && fieldName === 'vat_number') return; // Allow empty VAT
+    
+    // Validate tax rate
+    if (fieldName === 'default_tax_rate') {
+        const taxRate = parseFloat(value);
+        if (isNaN(taxRate) || taxRate < 0 || taxRate > 100) {
+            showNotification('معدل الضريبة يجب أن يكون بين 0 و 100', 'error');
+            document.getElementById(fieldName).value = '{{ company_settings.default_tax_rate|default:"0" }}';
+            return;
+        }
+    }
+    
+    showNotification('جاري الحفظ...', 'info');
+    
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const formData = new FormData();
+    formData.append(fieldName, value);
+    
+    fetch('{% url "taxes_save" %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('تم الحفظ ✓', 'success');
+            // Update display cards
+            updateDisplayCards();
+        } else {
+            showNotification('خطأ: ' + (data.message || 'فشل الحفظ'), 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('خطأ في الحفظ', 'error');
+    });
+}
+
+function updateDisplayCards() {
+    // Update VAT number card
+    const vatNumber = document.getElementById('vat_number').value;
+    document.getElementById('displayVatNumber').textContent = vatNumber || 'غير محدد';
+    
+    // Update tax rate card
+    const taxRate = document.getElementById('default_tax_rate').value;
+    document.getElementById('displayTaxRate').textContent = (taxRate || '0') + '%';
+}
+
+function searchTaxCategories() {
+    const searchInput = document.getElementById('searchInput');
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const taxRows = document.querySelectorAll('tbody .tax-row');
+    const emptyState = document.querySelector('tbody .empty-state');
+    
+    let visibleCount = 0;
+    
+    if (!searchTerm) {
+        // Show all rows if search is empty
+        taxRows.forEach(row => {
+            row.style.display = '';
+            visibleCount++;
+        });
+        if (emptyState) emptyState.style.display = 'none';
+    } else {
+        // Filter rows based on search term
+        taxRows.forEach(row => {
+            const taxName = row.getAttribute('data-tax-name').toLowerCase();
+            const taxRate = row.getAttribute('data-tax-rate').toLowerCase();
+            
+            if (taxName.includes(searchTerm) || taxRate.includes(searchTerm)) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        // Show/hide empty state
+        if (visibleCount === 0) {
+            if (emptyState) {
+                emptyState.style.display = '';
+                emptyState.innerHTML = '<td class="px-8 py-8 text-center text-gray-400" colspan="5">لم يتم العثور على فئات ضرائب تطابق البحث.</td>';
+            }
+        } else {
+            if (emptyState) emptyState.style.display = 'none';
+        }
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white text-sm font-semibold transition-all z-50 ${
+        type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'
+    }`;
+    notification.textContent = message;
+    notification.style.animation = 'slideIn 0.3s ease-out';
+    
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Add animation keyframes
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+</body></html>

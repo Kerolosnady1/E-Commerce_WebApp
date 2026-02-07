@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المساعدة والدليل - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+<div class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-white">المساعدة والدليل</h1>
+                <p class="text-gray-400 text-sm mt-1">كل ما تحتاج لمعرفته حول نظام ERP</p>
+            </div>
+            <a href="/" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 text-sm text-gray-400 mb-8">
+            <a href="/" class="hover:text-blue-400">الرئيسية</a>
+            <span>›</span>
+            <span>المساعدة والدليل</span>
+        </nav>
+
+        <!-- Help Sections Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <!-- دليل المستخدم المالي -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow p-6 border-r-4 border-blue-600">
+                <div class="flex items-start gap-4">
+                    <div class="text-blue-600 text-3xl">
+                        <span class="material-symbols-outlined" style="font-size: 2.5rem;">description</span>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold text-white mb-2">دليل المستخدم المالي</h2>
+                        <p class="text-gray-400 mb-4">شرح شامل لإدارة الشؤون المالية والضرائب وإعدادات النظام المالي.</p>
+                        <a href="/settings/general/" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm">
+                            اعرف المزيد
+                            <span class="material-symbols-outlined text-sm">arrow_back</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- إدارة الفواتير -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow p-6 border-r-4 border-green-600">
+                <div class="flex items-start gap-4">
+                    <div class="text-green-600 text-3xl">
+                        <span class="material-symbols-outlined" style="font-size: 2.5rem;">receipt_long</span>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold text-white mb-2">إدارة الفواتير</h2>
+                        <p class="text-gray-400 mb-4">كيفية إنشاء وتعديل وإدارة الفواتير مع حساب الضرائب تلقائياً.</p>
+                        <a href="/invoices/" class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold text-sm">
+                            اعرف المزيد
+                            <span class="material-symbols-outlined text-sm">arrow_back</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تقارير الإقرار الضريبي -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow p-6 border-r-4 border-orange-600">
+                <div class="flex items-start gap-4">
+                    <div class="text-orange-600 text-3xl">
+                        <span class="material-symbols-outlined" style="font-size: 2.5rem;">assessment</span>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold text-white mb-2">تقارير الإقرار الضريبي</h2>
+                        <p class="text-gray-400 mb-4">إنشاء تقارير ضريبية شاملة وإقرارات دورية للجهات المعنية.</p>
+                        <a href="/reports/" class="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold text-sm">
+                            اعرف المزيد
+                            <span class="material-symbols-outlined text-sm">arrow_back</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تكامل الجمارك -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow p-6 border-r-4 border-purple-600">
+                <div class="flex items-start gap-4">
+                    <div class="text-purple-600 text-3xl">
+                        <span class="material-symbols-outlined" style="font-size: 2.5rem;">import_export</span>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold text-white mb-2">تكامل الجمارك</h2>
+                        <p class="text-gray-400 mb-4">ربط نظام الجمارك وإدارة الاستيراد والتصدير بكفاءة.</p>
+                        <a href="/settings/system/" class="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-semibold text-sm">
+                            اعرف المزيد
+                            <span class="material-symbols-outlined text-sm">arrow_back</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 mb-12">
+            <h2 class="text-2xl font-bold text-white mb-6">الأسئلة الشائعة</h2>
+            
+            <div class="space-y-4">
+                <details class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <summary class="cursor-pointer font-semibold text-white flex items-center justify-between">
+                        كيف أنشئ فاتورة جديدة؟
+                        <span class="material-symbols-outlined">expand_more</span>
+                    </summary>
+                    <p class="text-gray-400 mt-4">يمكنك إنشاء فاتورة جديدة من خلال الذهاب إلى قسم الفواتير والنقر على "إضافة فاتورة جديدة". ثم قم بملء البيانات المطلوبة واختر المنتجات أو الخدمات.</p>
+                </details>
+
+                <details class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <summary class="cursor-pointer font-semibold text-white flex items-center justify-between">
+                        كيف أحسب الضرائب تلقائياً؟
+                        <span class="material-symbols-outlined">expand_more</span>
+                    </summary>
+                    <p class="text-gray-400 mt-4">يتم حساب الضرائب تلقائياً عند إنشاء الفاتورة بناءً على معدلات الضريبة المحددة في إعدادات النظام. يمكنك تعديل معدلات الضريبة من قسم إعدادات الضرائب.</p>
+                </details>
+
+                <details class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <summary class="cursor-pointer font-semibold text-white flex items-center justify-between">
+                        كيف أُنشئ تقرير ضريبي؟
+                        <span class="material-symbols-outlined">expand_more</span>
+                    </summary>
+                    <p class="text-gray-400 mt-4">توجه إلى قسم التقارير واختر "تقرير الإقرار الضريبي". حدد الفترة الزمنية المطلوبة وسيتم إنشاء التقرير تلقائياً بجميع البيانات المطلوبة.</p>
+                </details>
+
+                <details class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <summary class="cursor-pointer font-semibold text-white flex items-center justify-between">
+                        كيف أربط نظام الجمارك؟
+                        <span class="material-symbols-outlined">expand_more</span>
+                    </summary>
+                    <p class="text-gray-400 mt-4">توجه إلى الإعدادات > إعدادات النظام وابحث عن قسم "تكامل الجمارك". اتبع التعليمات لربط حسابك مع نظام الجمارك.</p>
+                </details>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow p-8 text-white">
+            <h2 class="text-2xl font-bold mb-4">هل تحتاج مساعدة إضافية؟</h2>
+            <p class="mb-6">فريق الدعم الخاص بنا متاح دائماً للإجابة على أسئلتك والمساعدة في أي مشاكل قد تواجهها.</p>
+            <div class="flex flex-col md:flex-row gap-4">
+                <a href="mailto:support@example.com" class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
+                    تواصل معنا عبر البريد
+                </a>
+                <a href="tel:+1234567890" class="px-6 py-3 bg-white/20 text-white font-semibold rounded-lg hover:bg-white/30 transition-colors border border-white">
+                    اتصل بنا
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12">
+        <div class="max-w-6xl mx-auto px-6 py-8 text-center text-gray-400 text-sm">
+            <p>جميع الحقوق محفوظة © 2026 نظام ERP المتكامل</p>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

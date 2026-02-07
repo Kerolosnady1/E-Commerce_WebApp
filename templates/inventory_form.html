@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحديث المخزون - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        .dark-bg {
+            background-color: #1e293b;
+        }
+        .dark-input {
+            background-color: #334155;
+            border-color: #475569;
+            color: #e2e8f0;
+        }
+        .dark-input:focus {
+            background-color: #475569;
+            border-color: #11a4d4;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(17, 164, 212, 0.1);
+        }
+        .dark-input::placeholder {
+            color: #94a3b8;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #f1f5f9;
+        }
+        label {
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-2xl mx-auto p-8 min-h-screen flex items-center justify-center">
+        <div class="dark-bg rounded-lg shadow-2xl p-8 w-full">
+            <div class="mb-8">
+                <h1 class="text-3xl font-black mb-2">📦 تحديث المخزون</h1>
+                <p class="text-slate-400 text-sm">تحديث كميات المخزون وحدود إعادة الطلب</p>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-lg p-4 mb-6 border border-slate-700">
+                <p class="text-sm text-slate-300"><span class="font-semibold text-emerald-400">المنتج:</span> {{ inventory_item.product.name }}</p>
+            </div>
+            
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div>
+                    <label class="block text-sm font-semibold mb-3 flex items-center gap-2">
+                        <span>📊</span>
+                        <span>الكمية الحالية</span>
+                    </label>
+                    <input type="number" name="quantity" value="{{ inventory_item.quantity }}" class="dark-input w-full px-4 py-2 rounded-lg border text-base transition-all" placeholder="أدخل الكمية" required>
+                    {% if form.quantity.errors %}
+                        <p class="text-red-400 text-sm mt-1">{{ form.quantity.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold mb-3 flex items-center gap-2">
+                        <span>🚨</span>
+                        <span>حد إعادة الطلب</span>
+                    </label>
+                    <input type="number" name="reorder_level" value="{{ inventory_item.reorder_level }}" class="dark-input w-full px-4 py-2 rounded-lg border text-base transition-all" placeholder="الحد الأدنى للتنبيه" required>
+                    {% if form.reorder_level.errors %}
+                        <p class="text-red-400 text-sm mt-1">{{ form.reorder_level.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium mb-2">ℹ️ معلومة:</p>
+                    <p class="text-xs text-slate-300">عند انخفاض الكمية عن حد إعادة الطلب، ستتلقى تنبيهات تلقائية لإعادة تخزين المنتج.</p>
+                </div>
+                
+                <div class="flex gap-4 pt-6">
+                    <button type="submit" class="flex-1 bg-emerald-500 text-white px-6 py-3 rounded-lg hover:bg-emerald-600 font-semibold transition-colors flex items-center justify-center gap-2">
+                        <span>✅</span>
+                        <span>تحديث</span>
+                    </button>
+                    <a href="{% url 'inventory' %}" class="flex-1 bg-slate-700 text-slate-100 px-6 py-3 rounded-lg hover:bg-slate-600 font-semibold transition-colors flex items-center justify-center gap-2">
+                        <span>❌</span>
+                        <span>إلغاء</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

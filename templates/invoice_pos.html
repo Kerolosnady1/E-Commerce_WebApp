@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نقطة البيع - إنشاء فاتورة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-100">
+    <div class="container mx-auto p-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+            <!-- Left: Product Search & List -->
+            <div class="lg:col-span-2 space-y-4">
+                <div class="bg-slate-800 rounded-lg shadow p-4 border border-slate-700">
+                    <h2 class="text-xl font-bold mb-4 text-white">بحث المنتجات</h2>
+                    
+                    <div class="relative">
+                           <input type="text" id="productSearch" 
+                               class="w-full px-4 py-3 pr-12 border border-slate-700 bg-slate-900 text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500" 
+                               placeholder="ابحث عن منتج بالاسم...">
+                           <span class="material-symbols-outlined absolute right-4 top-3 text-slate-400">search</span>
+                    </div>
+                    
+                    <div id="searchResults" class="mt-4 max-h-96 overflow-y-auto"></div>
+                </div>
+            </div>
+            
+            <!-- Right: Cart & Checkout -->
+            <div class="space-y-4">
+                <div class="bg-slate-800 rounded-lg shadow p-4 border border-slate-700">
+                    <h2 class="text-xl font-bold mb-4 text-white">سلة المشتريات</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-slate-300">العميل</label>
+                        <select id="customerSelect" class="w-full px-4 py-2 border border-slate-700 bg-slate-900 text-slate-100 rounded-lg">
+                            <option value="">اختر عميل</option>
+                            {% for customer in customers %}
+                            <option value="{{ customer.id }}">{{ customer.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div id="cartItems" class="space-y-2 mb-4 max-h-64 overflow-y-auto">
+                        <div class="text-center text-slate-400 py-8">
+                            <span class="material-symbols-outlined text-6xl">shopping_cart</span>
+                            <p class="mt-2">السلة فارغة</p>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-slate-700 pt-4 space-y-2">
+                        <div class="flex justify-between text-lg">
+                            <span>عدد العناصر:</span>
+                            <span id="totalItems" class="font-bold">0</span>
+                        </div>
+                        <div class="flex justify-between text-2xl font-bold text-blue-600">
+                            <span>الإجمالي:</span>
+                            <span id="totalAmount">0.00 ر.س</span>
+                        </div>
+                    </div>
+                    
+                        <button id="submitInvoice" 
+                            class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2"
+                            disabled>
+                        <span class="material-symbols-outlined">receipt_long</span>
+                        إتمام البيع
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 left-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg hidden z-50">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <script>
+        const cart = [];
+        let searchTimeout = null;
+        
+        // Product Search
+        document.getElementById('productSearch').addEventListener('input', function(e) {
+            const query = e.target.value;
+            
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '';
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                fetch(`/api/search-products/?q=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => displaySearchResults(data.products));
+            }, 300);
+        });
+        
+        function displaySearchResults(products) {
+            const container = document.getElementById('searchResults');
+            
+            if (products.length === 0) {
+                container.innerHTML = '<p class="text-slate-400 text-center py-4">لا توجد نتائج</p>';
+                return;
+            }
+            
+            container.innerHTML = products.map(product => `
+                <div class="flex items-center gap-4 p-3 border border-slate-700 rounded-lg hover:bg-slate-700/40 cursor-pointer mb-2" onclick="addToCart(${product.id}, '${product.name}', ${product.price}, ${product.stock}, '${product.image || ''}')">
+                    <div class="w-16 h-16 bg-slate-700 rounded flex items-center justify-center overflow-hidden">
+                        ${product.image ? `<img src="${product.image}" class="w-full h-full object-cover">` : '<span class="material-symbols-outlined text-2xl text-slate-400">image</span>'}
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-white">${product.name}</h3>
+                        <p class="text-sm text-slate-400">${product.sku} | ${product.category || 'بدون فئة'}</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            ${product.sale_price ? `
+                                <span class="text-green-400 font-bold">${product.sale_price.toFixed(2)} ر.س</span>
+                                <span class="text-slate-500 line-through text-sm">${product.regular_price.toFixed(2)}</span>
+                            ` : `
+                                <span class="text-blue-400 font-bold">${product.price.toFixed(2)} ر.س</span>
+                            `}
+                            <span class="text-xs ${product.stock > 10 ? 'text-green-400' : 'text-orange-400'}">
+                                المخزون: ${product.stock}
+                            </span>
+                        </div>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <span class="material-symbols-outlined">add</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        function addToCart(id, name, price, stock, image) {
+            const existing = cart.find(item => item.id === id);
+            
+            if (existing) {
+                if (existing.quantity >= stock) {
+                    showToast('المخزون غير كافٍ', 'error');
+                    return;
+                }
+                existing.quantity++;
+            } else {
+                cart.push({ id, name, price, stock, image, quantity: 1 });
+            }
+            
+            updateCart();
+            showToast(`تم إضافة ${name} إلى السلة`);
+        }
+        
+        function updateCart() {
+            const container = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-slate-400 py-8">
+                        <span class="material-symbols-outlined text-6xl">shopping_cart</span>
+                        <p class="mt-2">السلة فارغة</p>
+                    </div>
+                `;
+                document.getElementById('submitInvoice').disabled = true;
+            } else {
+                container.innerHTML = cart.map((item, index) => `
+                    <div class="flex items-center gap-2 p-2 bg-slate-700/40 rounded-lg">
+                        <div class="w-12 h-12 bg-slate-800 rounded overflow-hidden flex-shrink-0">
+                            ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : '<span class="material-symbols-outlined text-slate-400">image</span>'}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-sm truncate text-white">${item.name}</p>
+                            <p class="text-xs text-blue-400">${item.price.toFixed(2)} ر.س</p>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button onclick="changeQuantity(${index}, -1)" class="w-8 h-8 bg-slate-800 rounded border border-slate-700 hover:bg-slate-700 text-white">-</button>
+                            <span class="w-12 text-center font-bold text-white">${item.quantity}</span>
+                            <button onclick="changeQuantity(${index}, 1)" class="w-8 h-8 bg-slate-800 rounded border border-slate-700 hover:bg-slate-700 text-white" ${item.quantity >= item.stock ? 'disabled' : ''}>+</button>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-300">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </div>
+                `).join('');
+                
+                document.getElementById('submitInvoice').disabled = false;
+            }
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            document.getElementById('totalAmount').textContent = total.toFixed(2) + ' ر.س';
+            document.getElementById('totalItems').textContent = totalItems;
+        }
+        
+        function changeQuantity(index, delta) {
+            const item = cart[index];
+            const newQty = item.quantity + delta;
+            
+            if (newQty <= 0) {
+                removeFromCart(index);
+                return;
+            }
+            
+            if (newQty > item.stock) {
+                showToast('المخزون غير كافٍ', 'error');
+                return;
+            }
+            
+            item.quantity = newQty;
+            updateCart();
+        }
+        
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+        
+        // Submit Invoice
+        document.getElementById('submitInvoice').addEventListener('click', async function() {
+            const customerId = document.getElementById('customerSelect').value;
+            
+            if (!customerId) {
+                showToast('يرجى اختيار عميل', 'error');
+                return;
+            }
+            
+            if (cart.length === 0) {
+                showToast('يرجى إضافة منتجات', 'error');
+                return;
+            }
+            
+            const button = this;
+            button.disabled = true;
+            button.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> جاري المعالجة...';
+            
+            try {
+                const response = await fetch('/api/submit-invoice/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        customer_id: customerId,
+                        items: cart.map(item => ({
+                            product_id: item.id,
+                            quantity: item.quantity,
+                            price: item.price
+                        }))
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast(`تم إنشاء الفاتورة ${data.invoice_number} بنجاح!`);
+                    cart.length = 0;
+                    updateCart();
+                    document.getElementById('customerSelect').value = '';
+                    document.getElementById('productSearch').value = '';
+                    document.getElementById('searchResults').innerHTML = '';
+                    
+                    setTimeout(() => {
+                        window.location.href = `/invoices/${data.invoice_id}/`;
+                    }, 2000);
+                } else {
+                    showToast(data.error, 'error');
+                }
+            } catch (error) {
+                showToast('حدث خطأ أثناء إنشاء الفاتورة', 'error');
+                console.error(error);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<span class="material-symbols-outlined">receipt_long</span> إتمام البيع';
+            }
+        });
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = `fixed top-4 left-4 px-6 py-4 rounded-lg shadow-lg z-50 ${type === 'error' ? 'bg-red-500' : 'bg-green-500'} text-white`;
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>إدارة الحساب - نظام ERP المتكامل</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                        "surface-dark": "#111722",
+                        "card-dark": "#1b2333",
+                        "border-dark": "#232f48"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "system-ui", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav {
+            color: #60a5fa;
+            background-color: #334155;
+            border-right: 4px solid #3b82f6;
+        }
+        body {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+            color: #e2e8f0;
+        }
+        header, aside, main, section {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+        }
+        label { color: #9ca3af !important; }
+    </style>
+</head>
+<body class="bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-dark bg-surface-dark px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg">
+<span class="material-symbols-outlined text-white">deployed_code</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">نظام ERP المتكامل</h2>
+</div>
+<label class="flex flex-col min-w-56 h-10 max-w-[32rem] relative">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#92a4c9] flex border-none bg-border-dark items-center justify-center pr-4 rounded-r-lg" data-icon="search">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input id="accountsSearchInput" onkeydown="if(event.key==='Enter'){event.preventDefault();}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-border-dark focus:border-none h-full placeholder:text-[#92a4c9] px-4 rounded-r-none border-r-0 text-base font-normal leading-normal text-right" placeholder="بحث عن العملاء، المنتجات، الفواتير، الموردين..." value=""/>
+</div>
+<div id="accountsSearchResults" class="hidden mt-2 bg-surface-dark border border-border-dark rounded-lg p-3 max-h-[42rem] overflow-y-auto absolute right-0 left-0 top-12 z-50 min-w-[28rem]"></div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="flex items-center gap-6">
+<a class="text-[#92a4c9] hover:text-white text-sm font-medium leading-normal transition-colors" href="/">لوحة القيادة</a>
+<a class="text-[#92a4c9] hover:text-white text-sm font-medium leading-normal transition-colors" href="/reports/">التقارير</a>
+<a class="text-[#92a4c9] hover:text-white text-sm font-medium leading-normal transition-colors" href="/warehouses/">المخازن</a>
+<a class="text-[#92a4c9] hover:text-white text-sm font-medium leading-normal transition-colors" href="{% url 'employees' %}">الموظفين</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-border-dark text-white hover:bg-slate-700 transition-colors" onclick="window.location.href='/notifications/'">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-border-dark text-white hover:bg-slate-700 transition-colors" onclick="window.location.href='/settings/general/'">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+{% if request.user.profile.avatar %}
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" style='background-image: url("{{ request.user.profile.avatar.url }}");' title="{{ request.user.get_full_name|default:request.user.username }}"></div>
+            {% else %}
+            <div class="flex items-center justify-center rounded-full size-10 border-2 border-primary bg-primary/10 text-primary font-bold">
+                {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+            </div>
+            {% endif %}
+</div>
+</header>
+<div class="flex max-w-[1440px] mx-auto px-4 sm:px-10 py-8 gap-8">
+<!-- Sidebar Navigation -->
+<aside class="w-72 hidden lg:flex flex-col gap-2 shrink-0">
+<div class="flex flex-col gap-6 bg-surface-dark rounded-xl p-4 border border-border-dark">
+<div class="flex items-center gap-3 px-2">
+{% if profile.avatar %}
+<img src="{{ profile.avatar.url }}" alt="{{ user.get_full_name }}" class="rounded-full size-12 border-2 border-primary object-cover">
+{% else %}
+<div class="bg-primary rounded-full size-12 border-2 border-primary flex items-center justify-center">
+<span class="text-white text-lg font-bold">{{ user.first_name|first }}{{ user.last_name|first }}</span>
+</div>
+{% endif %}
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-none mb-1">{{ user.get_full_name|default:user.username }}</h1>
+<p class="text-[#92a4c9] text-xs font-normal">{{ user.groups.first.name|default:"مستخدم" }}</p>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg active-nav text-white transition-all group" href="/profile/">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<p class="text-sm font-medium">الملف الشخصي</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#92a4c9] hover:bg-border-dark hover:text-white transition-all" href="/security/">
+<span class="material-symbols-outlined text-[24px]">shield_lock</span>
+<p class="text-sm font-medium">الأمان والخصوصية</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#92a4c9] hover:bg-border-dark hover:text-white transition-all" href="/subscription/">
+<span class="material-symbols-outlined text-[24px]">subscriptions</span>
+<p class="text-sm font-medium">خطة الاشتراك</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#92a4c9] hover:bg-border-dark hover:text-white transition-all" href="/notifications/">
+<span class="material-symbols-outlined text-[24px]">notifications_active</span>
+<p class="text-sm font-medium">تفضيلات الإشعارات</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#92a4c9] hover:bg-border-dark hover:text-white transition-all" href="/security/logs/">
+<span class="material-symbols-outlined text-[24px]">history</span>
+<p class="text-sm font-medium">سجل النشاطات</p>
+</a>
+</div>
+<div class="border-t border-border-dark pt-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-red-400 hover:bg-red-950/30 transition-all" href="/logout/">
+<span class="material-symbols-outlined text-[24px]">logout</span>
+<p class="text-sm font-medium">تسجيل الخروج</p>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col gap-6 max-w-[960px]">
+<!-- Page Heading -->
+<form method="POST" id="profileForm">
+{% csrf_token %}
+<input type="hidden" name="update_profile" value="1">
+<div class="flex flex-wrap justify-between items-end gap-3 pb-2">
+<div class="flex flex-col gap-1">
+<p class="text-white text-3xl font-black leading-tight tracking-[-0.033em]">إدارة الحساب</p>
+<p class="text-[#92a4c9] text-base font-normal">تحكم في تفاصيل ملفك الشخصي وإعدادات الوصول الخاصة بك</p>
+</div>
+<div class="flex gap-3">
+<button type="button" onclick="window.location.href='/'" class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-border-dark text-white text-sm font-bold border border-transparent hover:border-slate-500 transition-all">
+                        إلغاء
+                    </button>
+<button type="submit" class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold hover:bg-blue-600 transition-all shadow-lg shadow-primary/20">
+                        حفظ التغييرات
+                    </button>
+</div>
+</div>
+<!-- Profile Section -->
+<section class="bg-surface-dark border border-border-dark rounded-xl overflow-hidden">
+<div class="p-6 border-b border-border-dark flex items-center justify-between bg-gradient-to-r from-primary/10 to-transparent">
+<div class="flex items-center gap-6">
+<div class="relative group cursor-pointer" onclick="document.getElementById('avatarInput').click()">
+{% if profile.avatar %}
+<img src="{{ profile.avatar.url }}" alt="{{ user.get_full_name }}" class="rounded-full size-32 border-4 border-surface-dark shadow-2xl object-cover">
+{% else %}
+<div class="bg-primary rounded-full size-32 border-4 border-surface-dark shadow-2xl flex items-center justify-center">
+<span class="text-white text-5xl font-bold">{{ user.first_name|first }}{{ user.last_name|first }}</span>
+</div>
+{% endif %}
+<div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-3xl">photo_camera</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-white text-2xl font-bold">{{ user.get_full_name|default:user.username }}</h3>
+<p class="text-[#92a4c9] text-sm">عضو منذ: {{ user.date_joined|date:"F Y" }}</p>
+<div class="mt-2 flex gap-2">
+<span class="px-2 py-0.5 bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider rounded border border-primary/30">{{ user.groups.first.name|default:"مستخدم" }}</span>
+<span class="px-2 py-0.5 bg-green-500/10 text-green-500 text-[10px] font-bold uppercase tracking-wider rounded border border-green-500/20">{{ user.is_active|yesno:"نشط,غير نشط" }}</span>
+</div>
+</div>
+</div>
+<button type="button" onclick="document.getElementById('avatarInput').click()" class="flex items-center gap-2 px-4 py-2 bg-border-dark text-white rounded-lg text-sm font-bold hover:bg-slate-700 transition-all">
+<span class="material-symbols-outlined text-sm">upload</span>
+                        تغيير الصورة
+                    </button>
+<input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;" onchange="uploadAvatar(this)">
+</div>
+<div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+<!-- Basic Info -->
+<div class="col-span-2">
+<h2 class="text-white text-lg font-bold flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">info</span>
+                            المعلومات الأساسية
+                        </h2>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-[#92a4c9] pr-1">الاسم الأول</label>
+<input name="first_name" class="bg-border-dark border-none rounded-lg text-white px-4 py-3 focus:ring-2 focus:ring-primary transition-all" type="text" value="{{ user.first_name }}" required/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-[#92a4c9] pr-1">الاسم الأخير</label>
+<input name="last_name" class="bg-border-dark border-none rounded-lg text-white px-4 py-3 focus:ring-2 focus:ring-primary transition-all" type="text" value="{{ user.last_name }}" required/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-[#92a4c9] pr-1">البريد الإلكتروني</label>
+<input name="email" class="bg-border-dark border-none rounded-lg text-white px-4 py-3 focus:ring-2 focus:ring-primary transition-all" type="email" value="{{ user.email }}" required/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-[#92a4c9] pr-1">رقم الهاتف</label>
+<input name="phone" class="bg-border-dark border-none rounded-lg text-white px-4 py-3 focus:ring-2 focus:ring-primary transition-all text-left" dir="ltr" type="tel" value="{{ profile.phone }}"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-[#92a4c9] pr-1">اللغة المفضلة</label>
+<select class="bg-border-dark border-none rounded-lg text-white px-4 py-3 focus:ring-2 focus:ring-primary transition-all appearance-none">
+<option selected="" value="ar">العربية</option>
+<option value="en">English</option>
+</select>
+</div>
+</div>
+</section>
+</form>
+<!-- Security Section -->
+<section class="bg-surface-dark border border-border-dark rounded-xl p-8 flex flex-col gap-6">
+<div class="flex items-center justify-between border-b border-border-dark pb-4">
+<h2 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">lock</span>
+                        الأمان والحماية
+                    </h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-[#92a4c9] pr-1">كلمة المرور الحالية</label>
+<input class="bg-border-dark border-none rounded-lg text-white px-4 py-3 focus:ring-2 focus:ring-primary transition-all" placeholder="••••••••" type="password"/>
+</div>
+<div class="hidden md:block"></div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-[#92a4c9] pr-1">كلمة المرور الجديدة</label>
+<input class="bg-border-dark border-none rounded-lg text-white px-4 py-3 focus:ring-2 focus:ring-primary transition-all" placeholder="••••••••" type="password"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-[#92a4c9] pr-1">تأكيد كلمة المرور</label>
+<input class="bg-border-dark border-none rounded-lg text-white px-4 py-3 focus:ring-2 focus:ring-primary transition-all" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- 2FA Toggle Card -->
+<div class="bg-border-dark rounded-xl p-6 mt-4 flex items-center justify-between border border-primary/20">
+<div class="flex items-center gap-4">
+<div class="size-12 bg-primary/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">verified_user</span>
+</div>
+<div class="flex flex-col">
+<h4 class="text-white font-bold">المصادقة الثنائية (2FA)</h4>
+<p class="text-[#92a4c9] text-xs">أضف طبقة إضافية من الأمان لحسابك عند تسجيل الدخول.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value="" id="twoFactorToggle"/>
+<div class="w-11 h-6 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</section>
+<script>
+        const twoFactorToggle = document.getElementById("twoFactorToggle");
+        const savedTwoFactor = localStorage.getItem("accountTwoFactorEnabled");
+        if (twoFactorToggle && savedTwoFactor !== null) {
+            twoFactorToggle.checked = savedTwoFactor === "true";
+        }
+        
+        twoFactorToggle?.addEventListener("change", function() {
+            // Save to API
+            fetch('/api/settings/2fa/save/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                },
+                body: JSON.stringify({ enabled: this.checked })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    localStorage.setItem("accountTwoFactorEnabled", this.checked);
+                    alert(result.message);
+                } else {
+                    alert('خطأ: ' + result.error);
+                    this.checked = !this.checked;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                localStorage.setItem("accountTwoFactorEnabled", this.checked);
+            });
+        });
+
+        // Avatar upload function
+        function uploadAvatar(input) {
+            if (input.files && input.files[0]) {
+                const formData = new FormData();
+                formData.append('avatar', input.files[0]);
+                
+                fetch('{% url "upload_avatar" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        location.reload();
+                    } else {
+                        alert('خطأ في رفع الصورة: ' + (result.error || 'حدث خطأ غير معروف'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ أثناء رفع الصورة');
+                });
+            }
+        }
+
+        // Save profile changes
+        document.querySelector('button[class*="bg-primary"]')?.addEventListener("click", function() {
+            alert("تم حفظ بيانات الملف الشخصي بنجاح ✓");
+            // Save all form fields to localStorage
+            const profileData = {
+                name: document.querySelector('input[type="text"]')?.value,
+                email: document.querySelector('input[type="email"]')?.value,
+                phone: document.querySelector('input[type="tel"]')?.value,
+                language: document.querySelector('select')?.value,
+                twoFactor: twoFactorToggle?.checked
+            };
+            localStorage.setItem("profileData", JSON.stringify(profileData));
+        });
+
+        // Load profile data
+        window.addEventListener("DOMContentLoaded", function() {
+            const saved = localStorage.getItem("profileData");
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (document.querySelector('input[type="text"]')) {
+                    document.querySelector('input[type="text"]').value = data.name || "";
+                }
+            }
+        });
+    </script>
+<!-- Subscription Section -->
+<section class="bg-surface-dark border border-border-dark rounded-xl p-8 flex flex-col gap-6">
+<div class="flex items-center justify-between border-b border-border-dark pb-4">
+<h2 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">credit_card</span>
+                        تفاصيل الاشتراك
+                    </h2>
+<span class="px-3 py-1 bg-primary text-white text-xs font-bold rounded-full">الخطة الاحترافية (Premium)</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 space-y-4">
+<div class="flex justify-between text-sm">
+<span class="text-[#92a4c9]">حالة الحساب</span>
+<span class="text-green-500 font-bold">فعال - يتم التجديد تلقائياً</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-[#92a4c9]">موعد التجديد القادم</span>
+<span class="text-white font-bold">15 فبراير 2024</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-[#92a4c9]">المبلغ الشهري</span>
+<span class="text-white font-bold">149.00 ر.س</span>
+</div>
+<!-- Usage Progress -->
+<div class="pt-4">
+<div class="flex justify-between mb-2">
+<span class="text-xs font-medium text-[#92a4c9]">استهلاك مساحة التخزين</span>
+<span class="text-xs font-medium text-white">75% (15GB / 20GB)</span>
+</div>
+<div class="w-full bg-border-dark rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+<div class="bg-border-dark p-6 rounded-xl flex flex-col justify-center items-center gap-4 text-center border border-white/5 shadow-inner">
+<span class="material-symbols-outlined text-4xl text-primary">auto_awesome</span>
+<div class="flex flex-col">
+<p class="text-white font-bold text-sm">هل تحتاج للمزيد؟</p>
+<p class="text-[#92a4c9] text-xs">قم بترقية حسابك للحصول على مميزات غير محدودة.</p>
+</div>
+<button class="w-full py-2 bg-white text-background-dark text-xs font-bold rounded-lg hover:bg-slate-200 transition-colors" onclick="window.location.href='/subscription/'">ترقية الاشتراك الآن</button>
+</div>
+</div>
+</section>
+<!-- Danger Zone -->
+<section class="bg-red-500/5 border border-red-500/20 rounded-xl p-6 flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<h2 class="text-red-500 font-bold text-lg">منطقة الخطر</h2>
+<p class="text-red-400/70 text-sm">بمجرد حذف حسابك، لا يمكن التراجع عن هذا الإجراء.</p>
+</div>
+<button class="px-6 py-2 border border-red-500/40 text-red-500 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white transition-all" onclick="window.location.href='/profile/delete-account/'">
+                    حذف الحساب نهائياً
+                </button>
+</section>
+</main>
+</div>
+<!-- Bottom Padding for spacing -->
+<div class="h-20"></div>
+<footer class="mt-auto px-10 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+<script>
+const accountsSearchInput = document.getElementById('accountsSearchInput');
+const accountsSearchResults = document.getElementById('accountsSearchResults');
+let accountsSearchTimeout = null;
+
+function escapeHtml(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function renderGroup(title, items, formatter) {
+    if (!items || items.length === 0) return '';
+    return `
+        <div class="mb-3">
+            <h4 class="text-xs text-[#92a4c9] mb-2">${title}</h4>
+            <div class="space-y-2">${items.map(formatter).join('')}</div>
+        </div>
+    `;
+}
+
+function renderResults(data) {
+    const hasAny = (data.customers && data.customers.length)
+        || (data.products && data.products.length)
+        || (data.invoices && data.invoices.length)
+        || (data.suppliers && data.suppliers.length);
+
+    const customers = renderGroup('العملاء', data.customers, (c) => `
+        <div class="bg-border-dark rounded-lg p-2">
+            <div class="text-white text-sm font-semibold">${escapeHtml(c.name)}</div>
+            <div class="text-xs text-[#92a4c9]">${escapeHtml(c.email || '')} ${escapeHtml(c.phone || '')}</div>
+        </div>
+    `);
+
+    const products = renderGroup('المنتجات', data.products, (p) => `
+        <div class="bg-border-dark rounded-lg p-2">
+            <div class="text-white text-sm font-semibold">${escapeHtml(p.name)}</div>
+            <div class="text-xs text-[#92a4c9]">SKU: ${escapeHtml(p.sku)} • ${escapeHtml(p.price)} ر.س</div>
+        </div>
+    `);
+
+    const invoices = renderGroup('الفواتير', data.invoices, (i) => `
+        <div class="bg-border-dark rounded-lg p-2">
+            <div class="text-white text-sm font-semibold">${escapeHtml(i.number)} - ${escapeHtml(i.customer__name)}</div>
+            <div class="text-xs text-[#92a4c9]">${escapeHtml(i.status)} • ${escapeHtml(i.total)} ر.س</div>
+        </div>
+    `);
+
+    const suppliers = renderGroup('الموردون', data.suppliers, (s) => `
+        <div class="bg-border-dark rounded-lg p-2">
+            <div class="text-white text-sm font-semibold">${escapeHtml(s.name)}</div>
+            <div class="text-xs text-[#92a4c9]">${escapeHtml(s.email || '')} ${escapeHtml(s.phone || '')}</div>
+        </div>
+    `);
+
+    accountsSearchResults.innerHTML = hasAny
+        ? `${customers}${products}${invoices}${suppliers}`
+        : '<div class="text-center text-[#92a4c9] py-4">لا توجد نتائج</div>';
+    accountsSearchResults.classList.remove('hidden');
+}
+
+if (accountsSearchInput) {
+    accountsSearchInput.addEventListener('input', function () {
+        const query = this.value.trim();
+        clearTimeout(accountsSearchTimeout);
+
+        if (query.length < 2) {
+            accountsSearchResults.classList.add('hidden');
+            accountsSearchResults.innerHTML = '';
+            return;
+        }
+
+        accountsSearchTimeout = setTimeout(() => {
+            fetch(`/search/?q=${encodeURIComponent(query)}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+                .then(res => res.ok ? res.json() : Promise.reject(res))
+                .then(data => renderResults(data))
+                .catch(() => {
+                    accountsSearchResults.innerHTML = '<div class="text-center text-red-400 py-4">حدث خطأ أثناء البحث</div>';
+                    accountsSearchResults.classList.remove('hidden');
+                });
+        }, 300);
+    });
+
+    accountsSearchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!accountsSearchResults.contains(e.target) && e.target !== accountsSearchInput) {
+            accountsSearchResults.classList.add('hidden');
+        }
+    });
+}
+</script>
+</body></html>

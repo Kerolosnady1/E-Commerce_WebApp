@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ action }} فاتورة - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet"/>
+</head>
+<body class="dark bg-slate-900 text-slate-100" dir="rtl">
+    <div class="max-w-4xl mx-auto p-8">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl shadow-2xl p-8">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">{{ action }} فاتورة مبيعات</h1>
+                    <p class="text-slate-400">أكمل نموذج الفاتورة وأضف الملاحظات المطلوبة</p>
+                </div>
+                <span class="material-symbols-outlined text-5xl text-primary">receipt</span>
+            </div>
+            
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Row 1: Customer and Date -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">person</span>
+                            العميل
+                        </label>
+                        {{ form.customer }}
+                        {% if form.customer.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.customer.errors }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">calendar_month</span>
+                            تاريخ الفاتورة
+                        </label>
+                        {{ form.issued_date }}
+                        {% if form.issued_date.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.issued_date.errors }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Row 2: Number and Status -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">tag</span>
+                            رقم الفاتورة
+                        </label>
+                        {{ form.number }}
+                        {% if form.number.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.number.errors }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">info</span>
+                            حالة الفاتورة
+                        </label>
+                        {{ form.status }}
+                        {% if form.status.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.status.errors }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Row 3: Print Template -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">print</span>
+                        نموذج الطباعة
+                    </label>
+                    {{ form.print_template }}
+                    {% if form.print_template.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.print_template.errors }}</p>
+                    {% endif %}
+                    <p class="text-slate-400 text-xs mt-2">اختر نموذج الطباعة المناسب لفاتورتك</p>
+                </div>
+
+                <!-- Row 4: VAT Setting -->
+                <div class="bg-slate-700 rounded-lg p-4 border border-slate-600">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" name="includes_vat" 
+                               {% if form.includes_vat.value %}checked{% endif %} 
+                               class="w-5 h-5 rounded accent-primary cursor-pointer">
+                        <div>
+                            <span class="font-semibold text-slate-100 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">percent</span>
+                                الأسعار تشمل ضريبة القيمة المضافة
+                            </span>
+                            <p class="text-slate-400 text-xs mt-1">هل أسعار المنتجات في الفاتورة تشمل الضريبة بالفعل؟</p>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Row 5: Notes -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">sticky_note_2</span>
+                        ملاحظات الفاتورة
+                    </label>
+                    {{ form.notes }}
+                    {% if form.notes.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.notes.errors }}</p>
+                    {% endif %}
+                    <p class="text-slate-400 text-xs mt-2">أضف أي ملاحظات أو شروط إضافية ستظهر أسفل الفاتورة</p>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex gap-4 pt-6 border-t border-slate-700">
+                    <button type="submit" class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 shadow-lg">
+                        <span class="material-symbols-outlined">save</span>
+                        حفظ الفاتورة
+                    </button>
+                    <a href="{% url 'sales' %}" class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-slate-100 font-semibold px-6 py-3 rounded-lg transition-all duration-200">
+                        <span class="material-symbols-outlined">close</span>
+                        إلغاء
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: 400;
+            font-style: normal;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-flex;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            background-color: #334155; /* slate-700 */
+            border: 1px solid #475569; /* slate-600 */
+            color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 0.625rem 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            outline: none;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="date"]::placeholder,
+        textarea::placeholder {
+            color: #94a3b8; /* slate-400 */
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #3b82f6; /* blue-500 as primary */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        select option {
+            background-color: #0f172a; /* slate-900 */
+            color: #e2e8f0; /* slate-200 */
+        }
+
+        .dark input[type="checkbox"] {
+            accent-color: #3b82f6; /* primary */
+        }
+    </style>
+
+    <script>
+        // Handle print template change
+        document.addEventListener('DOMContentLoaded', function() {
+            const templateSelect = document.querySelector('select[name="print_template"]');
+            
+            if (templateSelect) {
+                // Show notification when template changes
+                templateSelect.addEventListener('change', function() {
+                    const templateName = this.options[this.selectedIndex].text;
+                    const notification = document.createElement('div');
+                    notification.className = 'fixed top-4 left-4 px-6 py-3 rounded-lg text-white font-bold shadow-lg z-[9999] bg-blue-500';
+                    notification.textContent = '✓ تم اختيار النموذج: ' + templateName;
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 2000);
+                });
+            }
+            
+            // Handle checkbox change for includes_vat
+            const vat_checkbox = document.querySelector('input[name="includes_vat"]');
+            if (vat_checkbox) {
+                vat_checkbox.addEventListener('change', function() {
+                    const notification = document.createElement('div');
+                    notification.className = 'fixed top-4 left-4 px-6 py-3 rounded-lg text-white font-bold shadow-lg z-[9999] bg-blue-500';
+                    notification.textContent = this.checked ? '✓ سيتم تضمين الضريبة في الأسعار' : '✓ الأسعار بدون ضريبة';
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 2000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

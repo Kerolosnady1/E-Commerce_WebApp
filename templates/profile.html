@@ -1,0 +1,705 @@
+{% extends 'base.html' %}
+
+{% block title %}الملف الشخصي - {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen" dir="rtl">
+    <div class="container mx-auto px-4 py-12">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">الملف الشخصي</h1>
+            <p class="text-gray-400">إدارة بيانات حسابك الشخصية والاشتراك</p>
+            <div class="mt-4 max-w-xl">
+                <div class="relative">
+                    <input type="text" id="globalSearchInput" class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="ابحث عن عميل، منتج، فاتورة، مورد...">
+                    <span class="material-symbols-outlined absolute left-4 top-3.5 text-slate-400">search</span>
+                </div>
+                <div id="globalSearchResults" class="absolute right-0 left-0 mt-2 hidden bg-surface-dark border border-border-dark rounded-lg p-3 max-h-[32rem] overflow-y-auto z-50"></div>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="mb-6 space-y-2">
+            {% for message in messages %}
+            <div class="bg-green-900/30 border border-green-500/30 text-green-200 px-4 py-3 rounded-lg">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column - Profile Info -->
+            <div class="lg:col-span-1">
+                <!-- Avatar Card -->
+                <div class="bg-surface-dark rounded-lg shadow-lg overflow-hidden border border-border-dark p-6">
+                    <div class="flex flex-col items-center text-center">
+                        <!-- Avatar -->
+                        <div class="relative mb-6">
+                            <div class="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center text-white text-4xl font-bold overflow-hidden border-4 border-primary">
+                                {% if profile.avatar %}
+                                    <img src="{{ profile.avatar.url }}" alt="{{ user.username }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    {{ user.username|upper|first }}
+                                {% endif %}
+                            </div>
+                            <button class="absolute bottom-0 right-0 bg-primary hover:bg-blue-600 p-2 rounded-full text-white transition-colors" onclick="document.getElementById('avatar-input').click()">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
+                                </svg>
+                            </button>
+                            <input type="file" id="avatar-input" class="hidden" accept="image/*" onchange="uploadAvatar(event)">
+                        </div>
+
+                        <!-- User Name -->
+                        <h2 class="text-2xl font-bold text-white mb-1">{{ user.get_full_name|default:user.username }}</h2>
+                        <p class="text-gray-400 text-sm">@{{ user.username }}</p>
+                        
+                        <!-- Status -->
+                        <div class="mt-4 flex items-center gap-2">
+                            {% if user.is_active %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-400 border border-green-500/30">
+                                    <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                                    نشط
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30">
+                                    <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                                    غير نشط
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="mt-6 w-full grid grid-cols-2 gap-3">
+                            <div class="bg-border-dark rounded-lg p-3">
+                                <p class="text-gray-400 text-xs">الفواتير</p>
+                                <p class="text-xl font-bold text-primary">{{ invoices_count }}</p>
+                            </div>
+                            <div class="bg-border-dark rounded-lg p-3">
+                                <p class="text-gray-400 text-xs">إجمالي المبيعات</p>
+                                <p class="text-xl font-bold text-primary">{{ total_sales|floatformat:0 }} ر.س</p>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="mt-6 w-full space-y-2">
+                            <a href="{% url 'dashboard' %}" class="block w-full bg-primary hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-center text-sm">
+                                <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle;">dashboard</span> لوحة القيادة
+                            </a>
+                            <a href="{% url 'reports' %}" class="block w-full bg-border-dark hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-center text-sm border border-border-dark">
+                                <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle;">bar_chart</span> التقارير
+                            </a>
+                            <a href="{% url 'warehouses' %}" class="block w-full bg-border-dark hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-center text-sm border border-border-dark">
+                                <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle;">warehouse</span> المستودعات
+                            </a>
+                            <a href="{% url 'employees' %}" class="block w-full bg-border-dark hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-center text-sm border border-border-dark">
+                                <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle;">group</span> الموظفين
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Info -->
+                <div class="mt-6 bg-surface-dark rounded-lg shadow-lg border border-border-dark p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">معلومات سريعة</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">رقم العضوية:</span>
+                            <span class="text-white font-semibold">#{{ user.id }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">تاريخ الانضمام:</span>
+                            <span class="text-white font-semibold">{{ user.date_joined|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">آخر دخول:</span>
+                            <span class="text-white font-semibold">{{ user.last_login|date:"d/m/Y H:i"|default:"لم يسجل" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Profile Details -->
+            <div class="lg:col-span-2">
+                <!-- Personal Information -->
+                <div class="bg-surface-dark rounded-lg shadow-lg overflow-hidden border border-border-dark mb-6">
+                    <div class="bg-primary/20 border-b border-border-dark p-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-white">البيانات الشخصية</h3>
+                            <button onclick="document.getElementById('editProfileModal').classList.remove('hidden')" class="text-sm bg-border-dark hover:bg-slate-700 text-white font-semibold py-2 px-3 rounded-lg border border-border-dark">
+                                تعديل البيانات
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- First Name -->
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">الاسم الأول</label>
+                                <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white">
+                                    {{ user.first_name|default:"غير محدد" }}
+                                </div>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">الاسم الأخير</label>
+                                <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white">
+                                    {{ user.last_name|default:"غير محدد" }}
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="md:col-span-2">
+                                <label class="block text-sm text-gray-400 mb-2">البريد الإلكتروني</label>
+                                <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white">
+                                    {{ user.email|default:"غير محدد" }}
+                                </div>
+                            </div>
+
+                            <!-- Username -->
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">اسم المستخدم</label>
+                                <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white font-mono">
+                                    @{{ user.username }}
+                                </div>
+                            </div>
+
+                            <!-- Phone (from UserProfile) -->
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">رقم الهاتف</label>
+                                <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white">
+                                    {{ profile.phone|default:"غير محدد" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bio -->
+                        {% if profile.bio %}
+                        <div class="mt-6">
+                            <label class="block text-sm text-gray-400 mb-2">النبذة الشخصية</label>
+                            <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white">
+                                {{ profile.bio }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Subscription Info -->
+                <div class="bg-surface-dark rounded-lg shadow-lg overflow-hidden border border-border-dark mb-6">
+                    <div class="bg-gradient-to-r from-green-600 to-emerald-600 p-4">
+                        <h3 class="text-lg font-bold text-white">تفاصيل الاشتراك</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <!-- Current Plan -->
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">الخطة الحالية</label>
+                                <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white font-bold">
+                                    {{ subscription.get_plan_display }}
+                                </div>
+                            </div>
+
+                            <!-- Plan Cost -->
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">التكلفة الشهرية</label>
+                                <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white font-bold text-primary">
+                                    {{ subscription.monthly_cost }} ر.س
+                                </div>
+                            </div>
+
+                            <!-- Renewal Date -->
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">تاريخ التجديد</label>
+                                <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white">
+                                    {{ subscription.renewal_date|date:"d/m/Y" }}
+                                </div>
+                            </div>
+
+                            <!-- Status -->
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">حالة الاشتراك</label>
+                                <div class="bg-border-dark border border-border-dark rounded-lg px-4 py-3">
+                                    {% if subscription.status == 'active' %}
+                                        <span class="inline-flex items-center gap-2 text-green-400">
+                                            <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                                            فعال - يتم التجديد تلقائياً
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center gap-2 text-red-400">
+                                            <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                                            منتهي الصلاحية
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Storage Usage -->
+                        <div class="bg-slate-900/30 border border-border-dark rounded-lg p-4 mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-gray-400">استخدام التخزين</span>
+                                <span class="text-white font-semibold">{{ subscription.storage_used }}/{{ subscription.storage_total }} GB</span>
+                            </div>
+                            <div class="w-full bg-slate-900/50 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full" style="width: {{ subscription.storage_percent }}%"></div>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-2">{{ subscription.storage_percent }}% مستخدمة</p>
+                        </div>
+
+                        <!-- Upgrade Button -->
+                        <button class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors" onclick="showUpgradePlans()">
+                            ترقية الاشتراك الآن
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="bg-surface-dark rounded-lg shadow-lg overflow-hidden border border-border-dark">
+                    <div class="bg-gradient-to-r from-red-600 to-orange-600 p-4">
+                        <h3 class="text-lg font-bold text-white">الأمان والحماية</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <!-- 2FA Toggle -->
+                            <div class="bg-slate-900/30 border border-border-dark rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="text-white font-bold">المصادقة الثنائية (2FA)</h4>
+                                        <p class="text-sm text-gray-400 mt-1">تأكد من أمان حسابك بتفعيل المصادقة الثنائية</p>
+                                    </div>
+                                    <form method="POST" action="{% url 'toggle_two_factor' %}" class="inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="{% if profile.two_factor_enabled %}disable{% else %}enable{% endif %}">
+                                        <button type="submit" class="px-4 py-2 {% if profile.two_factor_enabled %}bg-red-600 hover:bg-red-700{% else %}bg-green-600 hover:bg-green-700{% endif %} text-white font-semibold rounded-lg transition-colors">
+                                            {% if profile.two_factor_enabled %}
+                                                تعطيل
+                                            {% else %}
+                                                تفعيل
+                                            {% endif %}
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="mt-3">
+                                    {% if profile.two_factor_enabled %}
+                                        <span class="inline-flex items-center gap-2 text-green-400">
+                                            <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                                            مفعلة
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center gap-2 text-yellow-400">
+                                            <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+                                            معطلة - ننصحك بتفعيلها
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Change Password -->
+                            <button onclick="document.getElementById('changePasswordModal').classList.remove('hidden')" class="w-full bg-border-dark hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-between border border-border-dark">
+                                <span>تغيير كلمة المرور</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+
+                            <!-- Active Sessions -->
+                            <button onclick="document.getElementById('activeSessionsModal').classList.remove('hidden')" class="w-full bg-border-dark hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-between border border-border-dark">
+                                <span>الجلسات النشطة</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+
+                            <!-- Delete Account -->
+                            <a href="{% url 'delete_account' %}" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-between">
+                                <span>حذف الحساب نهائياً</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div id="editProfileModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onclick="if(event.target === this) this.classList.add('hidden')">
+    <div class="bg-surface-dark rounded-2xl p-8 max-w-xl w-full mx-4 border border-border-dark">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-white">تعديل البيانات الشخصية</h3>
+            <button onclick="document.getElementById('editProfileModal').classList.add('hidden')" class="text-slate-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <form method="POST" action="{% url 'profile' %}">
+            {% csrf_token %}
+            <input type="hidden" name="update_profile" value="1">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">الاسم الأول</label>
+                    <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">الاسم الأخير</label>
+                    <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:outline-none">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-300 mb-2">البريد الإلكتروني</label>
+                    <input type="email" name="email" value="{{ user.email }}" class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">اسم المستخدم</label>
+                    <input type="text" name="username" value="{{ user.username }}" class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">رقم الهاتف</label>
+                    <input type="text" name="phone" value="{{ profile.phone }}" class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:outline-none">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-300 mb-2">النبذة الشخصية</label>
+                    <textarea name="bio" rows="3" class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:outline-none">{{ profile.bio }}</textarea>
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+                <button type="button" onclick="document.getElementById('editProfileModal').classList.add('hidden')" class="flex-1 bg-border-dark hover:bg-slate-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors border border-border-dark">
+                    إلغاء
+                </button>
+                <button type="submit" class="flex-1 bg-primary hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                    حفظ التغييرات
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div id="changePasswordModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onclick="if(event.target === this) this.classList.add('hidden')">
+    <div class="bg-surface-dark rounded-2xl p-8 max-w-md w-full mx-4 border border-border-dark">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-white">تغيير كلمة المرور</h3>
+            <button onclick="document.getElementById('changePasswordModal').classList.add('hidden')" class="text-slate-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        
+        <form method="POST" action="{% url 'profile' %}">
+            {% csrf_token %}
+            <input type="hidden" name="change_password" value="1">
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">كلمة المرور الحالية</label>
+                    <input type="password" name="current_password" required class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:outline-none" placeholder="أدخل كلمة المرور الحالية">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">كلمة المرور الجديدة</label>
+                    <input type="password" name="new_password" required minlength="8" class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:outline-none" placeholder="أدخل كلمة المرور الجديدة">
+                    <p class="text-xs text-slate-400 mt-1">يجب أن تتكون من 8 أحرف على الأقل</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">تأكيد كلمة المرور</label>
+                    <input type="password" name="confirm_password" required minlength="8" class="w-full bg-border-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary focus:outline-none" placeholder="أعد إدخال كلمة المرور">
+                </div>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button type="button" onclick="document.getElementById('changePasswordModal').classList.add('hidden')" class="flex-1 bg-border-dark hover:bg-slate-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors border border-border-dark">
+                    إلغاء
+                </button>
+                <button type="submit" class="flex-1 bg-primary hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                    حفظ التغييرات
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Active Sessions Modal -->
+<div id="activeSessionsModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onclick="if(event.target === this) this.classList.add('hidden')">
+    <div class="bg-surface-dark rounded-2xl p-8 max-w-2xl w-full mx-4 border border-border-dark max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-white">الجلسات النشطة</h3>
+            <button onclick="document.getElementById('activeSessionsModal').classList.add('hidden')" class="text-slate-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+                {% if active_sessions %}
+                    {% for session in active_sessions %}
+                    <div class="bg-border-dark rounded-lg p-4 {% if session.is_current %}border-2 border-primary{% endif %}">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-start gap-4">
+                            <div class="{% if session.is_current %}bg-primary/20{% else %}bg-slate-700{% endif %} rounded-lg p-3">
+                                {% if session.device_type == 'Mobile' %}
+                                <svg class="w-6 h-6 {% if session.is_current %}text-primary{% else %}text-slate-400{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                                {% elif session.device_type == 'Tablet' %}
+                                <svg class="w-6 h-6 {% if session.is_current %}text-primary{% else %}text-slate-400{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                                {% else %}
+                                <svg class="w-6 h-6 {% if session.is_current %}text-primary{% else %}text-slate-400{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                {% endif %}
+                        </div>
+                        <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    <h4 class="text-white font-bold">{% if session.is_current %}الجلسة الحالية{% else %}{{ session.device_type }}{% endif %}</h4>
+                                    {% if session.is_current %}
+                                    <span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs font-bold rounded-full border border-green-500/30">نشطة</span>
+                                    {% endif %}
+                                </div>
+                                <p class="text-slate-400 text-sm mt-1">{{ session.get_device_info }} • {{ session.browser }}</p>
+                                <p class="text-slate-500 text-xs mt-1">آخر نشاط: {{ session.time_since_activity }}</p>
+                                <p class="text-slate-500 text-xs">IP: {{ session.ip_address|default:"غير معروف" }}</p>
+                        </div>
+                    </div>
+                        {% if not session.is_current %}
+                        <a href="{% url 'terminate_session' session.id %}" onclick="return confirm('هل أنت متأكد من إنهاء هذه الجلسة؟')" class="text-red-400 hover:text-red-300 text-sm font-semibold">
+                        إنهاء
+                        </a>
+                        {% endif %}
+                </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-8">
+                        <p class="text-slate-400">لا توجد جلسات نشطة</p>
+                    </div>
+                {% endif %}
+        </div>
+        
+        <div class="mt-6 pt-6 border-t border-border-dark">
+                <a href="{% url 'terminate_all_sessions' %}" onclick="return confirm('هل أنت متأكد من إنهاء جميع الجلسات الأخرى؟')" class="block w-full text-center bg-red-500/10 hover:bg-red-500/20 text-red-400 font-semibold py-3 px-4 rounded-lg transition-colors border border-red-500/30">
+                إنهاء جميع الجلسات الأخرى
+                </a>
+        </div>
+    </div>
+</div>
+
+<!-- Upgrade Plans Modal -->
+<div id="upgrade-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" dir="rtl">
+    <div class="bg-slate-800 rounded-lg shadow-lg border border-border-dark max-w-4xl w-full max-h-96 overflow-y-auto">
+        <div class="bg-gradient-to-r from-green-600 to-emerald-600 p-6 flex justify-between items-center sticky top-0">
+            <h3 class="text-2xl font-bold text-white">اختر خطتك المفضلة</h3>
+            <button onclick="closeUpgradePlans()" class="text-white hover:text-gray-200">✕</button>
+        </div>
+
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% for plan in plans %}
+                <div class="bg-slate-700 border border-border-dark rounded-lg p-6 hover:border-cyan-500 transition-colors">
+                    <h4 class="text-xl font-bold text-white mb-2">{{ plan.name }}</h4>
+                    <div class="text-3xl font-bold text-primary mb-4">
+                        {{ plan.price }}
+                        <span class="text-sm text-gray-400">/شهر</span>
+                    </div>
+                    <div class="space-y-2 mb-6">
+                        <p class="text-gray-400">
+                            {% if plan.users == -1 %}
+                                <strong>مستخدمين:</strong> غير محدود
+                            {% else %}
+                                <strong>مستخدمين:</strong> {{ plan.users }}
+                            {% endif %}
+                        </p>
+                        <p class="text-gray-400">
+                            {% if plan.storage == -1 %}
+                                <strong>التخزين:</strong> غير محدود
+                            {% else %}
+                                <strong>التخزين:</strong> {{ plan.storage }} GB
+                            {% endif %}
+                        </p>
+                    </div>
+                    <ul class="space-y-2 mb-6">
+                        {% for feature in plan.features %}
+                        <li class="text-gray-300 flex items-start gap-2">
+                            <span class="text-primary mt-1">✓</span>
+                            <span>{{ feature }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{% url 'upgrade_subscription' plan.id %}" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors block text-center">
+                        اختيار هذه الخطة
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+</style>
+
+<script>
+function uploadAvatar(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    fetch('{% url "upload_avatar" %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('خطأ: ' + data.error);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function showUpgradePlans() {
+    document.getElementById('upgrade-modal').classList.remove('hidden');
+}
+
+function closeUpgradePlans() {
+    document.getElementById('upgrade-modal').classList.add('hidden');
+}
+
+// Global Search
+const globalSearchInput = document.getElementById('globalSearchInput');
+const globalSearchResults = document.getElementById('globalSearchResults');
+let globalSearchTimeout = null;
+
+function renderSearchGroup(title, items, formatter) {
+    if (!items || items.length === 0) return '';
+    const rows = items.map(formatter).join('');
+    return `
+        <div class="mb-3">
+            <h4 class="text-xs text-slate-400 mb-2">${title}</h4>
+            <div class="space-y-2">${rows}</div>
+        </div>
+    `;
+}
+
+function escapeHtml(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function renderSearchResults(data) {
+    const hasAnyResults = (data.customers && data.customers.length)
+        || (data.products && data.products.length)
+        || (data.invoices && data.invoices.length)
+        || (data.suppliers && data.suppliers.length);
+
+    const customers = renderSearchGroup('العملاء', data.customers, (c) => `
+        <div class="bg-border-dark rounded-lg p-2">
+            <div class="text-white text-sm font-semibold">${escapeHtml(c.name)}</div>
+            <div class="text-xs text-slate-400">${escapeHtml(c.email || '')} ${escapeHtml(c.phone || '')}</div>
+        </div>
+    `);
+
+    const products = renderSearchGroup('المنتجات', data.products, (p) => `
+        <div class="bg-border-dark rounded-lg p-2">
+            <div class="text-white text-sm font-semibold">${escapeHtml(p.name)}</div>
+            <div class="text-xs text-slate-400">SKU: ${escapeHtml(p.sku)} • ${escapeHtml(p.price)} ر.س</div>
+        </div>
+    `);
+
+    const invoices = renderSearchGroup('الفواتير', data.invoices, (i) => `
+        <div class="bg-border-dark rounded-lg p-2">
+            <div class="text-white text-sm font-semibold">${escapeHtml(i.number)} - ${escapeHtml(i.customer__name)}</div>
+            <div class="text-xs text-slate-400">${escapeHtml(i.status)} • ${escapeHtml(i.total)} ر.س</div>
+        </div>
+    `);
+
+    const suppliers = renderSearchGroup('الموردون', data.suppliers, (s) => `
+        <div class="bg-border-dark rounded-lg p-2">
+            <div class="text-white text-sm font-semibold">${escapeHtml(s.name)}</div>
+            <div class="text-xs text-slate-400">${escapeHtml(s.email || '')} ${escapeHtml(s.phone || '')}</div>
+        </div>
+    `);
+
+    const content = hasAnyResults
+        ? `${customers}${products}${invoices}${suppliers}`
+        : '<div class="text-center text-slate-400 py-4">لا توجد نتائج</div>';
+    globalSearchResults.innerHTML = content;
+    globalSearchResults.classList.remove('hidden');
+}
+
+if (globalSearchInput) {
+    globalSearchInput.addEventListener('input', function () {
+        const query = this.value.trim();
+        clearTimeout(globalSearchTimeout);
+
+        if (query.length < 2) {
+            globalSearchResults.classList.add('hidden');
+            globalSearchResults.innerHTML = '';
+            return;
+        }
+
+        globalSearchTimeout = setTimeout(() => {
+            fetch(`/search/?q=${encodeURIComponent(query)}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(res => res.ok ? res.json() : Promise.reject(res))
+                .then(data => renderSearchResults(data))
+                .catch(() => {
+                    globalSearchResults.innerHTML = '<div class="text-center text-red-400 py-4">حدث خطأ أثناء البحث</div>';
+                    globalSearchResults.classList.remove('hidden');
+                });
+        }, 300);
+    });
+
+    globalSearchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!globalSearchResults.contains(e.target) && e.target !== globalSearchInput) {
+            globalSearchResults.classList.add('hidden');
+        }
+    });
+}
+
+// Close modal when clicking outside
+document.getElementById('upgrade-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeUpgradePlans();
+    }
+});
+</script>
+{% endblock %}

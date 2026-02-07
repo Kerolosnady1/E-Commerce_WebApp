@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>إعدادات النظام - ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#11a4d4",
+              "background-light": "#f6f8f8",
+              "background-dark": "#101d22",
+            },
+            fontFamily: {
+              "display": ["Manrope", "system-ui", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+      body {
+        background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+        color: #e2e8f0;
+      }
+      header, aside, main, section {
+        background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+      }
+      h1, h2, h3, h4, h5, h6 { color: #fff !important; }
+      label { color: #9ca3af !important; }
+      input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+        background-color: #334155 !important;
+        border-color: #475569 !important;
+        color: #fff !important;
+      }
+      .bg-white, .bg-slate-50, .bg-background-light { background-color: #1f2937 !important; }
+      .border-gray-200, .border-[#dbe0e6], .border-[#f0f3f4] { border-color: #334155 !important; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-200 min-h-screen">
+<!-- Header / Navbar -->
+<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-16">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-icons text-primary">settings</span>
+</div>
+<h1 class="text-xl font-bold">الإعدادات العامة</h1>
+</div>
+<div class="flex items-center gap-3">
+<a href="{% url 'general_settings' %}" class="px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg transition-colors">
+            إلغاء
+          </a>
+<button type="submit" form="companySettingsForm" class="px-6 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors shadow-sm shadow-primary/20">
+            حفظ التغييرات
+          </button>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<form id="companySettingsForm" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Sidebar Navigation -->
+<aside class="w-full lg:w-64 flex-shrink-0">
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary border-r-4 border-primary rounded-l-lg font-medium" href="/settings/general/">
+<span class="material-icons text-[20px]">business</span>
+<span>إعدادات الشركة</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors" href="/taxes/">
+<span class="material-icons text-[20px]">receipt_long</span>
+<span>إعدادات الضرائب</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors" href="/print-templates/">
+<span class="material-icons text-[20px]">print</span>
+<span>نماذج الطباعة</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors" href="/notifications/">
+<span class="material-icons text-[20px]">notifications</span>
+<span>التنبيهات</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors" href="/security/">
+<span class="material-icons text-[20px]">security</span>
+<span>الأمان والصلاحيات</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 space-y-6">
+<!-- Section: Company Information -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800">
+<h2 class="text-lg font-bold">معلومات الشركة</h2>
+<p class="text-sm text-slate-500 mt-1">تعديل البيانات الأساسية لهوية شركتك في النظام</p>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Logo Upload -->
+<div class="md:col-span-2 flex items-center gap-6 pb-4">
+<div class="relative group">
+<div class="w-24 h-24 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 overflow-hidden">
+{% if settings_obj.logo %}
+<img alt="Company Logo" class="w-full h-full object-cover" src="{{ settings_obj.logo.url }}"/>
+{% else %}
+<span class="material-icons text-slate-400">image</span>
+{% endif %}
+</div>
+<label class="absolute -bottom-2 -right-2 bg-primary text-white p-1.5 rounded-full shadow-lg hover:scale-110 transition-transform cursor-pointer">
+<span class="material-icons text-sm">edit</span>
+<input type="file" name="logo" accept="image/*" class="hidden"/>
+</label>
+</div>
+<div>
+<h3 class="text-sm font-semibold">شعار الشركة</h3>
+<p class="text-xs text-slate-500 mt-1">يفضل استخدام صورة مربعة بدقة 512x512 بكسل بصيغة PNG أو JPG</p>
+<div class="mt-2 flex gap-2">
+<button type="button" onclick="document.querySelector('input[name=logo]').click()" class="text-xs font-medium text-primary hover:underline">رفع صورة جديدة</button>
+<span class="text-slate-300">|</span>
+<button type="submit" name="action" value="remove_logo" class="text-xs font-medium text-red-500 hover:underline">إزالة</button>
+</div>
+</div>
+</div>
+<!-- Form Fields -->
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-300">اسم الشركة بالعربية</label>
+<input name="company_name_ar" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" type="text" value="{{ settings_obj.company_name_ar }}"/>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-300">اسم الشركة بالإنجليزية</label>
+<input name="company_name_en" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-left" dir="ltr" type="text" value="{{ settings_obj.company_name_en }}"/>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-300">العملة الأساسية</label>
+<select name="currency" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary">
+{% for code, label in currency_options %}
+<option value="{{ code }}" {% if settings_obj.currency == code %}selected{% endif %}>{{ label }}</option>
+{% endfor %}
+</select>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-300">المنطقة الزمنية</label>
+<select name="timezone" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary">
+{% for code, label in timezone_options %}
+<option value="{{ code }}" {% if settings_obj.timezone == code %}selected{% endif %}>{{ label }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Tax Settings -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<div>
+<h2 class="text-lg font-bold">إعدادات الضرائب</h2>
+<p class="text-sm text-slate-500 mt-1">تكوين الرقم الضريبي ونسب القيمة المضافة</p>
+</div>
+<div class="flex items-center gap-3">
+<label class="flex items-center gap-3 text-sm font-medium text-slate-300">
+<input type="checkbox" name="tax_enabled" class="w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary" {% if settings_obj.tax_enabled %}checked{% endif %}/>
+تفعيل الضريبة
+</label>
+</div>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-300">الرقم الضريبي (VAT Number)</label>
+<input name="vat_number" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-left" dir="ltr" placeholder="3000XXXXXXXXXXX" type="text" value="{{ settings_obj.vat_number }}"/>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-300">نسبة الضريبة الافتراضية (%)</label>
+<div class="relative">
+<input name="default_tax_rate" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" type="number" step="0.01" value="{{ settings_obj.default_tax_rate }}"/>
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">%</span>
+</div>
+</div>
+<div class="md:col-span-2 space-y-4 pt-2">
+<label class="flex items-center gap-3 cursor-pointer">
+<input name="prices_include_tax" class="w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary" type="checkbox" {% if settings_obj.prices_include_tax %}checked{% endif %}/>
+<span class="text-sm text-slate-300">الأسعار في الفواتير تشمل ضريبة القيمة المضافة</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input name="show_vat_on_invoice" class="w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary" type="checkbox" {% if settings_obj.show_vat_on_invoice %}checked{% endif %}/>
+<span class="text-sm text-slate-300">إظهار الرقم الضريبي في ترويسة الفاتورة</span>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Print Templates -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800">
+<h2 class="text-lg font-bold">نماذج الطباعة</h2>
+<p class="text-sm text-slate-500 mt-1">اختر التنسيق المناسب لفواتيرك وتقاريرك</p>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="templates-grid">
+<!-- Template 1: Classic -->
+<div class="template-card relative group cursor-pointer border-2 border-primary rounded-xl overflow-hidden shadow-md transition-all" data-template="classic">
+<div class="aspect-[3/4] bg-slate-100 dark:bg-slate-800 relative">
+<div class="w-full h-full flex flex-col items-center justify-center p-4 space-y-2">
+<div class="w-12 h-12 bg-slate-300 rounded-full"></div>
+<div class="w-20 h-2 bg-slate-300 rounded"></div>
+<div class="w-16 h-1 bg-slate-200 rounded"></div>
+<div class="space-y-1 w-full mt-4">
+<div class="w-full h-2 bg-slate-200 rounded"></div>
+<div class="w-full h-2 bg-slate-200 rounded"></div>
+<div class="w-full h-2 bg-slate-200 rounded"></div>
+</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center bg-primary/20">
+<div class="bg-white dark:bg-slate-900 px-3 py-1 rounded-full text-xs font-bold text-primary flex items-center gap-1 shadow-sm">
+<span>✓</span>
+مختارة
+</div>
+</div>
+</div>
+<div class="p-3 text-center bg-white dark:bg-slate-900">
+<p class="text-sm font-semibold">النموذج الكلاسيكي</p>
+</div>
+</div>
+
+<!-- Template 2: Modern -->
+<div class="template-card relative group cursor-pointer border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-700 rounded-xl overflow-hidden transition-all" data-template="modern">
+<div class="aspect-[3/4] bg-slate-100 dark:bg-slate-800 relative">
+<div class="w-full h-full flex flex-col items-center justify-center p-4 space-y-3">
+<div class="w-16 h-1 bg-primary rounded-full"></div>
+<div class="space-y-2 w-full mt-4">
+<div class="flex gap-2">
+<div class="flex-1 h-2 bg-slate-300 rounded"></div>
+<div class="w-8 h-2 bg-slate-200 rounded"></div>
+</div>
+<div class="flex gap-2">
+<div class="flex-1 h-2 bg-slate-300 rounded"></div>
+<div class="w-8 h-2 bg-slate-200 rounded"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-3 text-center bg-white dark:bg-slate-900">
+<p class="text-sm font-semibold">النموذج العصري</p>
+</div>
+</div>
+
+<!-- Template 3: Minimal -->
+<div class="template-card relative group cursor-pointer border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-700 rounded-xl overflow-hidden transition-all" data-template="minimal">
+<div class="aspect-[3/4] bg-slate-100 dark:bg-slate-800 relative">
+<div class="w-full h-full flex flex-col items-center justify-center p-4 space-y-4">
+<div class="w-24 h-3 bg-slate-300 rounded"></div>
+<div class="w-full h-px bg-slate-300"></div>
+<div class="space-y-2 w-full mt-2">
+<div class="h-1.5 bg-slate-200 rounded"></div>
+<div class="h-1.5 bg-slate-200 rounded"></div>
+</div>
+</div>
+</div>
+<div class="p-3 text-center bg-white dark:bg-slate-900">
+<p class="text-sm font-semibold">النموذج المبسط</p>
+</div>
+</div>
+</div>
+<div class="mt-8 space-y-4">
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-300">ملاحظة أسفل الفاتورة</label>
+<textarea class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="شكراً لتعاملكم معنا..." rows="3"></textarea>
+</div>
+</div>
+</div>
+</section>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const templateNames = {
+    'classic': 'النموذج الكلاسيكي',
+    'modern': 'النموذج العصري',
+    'minimal': 'النموذج المبسط'
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    let selectedTemplate = localStorage.getItem('selectedTemplate') || 'classic';
+    
+    // Set initial selected template UI
+    updateTemplateUI(selectedTemplate);
+    
+    // Add click listeners to all template cards
+    document.querySelectorAll('.template-card').forEach(card => {
+        card.addEventListener('click', async function() {
+            selectedTemplate = this.dataset.template;
+            
+            // Save to backend
+            try {
+                const response = await fetch('/api/settings/print-templates/save/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({
+                        template: selectedTemplate,
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    localStorage.setItem('selectedTemplate', selectedTemplate);
+                    updateTemplateUI(selectedTemplate);
+                    showNotification(`✓ تم اختيار ${templateNames[selectedTemplate]}`, 'success');
+                } else {
+                    showNotification('حدث خطأ في الحفظ', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('فشل الاتصال بالسيرفر', 'error');
+            }
+        });
+    });
+    
+    function updateTemplateUI(templateName) {
+        document.querySelectorAll('.template-card').forEach(card => {
+            const overlay = card.querySelector('.absolute.inset-0');
+            
+            if (card.dataset.template === templateName) {
+                // Mark as selected
+                card.classList.remove('border-transparent', 'hover:border-slate-300', 'dark:hover:border-slate-700');
+                card.classList.add('border-primary', 'shadow-md');
+                if (!overlay) {
+                    const newOverlay = document.createElement('div');
+                    newOverlay.className = 'absolute inset-0 flex items-center justify-center bg-primary/20';
+                    newOverlay.innerHTML = '<div class="bg-white dark:bg-slate-900 px-3 py-1 rounded-full text-xs font-bold text-primary flex items-center gap-1 shadow-sm"><span>✓</span>مختارة</div>';
+                    card.querySelector('.aspect-\\[3\\/4\\]').appendChild(newOverlay);
+                }
+            } else {
+                // Mark as not selected
+                card.classList.add('border-transparent', 'hover:border-slate-300', 'dark:hover:border-slate-700');
+                card.classList.remove('border-primary', 'shadow-md');
+                if (overlay) {
+                    overlay.remove();
+                }
+            }
+        });
+    }
+    
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        const bgClass = type === 'success' ? 'bg-green-600 dark:bg-green-700' : 'bg-red-600 dark:bg-red-700';
+        notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-bold shadow-lg z-[9999] ${bgClass}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 2500);
+    }
+});
+</script>
+<!-- Action Footer Mobile (Visible on small screens) -->
+<div class="lg:hidden flex gap-3 pt-4 pb-8">
+<button class="flex-1 px-6 py-3 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors">
+                        حفظ التغييرات
+                    </button>
+<button class="flex-1 px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg transition-colors">
+                        إلغاء
+                    </button>
+</div>
+</div>
+</div>
+</form>
+</main>
+<!-- Footer Meta -->
+<footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-slate-200 dark:border-slate-800">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4">
+<p class="text-xs text-slate-400">نظام ERP المتكامل - الإصدار 4.2.0 • جميع الحقوق محفوظة © 2026</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</body></html>

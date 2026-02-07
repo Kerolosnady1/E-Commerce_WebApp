@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>إعدادات النظام - ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "primary-dark": "#0f8bb4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                    },
+                    fontFamily: {
+                        "display": ["IBM Plex Sans Arabic", "system-ui", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            @apply bg-background-light text-slate-900;
+        }
+        .settings-container {
+            height: calc(100vh - 80px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            @apply bg-slate-200 rounded-full;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            @apply bg-slate-700;
+        }
+    </style>
+    <style>
+            body {
+                background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+                color: #e2e8f0;
+            }
+            header, aside, main, section {
+                background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+            }
+            h1, h2, h3, h4, h5, h6 { color: #fff !important; }
+            label { color: #9ca3af !important; }
+            input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+                background-color: #334155 !important;
+                border-color: #475569 !important;
+                color: #fff !important;
+            }
+            .bg-white, .bg-slate-50, .bg-background-light { background-color: #1f2937 !important; }
+            .border-slate-200, .border-gray-200 { border-color: #334155 !important; }
+            .nav-active, .active-nav {
+                color: #60a5fa !important;
+                background-color: #334155 !important;
+                border-right: 4px solid #3b82f6 !important;
+            }
+            .template-selected {
+                border-color: #3b82f6 !important;
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+            }
+        </style>
+</head>
+    <body class="bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] text-slate-100 min-h-screen overflow-hidden">
+<header class="h-16 bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] border-b border-slate-200 dark:border-slate-800 flex items-center px-8 shrink-0 relative z-20">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-bold">settings</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight">إعدادات النظام</h1>
+<p class="text-xs text-slate-500 font-medium">تخصيص وإدارة تفضيلات المنصة</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-5 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all" id="generalCancelBtn">
+                إلغاء
+            </button>
+<button class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primary-dark rounded-lg transition-all shadow-lg shadow-primary/20 flex items-center gap-2" id="generalSaveBtn">
+<span class="material-symbols-outlined text-sm">save</span>
+                حفظ التغييرات
+            </button>
+</div>
+</div>
+</header>
+<main class="settings-container flex overflow-hidden">
+<aside class="w-72 border-l border-slate-200 dark:border-slate-800 bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] overflow-y-auto custom-scrollbar">
+<div class="p-6">
+<h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-4">قائمة الإعدادات</h3>
+<nav class="space-y-1">
+<a class="flex items-center justify-between px-4 py-3 nav-active rounded-xl font-bold transition-all group" href="/settings/general/">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">business</span>
+<span>إعدادات الشركة</span>
+</div>
+<span class="material-symbols-outlined text-sm opacity-50">chevron_left</span>
+</a>
+<a class="flex items-center justify-between px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl font-medium transition-all group" href="/taxes/">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">receipt_long</span>
+<span>إعدادات الضرائب</span>
+</div>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_left</span>
+</a>
+<a class="flex items-center justify-between px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl font-medium transition-all group" href="/print-templates/">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">print</span>
+<span>نماذج الطباعة</span>
+</div>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_left</span>
+</a>
+<a class="flex items-center justify-between px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl font-medium transition-all group" href="/notifications/">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">notifications_active</span>
+<span>التنبيهات</span>
+</div>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_left</span>
+</a>
+<a class="flex items-center justify-between px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl font-medium transition-all group" href="/settings/security/">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">lock_person</span>
+<span>الأمان والصلاحيات</span>
+</div>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_left</span>
+</a>
+<a class="flex items-center justify-between px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl font-medium transition-all group" href="/locale-time/">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">language</span>
+<span>اللغة والتوقيت</span>
+</div>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_left</span>
+</a>
+</nav>
+<div class="mt-12 pt-6 border-t border-slate-100 dark:border-slate-800">
+<div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4">
+<p class="text-xs text-slate-500 mb-2">مساحة التخزين</p>
+<div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: {{ storage_percentage }}%"></div>
+</div>
+<p class="text-[10px] text-slate-400 mt-2">{{ storage_used_gb }} GB من {{ storage_quota_gb }} GB مستخدم</p>
+</div>
+</div>
+</div>
+</aside>
+<section class="flex-1 overflow-y-auto custom-scrollbar bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] p-8">
+<div class="max-w-4xl mx-auto space-y-8">
+<div class="grid grid-cols-12 gap-8">
+<div class="col-span-12 lg:col-span-4">
+<h2 class="text-lg font-bold text-slate-800 dark:text-white">هوية الشركة</h2>
+<p class="text-sm text-slate-500 mt-2 leading-relaxed">المعلومات الأساسية التي تظهر في المراسلات والفواتير الرسمية.</p>
+</div>
+<div class="col-span-12 lg:col-span-8">
+<div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-6">
+<div class="flex items-center gap-6">
+<div class="relative">
+<div class="w-24 h-24 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 overflow-hidden group">
+<img alt="Company Logo" class="w-full h-full object-cover" src="{{ company_logo_url|default:'' }}" id="companyLogo" data-default="{{ company_logo_default|default:'' }}"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white">upload_file</span>
+</div>
+</div>
+<button id="changeLogoIconBtn" class="absolute -bottom-2 -right-2 bg-primary text-white p-2 rounded-lg shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-base">edit</span>
+</button>
+</div>
+<div>
+<h3 class="text-sm font-bold">شعار المنشأة</h3>
+<p class="text-xs text-slate-400 mt-1">تنسيق PNG أو JPG، بحد أقصى 2 ميجابايت</p>
+<div class="mt-3 flex gap-4">
+<button class="text-xs font-bold text-primary" id="changeLogoBtn">تغيير الشعار</button>
+<button class="text-xs font-bold text-red-500" id="deleteLogoBtn">حذف</button>
+<input accept="image/*" class="hidden" id="logoInput" type="file"/>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-slate-500 px-1">اسم الشركة (عربي)</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary text-sm" id="companyNameAr" type="text" value="{{ company_name_ar|default:'' }}"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-slate-500 px-1">اسم الشركة (EN)</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary text-sm text-left" dir="ltr" id="companyNameEn" type="text" value="{{ company_name_en|default:'' }}"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-slate-500 px-1">العملة الأساسية</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary text-sm" id="currencySelect">
+<option value="SAR" {% if currency == 'SAR' %}selected{% endif %}>ريال سعودي (SAR)</option>
+<option value="AED" {% if currency == 'AED' %}selected{% endif %}>درهم إماراتي (AED)</option>
+<option value="USD" {% if currency == 'USD' %}selected{% endif %}>دولار أمريكي (USD)</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-slate-500 px-1">السنة المالية تبدأ في</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary text-sm" id="fiscalYearStart" type="date"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<hr class="border-slate-200 dark:border-slate-800"/>
+<div class="grid grid-cols-12 gap-8">
+<div class="col-span-12 lg:col-span-4">
+<h2 class="text-lg font-bold text-slate-800 dark:text-white">إعدادات الضرائب</h2>
+<p class="text-sm text-slate-500 mt-2 leading-relaxed">تكوين الرقم الضريبي ونسب القيمة المضافة حسب الأنظمة المحلية.</p>
+</div>
+<div class="col-span-12 lg:col-span-8">
+<div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-6">
+<div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">verified</span>
+<div>
+<p class="text-sm font-bold">تفعيل ضريبة القيمة المضافة</p>
+<p class="text-xs text-slate-400">سيتم تطبيق الضريبة تلقائياً على كافة الفواتير</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" id="vatToggle" {% if tax_enabled %}checked{% endif %}/>
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-slate-500 px-1">الرقم الضريبي (VAT)</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary text-sm text-left" dir="ltr" id="vatNumber" placeholder="3000XXXXXXXXXXX" type="text" value="{{ vat_number|default:'' }}"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-slate-500 px-1">نسبة الضريبة (%)</label>
+<div class="relative">
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary text-sm" id="vatRate" type="number" value="{{ default_tax_rate|default:0 }}"/>
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">%</span>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<label class="flex items-start gap-3 cursor-pointer group">
+<input class="mt-1 w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary" type="checkbox" id="pricesIncludeTax" {% if prices_include_tax %}checked{% endif %}/>
+<div>
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">الأسعار تشمل الضريبة</span>
+<p class="text-[11px] text-slate-400">سيتم استخلاص الضريبة من السعر الإجمالي المدخل</p>
+</div>
+</label>
+<label class="flex items-start gap-3 cursor-pointer group">
+<input class="mt-1 w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary" type="checkbox" id="showVatOnInvoice" {% if show_vat_on_invoice %}checked{% endif %}/>
+<div>
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">إظهار تفاصيل الضريبة في الفاتورة</span>
+<p class="text-[11px] text-slate-400">عرض مبلغ الضريبة ونسبتها ضمن الفواتير</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<hr class="border-slate-200 dark:border-slate-800"/>
+<div class="grid grid-cols-12 gap-8">
+<div class="col-span-12 lg:col-span-4">
+<h2 class="text-lg font-bold text-slate-800 dark:text-white">نماذج المخرجات</h2>
+<p class="text-sm text-slate-500 mt-2 leading-relaxed">اختر التنسيق البصري المفضل للفواتير وعروض الأسعار.</p>
+</div>
+<div class="col-span-12 lg:col-span-8">
+<div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="grid grid-cols-3 gap-4 mb-6">
+<div class="relative group cursor-pointer border-2 {% if default_print_template == 'classic' %}border-primary ring-4 ring-primary/5 template-selected{% else %}border-transparent hover:border-slate-300 dark:hover:border-slate-700{% endif %} rounded-xl overflow-hidden transition-all template-card" data-template="classic">
+<div class="aspect-[3/4] bg-slate-100 dark:bg-slate-800">
+<img alt="Template 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdV7hpVps1l0jq1U8oUDHHi8oTKkwUpapQbhzposWkRAQj9jD54jSQnmZDNpZpn7MGv7hlBCiUqkgieNIk6R7elYqvETZ6W6LSNBhysvLEYi-0Lq2lFFtd044fmpsuZ4mWhcevVZKMZmgBZzDQ29w5np_CYhpby8ErFcAzrrK-hprbiRhafGaBRu6eFK4eu988z4CV95uDRVq9CE5LWcT8Og6BJG_UY99qidnrnzA9_U-lzAbaY9ZWFX9dVBTgPdyjY_qiCqnGLcP6"/>
+{% if default_print_template == 'classic' %}
+<div class="absolute top-2 right-2">
+<span class="bg-primary text-white p-1 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+</div>
+{% endif %}
+</div>
+<div class="p-2 text-center text-xs font-bold bg-white dark:bg-slate-800">الكلاسيكي</div>
+</div>
+<div class="relative group cursor-pointer border-2 {% if default_print_template == 'modern' %}border-primary ring-4 ring-primary/5 template-selected{% else %}border-transparent hover:border-slate-300 dark:hover:border-slate-700{% endif %} rounded-xl overflow-hidden transition-all template-card" data-template="modern">
+<div class="aspect-[3/4] bg-slate-100 dark:bg-slate-800">
+<img alt="Template 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzDE8KgJVhrewqpaPA7aq3NzWGwOHBVgmIijc1t1452VRhN4684_S0SUuesIa8dDDBQ__7igSmzSIYbZeTn0heZuakzaf-k40ofODHc6EfjHokyXNXV66dqaRQU3jiDE5QtSIHVYzM1xSDuAhv3KmgMxT5ULQRKZQobSARCZb-yr4kpBgQHAiN8Dl2wv01KaD0wuf3Q-RGbC9hnCIizxjRw6TDjz8norsQn5GHtcgZdK4wCE_-LvsIerckFPbdPrpYcuz0TKGiKxM9"/>
+{% if default_print_template == 'modern' %}
+<div class="absolute top-2 right-2">
+<span class="bg-primary text-white p-1 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+</div>
+{% endif %}
+</div>
+<div class="p-2 text-center text-xs font-bold bg-white dark:bg-slate-800">العصري</div>
+</div>
+<div class="relative group cursor-pointer border-2 {% if default_print_template == 'minimal' %}border-primary ring-4 ring-primary/5 template-selected{% else %}border-transparent hover:border-slate-300 dark:hover:border-slate-700{% endif %} rounded-xl overflow-hidden transition-all template-card" data-template="minimal">
+<div class="aspect-[3/4] bg-slate-100 dark:bg-slate-800">
+<img alt="Template 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWLAN8YvRN76fX9cEyAxGc3bdOHMyTLAhrombx8n205zIAEw9W3WZ7TxbI5JV0L49XH2PEZV3VD5AvIBk67k_BrF4wazYKR7H6O04ZAdwcRPHRQXksakiU5X8aTHIEwSaVuoQaNqC_3iKJEtDcz75hlhqZhXsA2deoMyVzlTlopORiQ_9ETh2osScjqtAllRX1c_x1WhWzLIJFCu2vwzt3XTLNwQ0tqXBl_2I-T93pSAVoSwvgAhVWyABBsjWPTS6FaeKo043GgLGK"/>
+{% if default_print_template == 'minimal' %}
+<div class="absolute top-2 right-2">
+<span class="bg-primary text-white p-1 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+</div>
+{% endif %}
+</div>
+<div class="p-2 text-center text-xs font-bold bg-white dark:bg-slate-800">المبسط</div>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-slate-500 px-1">تذييل الفاتورة الافتراضي</label>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary text-sm" id="invoiceFooter" placeholder="مثال: نشكركم على حسن تعاونكم معنا..." rows="3"></textarea>
+</div>
+</div>
+</div>
+</div>
+<div class="h-10"></div>
+</div>
+</section>
+</main>
+<footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-center shrink-0 relative z-20">
+<div class="w-full max-w-6xl px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
+<p class="text-[10px] text-slate-400 font-medium">نظام ERP المتكامل • الإصدار 4.5.0 • جميع الحقوق محفوظة © 2026</p>
+<div class="flex gap-5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+
+<script>
+        const generalFormDefaults = {};
+
+        function snapshotForm() {
+            const fields = document.querySelectorAll("input[type='text'], input[type='date'], input[type='number'], select, textarea");
+            fields.forEach((field) => {
+                if (field.id) {
+                    generalFormDefaults[field.id] = field.value;
+                }
+            });
+            const vatToggle = document.getElementById("vatToggle");
+            if (vatToggle) generalFormDefaults.vatToggle = vatToggle.checked;
+            const pricesIncludeTax = document.getElementById("pricesIncludeTax");
+            if (pricesIncludeTax) generalFormDefaults.pricesIncludeTax = pricesIncludeTax.checked;
+            const showVatOnInvoice = document.getElementById("showVatOnInvoice");
+            if (showVatOnInvoice) generalFormDefaults.showVatOnInvoice = showVatOnInvoice.checked;
+            const templateSelected = document.querySelector(".template-card.template-selected")?.dataset.template;
+            if (templateSelected) generalFormDefaults.templateSelected = templateSelected;
+        }
+
+        function applyGeneralState(state) {
+            if (!state) return;
+            Object.keys(state).forEach((key) => {
+                if (key === "vatToggle" || key === "templateSelected" || key === "logoData") return;
+                const el = document.getElementById(key);
+                if (el) el.value = state[key];
+            });
+            const vatToggle = document.getElementById("vatToggle");
+            if (vatToggle && typeof state.vatToggle === "boolean") vatToggle.checked = state.vatToggle;
+            const pricesIncludeTax = document.getElementById("pricesIncludeTax");
+            if (pricesIncludeTax && typeof state.pricesIncludeTax === "boolean") pricesIncludeTax.checked = state.pricesIncludeTax;
+            const showVatOnInvoice = document.getElementById("showVatOnInvoice");
+            if (showVatOnInvoice && typeof state.showVatOnInvoice === "boolean") showVatOnInvoice.checked = state.showVatOnInvoice;
+            if (state.templateSelected) {
+                document.querySelectorAll(".template-card").forEach((card) => {
+                    card.classList.toggle("template-selected", card.dataset.template === state.templateSelected);
+                });
+            }
+            if (state.logoData) {
+                const logo = document.getElementById("companyLogo");
+                if (logo) logo.src = state.logoData;
+            }
+        }
+
+        function saveGeneralSettings() {
+            const formData = new FormData();
+            
+            // Get all form values
+            const companyNameAr = document.getElementById("companyNameAr")?.value || "";
+            const companyNameEn = document.getElementById("companyNameEn")?.value || "";
+            const vatNumber = document.getElementById("vatNumber")?.value || "";
+            const vatRate = document.getElementById("vatRate")?.value || "";
+            const taxEnabled = document.getElementById("vatToggle")?.checked || false;
+            const pricesIncludeTax = document.getElementById("pricesIncludeTax")?.checked || false;
+            const showVatOnInvoice = document.getElementById("showVatOnInvoice")?.checked || false;
+            const currency = document.getElementById("currencySelect")?.value || "";
+            const footerText = document.getElementById("footerText")?.value || "";
+            
+            const data = {
+                companyName: companyNameAr,
+                companyNameEn: companyNameEn,
+                vatNumber: vatNumber,
+                vatRate: vatRate,
+                taxEnabled: taxEnabled,
+                pricesIncludeTax: pricesIncludeTax,
+                showVatOnInvoice: showVatOnInvoice,
+                currency: currency,
+                templateSelected: document.querySelector(".template-card.template-selected")?.dataset.template || "classic",
+                footerText: footerText
+            };
+            
+            // Save to API
+            fetch('/api/settings/general/save/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(result.message);
+                    saveGeneralSettingsLocal();
+                } else {
+                    alert('خطأ: ' + result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ في الاتصال بالخادم');
+                saveGeneralSettingsLocal();
+            });
+        }
+
+        function saveGeneralSettingsLocal() {
+            const state = {};
+            const fields = document.querySelectorAll("input[type='text'], input[type='date'], input[type='number'], select, textarea");
+            fields.forEach((field) => {
+                if (field.id) state[field.id] = field.value;
+            });
+            const vatToggle = document.getElementById("vatToggle");
+            if (vatToggle) state.vatToggle = vatToggle.checked;
+            const pricesIncludeTax = document.getElementById("pricesIncludeTax");
+            if (pricesIncludeTax) state.pricesIncludeTax = pricesIncludeTax.checked;
+            const showVatOnInvoice = document.getElementById("showVatOnInvoice");
+            if (showVatOnInvoice) state.showVatOnInvoice = showVatOnInvoice.checked;
+            const templateSelected = document.querySelector(".template-card.template-selected")?.dataset.template;
+            if (templateSelected) state.templateSelected = templateSelected;
+            const logo = document.getElementById("companyLogo");
+            if (logo) state.logoData = logo.src;
+            localStorage.setItem("generalSettings", JSON.stringify(state));
+        }
+
+        function loadGeneralSettings() {
+            const saved = localStorage.getItem("generalSettings");
+            if (saved) {
+                applyGeneralState(JSON.parse(saved));
+            }
+        }
+
+        function cancelGeneralSettings() {
+            const saved = localStorage.getItem("generalSettings");
+            if (saved) {
+                applyGeneralState(JSON.parse(saved));
+                return;
+            }
+            applyGeneralState(generalFormDefaults);
+        }
+
+        document.getElementById("generalSaveBtn")?.addEventListener("click", function(event) {
+            event.preventDefault();
+            saveGeneralSettings();
+        });
+        document.getElementById("generalCancelBtn")?.addEventListener("click", function(event) {
+            event.preventDefault();
+            if (confirm("هل تريد إلغاء جميع التغييرات؟")) {
+                const hasSaved = !!localStorage.getItem("generalSettings");
+                cancelGeneralSettings();
+                if (!hasSaved) {
+                    location.reload();
+                }
+            }
+        });
+
+        document.querySelectorAll(".template-card").forEach((card) => {
+            card.addEventListener("click", () => {
+                // Remove template-selected class and checkmark from all cards
+                document.querySelectorAll(".template-card").forEach((item) => {
+                    item.classList.remove("template-selected", "border-primary");
+                    // Remove checkmark if exists
+                    const checkmark = item.querySelector(".absolute.top-2.right-2");
+                    if (checkmark) {
+                        checkmark.remove();
+                    }
+                });
+                
+                // Add template-selected class and border to clicked card
+                card.classList.add("template-selected", "border-primary");
+                
+                // Add checkmark to clicked card
+                const checkmarkHtml = `
+                    <div class="absolute top-2 right-2">
+                        <span class="bg-primary text-white p-1 rounded-full">
+                            <span class="material-symbols-outlined">check</span>
+                        </span>
+                    </div>
+                `;
+                card.insertAdjacentHTML('afterbegin', checkmarkHtml);
+                
+                saveGeneralSettings();
+            });
+        });
+
+        document.getElementById("vatToggle")?.addEventListener("change", () => {
+            saveGeneralSettings();
+        });
+        document.getElementById("pricesIncludeTax")?.addEventListener("change", () => {
+            saveGeneralSettings();
+        });
+        document.getElementById("showVatOnInvoice")?.addEventListener("change", () => {
+            saveGeneralSettings();
+        });
+
+        const logoInput = document.getElementById("logoInput");
+        const logo = document.getElementById("companyLogo");
+        document.getElementById("changeLogoBtn")?.addEventListener("click", (event) => {
+            event.preventDefault();
+            logoInput?.click();
+        });
+        document.getElementById("changeLogoIconBtn")?.addEventListener("click", (event) => {
+            event.preventDefault();
+            logoInput?.click();
+        });
+        logoInput?.addEventListener("change", (event) => {
+            const file = event.target.files?.[0];
+            if (!file || !logo) return;
+            
+            // Validate file size
+            if (file.size > 2 * 1024 * 1024) {
+                alert("حجم الملف يتجاوز 2 ميجابايت!");
+                return;
+            }
+            
+            // Upload to API
+            const formData = new FormData();
+            formData.append('logo', file);
+            
+            fetch('/api/settings/logo/upload/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    logo.src = result.logo_url;
+                    alert(result.message);
+                    saveGeneralSettingsLocal();
+                } else {
+                    alert('خطأ: ' + result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ في تحميل الشعار');
+            });
+        });
+        
+        document.getElementById("deleteLogoBtn")?.addEventListener("click", (event) => {
+            event.preventDefault();
+            if (confirm("هل تريد حذف شعار الشركة؟")) {
+                fetch('/api/settings/logo/delete/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                    }
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        if (logo) logo.src = logo.dataset.default || "";
+                        saveGeneralSettingsLocal();
+                        alert(result.message);
+                    } else {
+                        alert('خطأ: ' + result.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ أثناء حذف الشعار');
+                });
+            }
+        });
+
+        snapshotForm();
+        loadGeneralSettings();
+    </script>
+
+</body></html>

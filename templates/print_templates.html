@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>نماذج الطباعة | ERP System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+    darkMode: "class",
+    theme: {
+        extend: {
+            colors: {
+                "primary": "#11a4d4",
+                "background-light": "#f6f8f8",
+                "background-dark": "#101d22",
+            },
+            fontFamily: {
+                "display": ["Inter", "Noto Sans Arabic", "sans-serif"]
+            },
+        },
+    },
+}
+</script>
+<style>
+body { 
+    font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+    background-color: rgb(15 23 42); 
+    color: #e2e8f0; 
+}
+header, aside, main, section { 
+    background-color: rgb(15 23 42); 
+}
+h1, h2, h3, h4, h5, h6 { 
+    color: #fff !important; 
+}
+input:not([type="checkbox"]), select, textarea { 
+    background-color: #334155 !important; 
+    border-color: #475569 !important; 
+    color: #fff !important; 
+}
+.nav-active { 
+    color: #60a5fa !important; 
+    background-color: #334155 !important; 
+    border-right: 4px solid #3b82f6 !important; 
+}
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+}
+</style>
+</head>
+<body class="bg-[rgb(15_23_42)] text-slate-100 font-display transition-colors duration-200">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e5e7eb] dark:border-gray-800 bg-[rgb(15_23_42)] px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-[#111418] dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">dashboard_customize</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">نظام ERP المتكامل</h2>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="flex items-center gap-6">
+<a class="text-[#111418] dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="/">الرئيسية</a>
+<a class="text-[#111418] dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="/sales/">المبيعات</a>
+<a class="text-primary text-sm font-bold leading-normal" href="/print-templates/">الإعدادات</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-gray-800 text-[#111418] dark:text-gray-300" onclick="window.location.href='/notifications/'">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-gray-800 text-[#111418] dark:text-gray-300" onclick="window.location.href='/settings/general/'">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Side Settings Nav -->
+<aside class="w-64 border-l border-[#e5e7eb] dark:border-gray-800 bg-[rgb(15_23_42)] hidden lg:flex flex-col">
+<div class="p-6 flex flex-col gap-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">settings</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold dark:text-white">الإعدادات العامة</h1>
+<p class="text-[#617289] text-xs">تخصيص النظام بالكامل</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#617289] hover:bg-gray-800 transition-colors" href="/settings/general/">
+<span class="material-symbols-outlined">display_settings</span>
+<span class="text-sm font-medium">إعدادات النظام</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg nav-active shadow-sm" href="/print-templates/">
+<span class="material-symbols-outlined">print</span>
+<span class="text-sm font-medium">نماذج الطباعة</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content Area -->
+<section class="flex-1 flex flex-col overflow-y-auto bg-[rgb(15_23_42)]">
+<!-- Breadcrumbs & Heading -->
+<div class="px-8 pt-8">
+<div class="flex flex-wrap gap-2 text-sm">
+<a class="text-[#617289] font-medium" href="/settings/general/">الإعدادات</a>
+<span class="text-[#617289] font-medium">/</span>
+<span class="text-primary font-bold">نماذج الطباعة</span>
+</div>
+<div class="flex flex-wrap justify-between items-end gap-3 mt-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-3xl font-black tracking-tight dark:text-white">نماذج الطباعة</h2>
+<p class="text-[#617289] text-base">اختر وخصص مظهر فواتيرك ومستنداتك المطبوعة لتعكس هوية شركتك</p>
+</div>
+<button class="flex items-center gap-2 px-6 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-[#111418] dark:text-white text-sm font-bold shadow-sm hover:bg-gray-50 transition-all" id="previewTemplatesBtn">
+<span class="material-symbols-outlined text-xl">visibility</span>
+معاينة مباشرة
+</button>
+</div>
+</div>
+<!-- Template Grid -->
+<div class="p-8">
+<h3 class="text-lg font-bold mb-6 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">grid_view</span>
+القوالب المتوفرة
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+{% for template in sales_templates %}
+<div class="template-card group relative flex flex-col bg-white dark:bg-gray-900 rounded-xl overflow-hidden {% if template.is_default %}border-2 border-primary shadow-lg{% else %}border border-gray-200 dark:border-gray-800 hover:border-primary/50{% endif %} transition-all cursor-pointer" data-template-id="{{ template.id }}" data-template-type="{{ template.template_type }}" data-template-name="{{ template.name }}" data-template-style="{{ template.style }}">
+{% if template.is_default %}
+<div class="default-badge absolute top-3 right-3 z-10 bg-primary text-white rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+{% else %}
+<div class="default-badge absolute top-3 right-3 z-10 bg-primary text-white rounded-full p-1 flex items-center justify-center hidden">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+{% endif %}
+
+{% if template.style == 'thermal' %}
+<div class="aspect-[3/4] bg-gray-100 dark:bg-gray-800 p-4 flex justify-center">
+<div class="w-32 h-full bg-white dark:bg-gray-700 rounded shadow-sm border border-gray-200 dark:border-gray-600 flex flex-col p-2 overflow-hidden">
+<div class="flex flex-col items-center gap-2 border-b border-dashed pb-2 mb-2">
+<div class="w-8 h-8 bg-gray-200 rounded-full"></div>
+<div class="w-16 h-2 bg-gray-300 rounded"></div>
+</div>
+<div class="space-y-1">
+<div class="w-full h-2 bg-gray-100 rounded"></div>
+<div class="w-full h-2 bg-gray-100 rounded"></div>
+<div class="w-full h-2 bg-gray-100 rounded"></div>
+</div>
+<div class="mt-auto pt-2 border-t border-dashed flex flex-col items-center gap-1">
+<div class="w-12 h-12 bg-gray-200 rounded"></div>
+<div class="w-10 h-1.5 bg-gray-100 rounded"></div>
+</div>
+</div>
+</div>
+{% elif template.style == 'minimal' %}
+<div class="aspect-[3/4] bg-gray-100 dark:bg-gray-800 p-4">
+<div class="w-full h-full bg-white dark:bg-gray-700 rounded shadow-sm border border-gray-200 dark:border-gray-600 flex flex-col p-6 overflow-hidden">
+<div class="flex flex-col gap-4">
+<div class="w-24 h-4 bg-primary/40 rounded"></div>
+<div class="w-full h-1 bg-gray-100 rounded"></div>
+<div class="space-y-2">
+<div class="flex justify-between">
+<div class="w-20 h-2 bg-gray-200 rounded"></div>
+<div class="w-8 h-2 bg-gray-300 rounded"></div>
+</div>
+<div class="flex justify-between">
+<div class="w-20 h-2 bg-gray-200 rounded"></div>
+<div class="w-8 h-2 bg-gray-300 rounded"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% else %}
+<div class="aspect-[3/4] bg-gray-100 dark:bg-gray-800 p-4">
+<div class="w-full h-full bg-white dark:bg-gray-700 rounded shadow-sm border border-gray-200 dark:border-gray-600 flex flex-col p-4 overflow-hidden">
+<div class="flex justify-between border-b pb-2 mb-4">
+<div class="w-12 h-12 bg-gray-200 rounded"></div>
+<div class="flex flex-col gap-1">
+<div class="w-20 h-2 bg-gray-300 rounded"></div>
+<div class="w-12 h-2 bg-gray-200 rounded"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="w-full h-4 bg-gray-100 rounded"></div>
+<div class="w-full h-4 bg-gray-100 rounded"></div>
+<div class="w-full h-4 bg-gray-100 rounded"></div>
+</div>
+<div class="mt-auto pt-4 border-t flex justify-end">
+<div class="w-16 h-4 bg-primary/20 rounded"></div>
+</div>
+</div>
+</div>
+{% endif %}
+
+<div class="p-4 flex flex-col gap-1 border-t border-gray-100 dark:border-gray-800">
+<span class="font-bold text-[#111418] dark:text-white">{{ template.name }}</span>
+<span class="text-xs text-[#617289]">{{ template.get_template_type_display }}</span>
+</div>
+</div>
+{% empty %}
+<p class="text-slate-400 text-sm">لا توجد نماذج للطباعة</p>
+{% endfor %}
+</div>
+</div>
+</section>
+<!-- Customization Sidebar (Left) -->
+<aside class="w-80 border-r border-[#e5e7eb] dark:border-gray-800 bg-[rgb(15_23_42)] flex flex-col h-full sticky top-0 overflow-y-auto">
+<div class="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+<h3 class="font-bold text-lg dark:text-white">تخصيص النموذج</h3>
+<span class="material-symbols-outlined text-primary">palette</span>
+</div>
+<div class="p-6 flex flex-col gap-8">
+<!-- Visual Identity Section -->
+<div class="flex flex-col gap-4">
+<label class="text-sm font-bold text-[#111418] dark:text-white">الهوية البصرية</label>
+<div class="flex flex-col gap-2">
+<p class="text-xs text-[#617289]">شعار الشركة</p>
+<div id="logo-uploader" class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg p-4 flex flex-col items-center gap-2 hover:border-primary transition-colors cursor-pointer bg-background-light dark:bg-gray-800/50">
+{% if company_settings and company_settings.logo %}
+<img alt="شعار الشركة" class="h-20 object-contain" src="{{ company_settings.logo.url }}"/>
+{% else %}
+<span class="material-symbols-outlined text-3xl text-[#617289]">upload_file</span>
+<p class="text-[10px] text-center text-[#617289]">اسحب الشعار هنا أو اضغط للرفع</p>
+{% endif %}
+</div>
+<input id="logo-input" class="hidden" type="file" accept="image/*" />
+</div>
+<div class="flex flex-col gap-2">
+<p class="text-xs text-[#617289]">ختم المنشأة</p>
+<div id="seal-uploader" class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg p-4 flex flex-col items-center gap-2 hover:border-primary transition-colors cursor-pointer bg-background-light dark:bg-gray-800/50">
+{% if company_settings and company_settings.seal %}
+<img alt="ختم المنشأة" class="h-20 object-contain" src="{{ company_settings.seal.url }}"/>
+{% else %}
+<span class="material-symbols-outlined text-3xl text-[#617289]">approval</span>
+<p class="text-[10px] text-center text-[#617289]">تحميل الختم الرسمي</p>
+{% endif %}
+</div>
+<input id="seal-input" class="hidden" type="file" accept="image/*" />
+</div>
+</div>
+<!-- Header Data Section -->
+<div class="flex flex-col gap-4">
+<label class="text-sm font-bold text-[#111418] dark:text-white">بيانات الترويسة</label>
+<div class="flex flex-col gap-3">
+<div class="flex flex-col gap-1">
+<span class="text-xs text-[#617289]">عنوان الترويسة</span>
+<input id="header-title" class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 text-sm focus:ring-primary focus:border-primary" type="text" value="{{ default_sales_template.header_title|default:'فاتورة ضريبية' }}"/>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-[#617289]">اسم الشركة (بالعربية)</span>
+<input id="company-name-ar" class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 text-sm focus:ring-primary focus:border-primary" type="text" value="{{ company_settings.company_name_ar|default:'' }}"/>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-[#617289]">الرقم الضريبي</span>
+<input id="vat-number" class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 text-sm focus:ring-primary focus:border-primary" type="text" value="{{ company_settings.vat_number|default:'' }}"/>
+</div>
+</div>
+</div>
+<!-- Display Options Section -->
+<div class="flex flex-col gap-4">
+<label class="text-sm font-bold text-[#111418] dark:text-white">إعدادات العرض</label>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-xs text-[#111418] dark:text-gray-300 font-medium">إظهار رمز QR للفوترة</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input id="toggle-qr" class="sr-only peer" type="checkbox" {% if default_sales_template and default_sales_template.show_qr_code %}checked{% endif %}/>
+<div class="relative h-5 w-9 rounded-full bg-slate-600 transition peer-checked:bg-primary after:content-[''] after:absolute after:top-1/2 after:-translate-y-1/2 after:left-[2px] after:h-3.5 after:w-3.5 after:rounded-full after:bg-white after:transition peer-checked:after:translate-x-[22px]"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-[#111418] dark:text-gray-300 font-medium">إظهار التوقيع والختم</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input id="toggle-signature" class="sr-only peer" type="checkbox" {% if default_sales_template and default_sales_template.show_signature %}checked{% endif %}/>
+<div class="relative h-5 w-9 rounded-full bg-slate-600 transition peer-checked:bg-primary after:content-[''] after:absolute after:top-1/2 after:-translate-y-1/2 after:left-[2px] after:h-3.5 after:w-3.5 after:rounded-full after:bg-white after:transition peer-checked:after:translate-x-[22px]"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-[#111418] dark:text-gray-300 font-medium">إظهار تفاصيل الضريبة</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input id="toggle-tax" class="sr-only peer" type="checkbox" {% if default_sales_template and default_sales_template.show_vat %}checked{% endif %}/>
+<div class="relative h-5 w-9 rounded-full bg-slate-600 transition peer-checked:bg-primary after:content-[''] after:absolute after:top-1/2 after:-translate-y-1/2 after:left-[2px] after:h-3.5 after:w-3.5 after:rounded-full after:bg-white after:transition peer-checked:after:translate-x-[22px]"></div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-2">
+<button class="w-full bg-primary text-white font-bold py-2.5 rounded-lg shadow-sm hover:bg-primary/90 transition-colors flex items-center justify-center gap-2" id="saveTemplatesBtn">
+<span class="material-symbols-outlined text-xl">save</span>
+حفظ التعديلات
+</button>
+<button class="w-full bg-transparent text-[#617289] font-medium py-2 rounded-lg hover:text-red-500 transition-colors text-xs" id="resetTemplatesBtn">
+استعادة الإعدادات الافتراضية
+</button>
+</div>
+</aside>
+</main>
+</div>
+<script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        let selectedTemplateId = document.querySelector('.template-card .default-badge:not(.hidden)')?.closest('.template-card')?.dataset?.templateId || null;
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 left-4 px-6 py-3 rounded-lg text-white font-bold shadow-lg z-[9999] ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        function updateSelectedCard(templateId) {
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('border-2', 'border-primary', 'shadow-lg');
+                card.classList.add('border', 'border-gray-200', 'dark:border-gray-800');
+                card.querySelector('.default-badge')?.classList.add('hidden');
+            });
+            const selected = document.querySelector(`.template-card[data-template-id="${templateId}"]`);
+            if (selected) {
+                selected.classList.add('border-2', 'border-primary', 'shadow-lg');
+                selected.classList.remove('border');
+                selected.querySelector('.default-badge')?.classList.remove('hidden');
+            }
+            selectedTemplateId = templateId;
+        }
+
+        async function setDefaultTemplate(templateId, templateType) {
+            try {
+                const response = await fetch('/print-templates/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({
+                        template_id: templateId,
+                        template_type: templateType,
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    updateSelectedCard(templateId);
+                    showToast('✓ تم تحديث النموذج الافتراضي');
+                } else {
+                    showToast(data.message || 'حدث خطأ', 'error');
+                }
+            } catch (error) {
+                showToast('حدث خطأ في الاتصال', 'error');
+            }
+        }
+
+        function bindTemplateSelection() {
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const templateId = card.dataset.templateId;
+                    const templateType = card.dataset.templateType;
+                    if (templateId && templateType) {
+                        setDefaultTemplate(templateId, templateType);
+                    }
+                });
+            });
+        }
+
+        function bindSearch() {
+            const searchInput = document.getElementById('templates-search');
+            if (!searchInput) return;
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim().toLowerCase();
+                document.querySelectorAll('.template-card').forEach(card => {
+                    const name = card.dataset.templateName?.toLowerCase() || '';
+                    const type = card.dataset.templateType?.toLowerCase() || '';
+                    const style = card.dataset.templateStyle?.toLowerCase() || '';
+                    const match = name.includes(query) || type.includes(query) || style.includes(query);
+                    card.style.display = match ? '' : 'none';
+                });
+            });
+        }
+
+        async function uploadFile(endpoint, file, fieldName, onSuccess) {
+            const formData = new FormData();
+            formData.append(fieldName, file);
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.success) {
+                    onSuccess(data);
+                    showToast(data.message || 'تم الرفع بنجاح');
+                } else {
+                    showToast(data.error || 'خطأ في الرفع', 'error');
+                }
+            } catch (error) {
+                showToast('فشل الاتصال بالسيرفر', 'error');
+            }
+        }
+
+        function bindUploads() {
+            const logoUploader = document.getElementById('logo-uploader');
+            const logoInput = document.getElementById('logo-input');
+            const sealUploader = document.getElementById('seal-uploader');
+            const sealInput = document.getElementById('seal-input');
+
+            if (logoUploader && logoInput) {
+                logoUploader.addEventListener('click', () => logoInput.click());
+                logoInput.addEventListener('change', () => {
+                    if (logoInput.files && logoInput.files[0]) {
+                        uploadFile('/api/settings/logo/upload/', logoInput.files[0], 'logo', (data) => {
+                            logoUploader.innerHTML = `<img alt="شعار الشركة" class="h-20 object-contain" src="${data.logo_url}"/>`;
+                        });
+                    }
+                });
+            }
+
+            if (sealUploader && sealInput) {
+                sealUploader.addEventListener('click', () => sealInput.click());
+                sealInput.addEventListener('change', () => {
+                    if (sealInput.files && sealInput.files[0]) {
+                        uploadFile('/api/settings/seal/upload/', sealInput.files[0], 'seal', (data) => {
+                            sealUploader.innerHTML = `<img alt="ختم المنشأة" class="h-20 object-contain" src="${data.seal_url}"/>`;
+                        });
+                    }
+                });
+            }
+        }
+
+        async function saveTemplateSettings() {
+            const headerTitle = document.getElementById('header-title')?.value || '';
+            const companyNameAr = document.getElementById('company-name-ar')?.value || '';
+            const vatNumber = document.getElementById('vat-number')?.value || '';
+            const showQR = document.getElementById('toggle-qr')?.checked || false;
+            const showSignature = document.getElementById('toggle-signature')?.checked || false;
+            const showTaxDetails = document.getElementById('toggle-tax')?.checked || false;
+
+            try {
+                const response = await fetch('/api/settings/print-templates/save/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({
+                        templateId: selectedTemplateId,
+                        headerTitle: headerTitle,
+                        companyNameAr: companyNameAr,
+                        vatNumber: vatNumber,
+                        showQR: showQR,
+                        showSignature: showSignature,
+                        showTaxDetails: showTaxDetails,
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast(data.message || 'تم الحفظ بنجاح');
+                } else {
+                    showToast(data.error || 'خطأ في الحفظ', 'error');
+                }
+            } catch (error) {
+                showToast('فشل الاتصال بالسيرفر', 'error');
+            }
+        }
+
+        document.getElementById("previewTemplatesBtn")?.addEventListener("click", function () {
+            window.print();
+        });
+        document.getElementById("saveTemplatesBtn")?.addEventListener("click", saveTemplateSettings);
+        document.getElementById("resetTemplatesBtn")?.addEventListener("click", () => location.reload());
+
+        bindTemplateSelection();
+        bindSearch();
+        bindUploads();
+    </script>
+<footer class="mt-auto px-10 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</body>
+</html>
+

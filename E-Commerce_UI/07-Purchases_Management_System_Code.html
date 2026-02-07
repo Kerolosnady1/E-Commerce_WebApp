@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>نظام ERP - المشتريات</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=Noto+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                        "navy-accent": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans Arabic", "sans-serif"],
+                        "sans": ["Noto Sans Arabic", "Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+            background-color: #0f172a !important;
+            color: #e2e8f0 !important;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        header, aside, main, section {
+            background-color: #1e293b !important;
+        }
+        h1, h2, h3, h4, h5, h6, p, span, label, a { 
+            color: #e2e8f0 !important; 
+        }
+        .text-slate-900, .text-navy-accent { color: #e2e8f0 !important; }
+        .text-slate-600 { color: #94a3b8 !important; }
+        .text-slate-400, .text-slate-500 { color: #64748b !important; }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+            color: #e2e8f0 !important;
+        }
+        input::placeholder { color: #64748b !important; }
+        .bg-white { background-color: #1e293b !important; }
+        .bg-slate-50, .bg-slate-100 { background-color: #334155 !important; }
+        .bg-background-light { background-color: #0f172a !important; }
+        .border-slate-200, .border-gray-200, .border-[#dbe0e6], .border-[#f0f3f4] { 
+            border-color: #334155 !important; 
+        }
+        table thead { background-color: #1e293b !important; }
+        table tbody tr { background-color: #0f172a !important; }
+        table tbody tr:hover { background-color: #1e293b !important; }
+    </style>
+</head>
+<body class="bg-background-dark text-slate-100 min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-1.5 rounded-lg">
+<svg class="size-6 text-navy-accent" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h1 class="text-xl font-black text-navy-accent dark:text-white tracking-tight">نظام ERP المتكامل</h1>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 hover:text-navy-accent font-medium text-sm transition-colors" href="/">الرئيسية</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-navy-accent font-medium text-sm transition-colors" href="/warehouses/">المخازن</a>
+<a class="text-navy-accent dark:text-primary font-bold text-sm border-b-2 border-primary pb-1" href="/purchases/">المشتريات</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-navy-accent font-medium text-sm transition-colors" href="/sales/">المبيعات</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-navy-accent font-medium text-sm transition-colors" href="/reports/">التقارير</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+    <div class="relative hidden lg:block">
+        <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+            <span class="material-symbols-outlined text-lg">search</span>
+        </span>
+        <input id="purchaseSearch" class="w-64 h-10 bg-slate-100 dark:bg-slate-800 border-none rounded-lg pr-10 text-sm focus:ring-2 focus:ring-primary/50 placeholder:text-slate-400" placeholder="بحث عن طلب..." type="text"/>
+        <div id="searchResults" class="absolute top-12 right-0 w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-64 overflow-y-auto z-50"></div>
+    </div>
+    <a href="/notifications/" class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+        <span class="material-symbols-outlined">notifications</span>
+    </a>
+    <button onclick="toggleProfileMenu()" class="h-10 w-10 rounded-full bg-slate-200 overflow-hidden border-2 border-primary/20 hover:border-primary transition-all" id="profileBtn">
+        {% if user_profile and user_profile.avatar %}
+            <img alt="صورة المستخدم" class="w-full h-full object-cover" src="{{ user_profile.avatar.url }}"/>
+        {% else %}
+            <div class="w-full h-full flex items-center justify-center bg-primary text-white font-bold text-lg">
+                {{ request.user.first_name.0|default:request.user.username.0|upper }}
+            </div>
+        {% endif %}
+    </button>
+    <!-- Profile Dropdown -->
+    <div id="profileMenu" class="absolute top-16 left-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden w-48 z-50">
+        <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+            <p class="font-bold text-sm">{{ request.user.first_name }} {{ request.user.last_name }}</p>
+            <p class="text-xs text-slate-500">{{ request.user.email }}</p>
+        </div>
+        <a href="/settings/general/" class="block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">الإعدادات</a>
+        <a href="/logout/" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20">تسجيل الخروج</a>
+    </div>
+</div>
+</header>
+<div class="max-w-[1440px] mx-auto w-full flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 hidden xl:flex flex-col py-6 px-4 shrink-0">
+<div class="mb-8 px-2">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">القائمة الرئيسية</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" href="/">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span class="font-medium text-sm">لوحة التحكم</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-navy-accent dark:text-primary font-semibold" href="/purchases/">
+<span class="material-symbols-outlined text-xl fill-1">shopping_cart</span>
+<span class="text-sm">المشتريات</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" href="/suppliers/">
+<span class="material-symbols-outlined text-xl">group</span>
+<span class="font-medium text-sm">الموردين</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" href="/inventory/">
+<span class="material-symbols-outlined text-xl">inventory_2</span>
+<span class="font-medium text-sm">المنتجات</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" href="/invoices/">
+<span class="material-symbols-outlined text-xl">description</span>
+<span class="font-medium text-sm">الفواتير</span>
+</a>
+</div>
+</div>
+<div class="mt-auto px-2">
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" href="/settings/general/">
+<span class="material-symbols-outlined text-xl">settings</span>
+<span class="font-medium text-sm">الإعدادات</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-all" href="/logout/">
+<span class="material-symbols-outlined text-xl">logout</span>
+<span class="font-medium text-sm">تسجيل الخروج</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6 md:p-8">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<h2 class="text-4xl font-black text-navy-accent dark:text-white tracking-tight mb-2">إدارة المشتريات</h2>
+<p class="text-slate-500 dark:text-slate-400 text-lg">متابعة طلبات التوريد، الفواتير وعلاقات الموردين</p>
+</div>
+<button onclick="openNewPurchaseModal()" class="flex items-center justify-center gap-2 px-6 h-12 bg-primary text-navy-accent font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all shrink-0">
+<span class="material-symbols-outlined font-bold">add_circle</span>
+<span>طلب شراء جديد</span>
+</button>
+</div>
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="text-slate-500 font-medium">إجمالي المشتريات</span>
+<div class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 p-2 rounded-lg">
+<span class="material-symbols-outlined">payments</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-black text-navy-accent dark:text-white">{{ total_amount|floatformat:2|default:"0.00" }}</span>
+<span class="text-sm font-bold text-slate-400">ر.س</span>
+</div>
+<div class="mt-2 flex items-center gap-1 text-primary font-bold text-xs">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>{{ total_orders|default:"0" }} طلب شراء</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="text-slate-500 font-medium">بانتظار الاستلام</span>
+<div class="bg-amber-50 dark:bg-amber-900/20 text-amber-600 p-2 rounded-lg">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-black text-navy-accent dark:text-white">{{ pending_orders|default:"0" }}</span>
+<span class="text-sm font-bold text-slate-400">طلب</span>
+</div>
+<div class="mt-2 flex items-center gap-1 text-slate-400 font-bold text-xs">
+<span>قيد المعالجة حالياً</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="text-slate-500 font-medium">تم الاستلام</span>
+<div class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 p-2 rounded-lg">
+<span class="material-symbols-outlined">task_alt</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-black text-navy-accent dark:text-white">{{ completed_orders|default:"0" }}</span>
+<span class="text-sm font-bold text-slate-400">طلب مكتمل</span>
+</div>
+<div class="mt-2 flex items-center gap-1 text-primary font-bold text-xs">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span>مكتمل بنجاح</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="text-slate-500 font-medium">طلبات ملغاة</span>
+<div class="bg-red-50 dark:bg-red-900/20 text-red-600 p-2 rounded-lg">
+<span class="material-symbols-outlined">cancel</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-black text-navy-accent dark:text-white">{{ cancelled_orders|default:"0" }}</span>
+<span class="text-sm font-bold text-slate-400">طلبات</span>
+</div>
+<div class="mt-2 flex items-center gap-1 text-slate-400 font-bold text-xs">
+<span>طلبات ملغية</span>
+</div>
+</div>
+</div>
+<!-- Tabs & Filters -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm mb-6">
+<div class="px-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-8 overflow-x-auto">
+<a href="?status=all" class="py-4 px-2 border-b-2 {% if current_filter == 'all' or not current_filter %}border-primary text-navy-accent dark:text-primary font-bold{% else %}border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium{% endif %} text-sm whitespace-nowrap transition-colors">
+كل الطلبات ({{ total_orders|default:"0" }})
+</a>
+<a href="?status=processing" class="py-4 px-2 border-b-2 {% if current_filter == 'processing' %}border-primary text-navy-accent dark:text-primary font-bold{% else %}border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium{% endif %} text-sm whitespace-nowrap transition-colors">
+قيد المعالجة ({{ processing_orders|default:"0" }})
+</a>
+<a href="?status=received" class="py-4 px-2 border-b-2 {% if current_filter == 'received' %}border-primary text-navy-accent dark:text-primary font-bold{% else %}border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium{% endif %} text-sm whitespace-nowrap transition-colors">
+تم الاستلام ({{ completed_orders|default:"0" }})
+</a>
+<a href="?status=cancelled" class="py-4 px-2 border-b-2 {% if current_filter == 'cancelled' %}border-primary text-navy-accent dark:text-primary font-bold{% else %}border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium{% endif %} text-sm whitespace-nowrap transition-colors">
+ملغاة ({{ cancelled_orders|default:"0" }})
+</a>
+<div class="mr-auto py-2">
+    <div class="flex items-center gap-2">
+        <button onclick="openAdvancedFilter()" class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            <span class="material-symbols-outlined text-base">filter_list</span>
+            تصفية متقدمة
+        </button>
+        <a href="/purchases/export/" class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            <span class="material-symbols-outlined text-base">download</span>
+            تصدير بيانات
+        </a>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto">
+<table class="w-full text-right">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-xs font-bold">
+<th class="px-6 py-4">رقم الطلب</th>
+<th class="px-6 py-4">المورد</th>
+<th class="px-6 py-4">تاريخ الطلب</th>
+<th class="px-6 py-4">المبلغ الإجمالي</th>
+<th class="px-6 py-4">الحالة</th>
+<th class="px-6 py-4 text-center">الإجراءات</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+{% if purchase_orders %}
+{% for order in purchase_orders %}
+<tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-5 font-display font-semibold text-navy-accent dark:text-white">{{ order.number }}</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 font-bold text-xs uppercase">
+{{ order.supplier.name.0|default:"S" }}
+</div>
+<span class="font-bold text-slate-700 dark:text-slate-200">{{ order.supplier.name }}</span>
+</div>
+</td>
+<td class="px-6 py-5 text-slate-500 text-sm">{{ order.issued_date|date:"d M Y" }}</td>
+<td class="px-6 py-5">
+<span class="font-display font-bold text-navy-accent dark:text-white">{{ order.total|floatformat:2 }}</span>
+<span class="text-[10px] text-slate-400 mr-1">ر.س</span>
+</td>
+<td class="px-6 py-5">
+{% if order.status == 'received' or order.status == 'completed' %}
+<span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center w-fit gap-1">
+<span class="size-1.5 bg-emerald-500 rounded-full"></span>
+{{ order.status_display }}
+</span>
+{% elif order.status == 'sent' or order.status == 'pending' %}
+<span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-xs font-bold flex items-center w-fit gap-1">
+<span class="size-1.5 bg-amber-500 rounded-full"></span>
+{{ order.status_display }}
+</span>
+{% elif order.status == 'cancelled' %}
+<span class="px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-bold flex items-center w-fit gap-1">
+<span class="size-1.5 bg-red-500 rounded-full"></span>
+{{ order.status_display }}
+</span>
+{% else %}
+<span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold flex items-center w-fit gap-1">
+<span class="size-1.5 bg-slate-500 rounded-full"></span>
+{{ order.status_display }}
+</span>
+{% endif %}
+</td>
+<td class="px-6 py-5">
+<div class="flex justify-center gap-2">
+<a href="/purchase-orders/{{ order.id }}/" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-navy-accent transition-colors" title="عرض التفاصيل">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</a>
+<a href="/purchase-orders/{{ order.id }}/edit/" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-navy-accent transition-colors" title="تعديل">
+<span class="material-symbols-outlined text-lg">edit</span>
+</a>
+<a href="/print-templates/" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-navy-accent transition-colors" title="طباعة">
+<span class="material-symbols-outlined text-lg">print</span>
+</a>
+</div>
+</td>
+</tr>
+{% endfor %}
+{% else %}
+<tr>
+<td colspan="6" class="px-6 py-12 text-center text-slate-400">
+<div class="flex flex-col items-center gap-3">
+<span class="material-symbols-outlined text-5xl">inbox</span>
+<p class="text-lg font-medium">لا توجد طلبات شراء</p>
+<p class="text-sm">ابدأ بإنشاء طلب شراء جديد</p>
+</div>
+</td>
+</tr>
+{% endif %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+    <!-- Pagination Footer -->
+    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="text-sm text-slate-500">
+            عرض <span class="font-bold text-navy-accent dark:text-white">1-{{ purchase_orders|length }}</span> من <span class="font-bold text-navy-accent dark:text-white">{{ total_orders }}</span> طلب
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-400 hover:text-navy-accent hover:border-navy-accent transition-all">
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+            <button class="size-8 flex items-center justify-center rounded-lg bg-navy-accent text-white font-bold text-xs">1</button>
+            <button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-400 hover:text-navy-accent hover:border-navy-accent transition-all">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+        </div>
+    </div>
+</main>
+
+<!-- New Purchase Modal -->
+<div id="newPurchaseModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div class="bg-white dark:bg-slate-900 rounded-xl p-6 w-full max-w-md">
+        <h3 class="text-xl font-bold text-navy-accent dark:text-white mb-4">طلب شراء جديد</h3>
+        <form id="purchaseForm" onsubmit="createPurchaseOrder(event)">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">المورد</label>
+                    <select name="supplier_id" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg" required>
+                        <option value="">اختر المورد</option>
+                        {% for supplier in suppliers %}
+                        <option value="{{ supplier.id }}">{{ supplier.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="mt-3 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <p class="text-xs text-slate-500 mb-2">إضافة مورد جديد بسرعة</p>
+                        <div class="grid grid-cols-1 gap-2">
+                            <input id="quickSupplierName" type="text" placeholder="اسم المورد" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg" />
+                            <input id="quickSupplierEmail" type="email" placeholder="البريد الإلكتروني (اختياري)" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg" />
+                            <input id="quickSupplierPhone" type="text" placeholder="رقم الهاتف (اختياري)" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg" />
+                        </div>
+                        <button type="button" onclick="createSupplierQuick()" class="mt-2 w-full px-3 py-2 bg-primary text-navy-accent font-bold rounded-lg hover:bg-primary/90">إضافة المورد</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">تاريخ الطلب</label>
+                    <input type="date" name="issued_date" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">المبلغ الإجمالي</label>
+                    <input type="number" name="total" step="0.01" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg" required/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">الملاحظات</label>
+                    <textarea name="notes" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="flex gap-2 mt-6">
+                <button type="submit" class="flex-1 px-4 py-2 bg-primary text-navy-accent font-bold rounded-lg hover:bg-primary/90">إنشاء الطلب</button>
+                <button type="button" onclick="closeNewPurchaseModal()" class="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Advanced Filter Modal -->
+<div id="advancedFilterModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div class="bg-white dark:bg-slate-900 rounded-xl p-6 w-full max-w-md">
+        <h3 class="text-xl font-bold text-navy-accent dark:text-white mb-4">تصفية متقدمة</h3>
+        <form id="filterForm" onsubmit="applyAdvancedFilter(event)">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">المورد</label>
+                    <select name="supplier" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg">
+                        <option value="">الكل</option>
+                        {% for supplier in suppliers %}
+                        <option value="{{ supplier.id }}" {% if filters.supplier|default:"" == supplier.id|stringformat:"s" %}selected{% endif %}>{{ supplier.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">من التاريخ</label>
+                    <input type="date" name="date_from" value="{{ filters.date_from|default:'' }}" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">إلى التاريخ</label>
+                    <input type="date" name="date_to" value="{{ filters.date_to|default:'' }}" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">الحد الأدنى للمبلغ</label>
+                    <input type="number" name="amount_min" value="{{ filters.amount_min|default:'' }}" step="0.01" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">الحد الأقصى للمبلغ</label>
+                    <input type="number" name="amount_max" value="{{ filters.amount_max|default:'' }}" step="0.01" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"/>
+                </div>
+            </div>
+            <div class="flex gap-2 mt-6">
+                <button type="submit" class="flex-1 px-4 py-2 bg-primary text-navy-accent font-bold rounded-lg hover:bg-primary/90">تطبيق التصفية</button>
+                <button type="button" onclick="closeAdvancedFilter()" class="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Toggle profile menu
+function toggleProfileMenu() {
+    const menu = document.getElementById('profileMenu');
+    menu.classList.toggle('hidden');
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#profileBtn') && !e.target.closest('#profileMenu')) {
+            menu.classList.add('hidden');
+        }
+    });
+}
+
+// Search purchases
+document.getElementById('purchaseSearch')?.addEventListener('input', async (e) => {
+    const query = e.target.value.trim();
+    const resultsDiv = document.getElementById('searchResults');
+    
+    if (!query) {
+        resultsDiv.classList.add('hidden');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/purchases/search/?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        
+        if (data.results.length) {
+            resultsDiv.innerHTML = data.results.map(r => `
+                <a href="/purchase-orders/${r.id}/edit/" class="block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 border-b border-slate-200 dark:border-slate-700">
+                    <div class="font-medium">${r.number}</div>
+                    <div class="text-xs text-slate-500">${r.supplier}</div>
+                </a>
+            `).join('');
+            resultsDiv.classList.remove('hidden');
+        } else {
+            resultsDiv.innerHTML = '<div class="p-4 text-center text-slate-500">لا توجد نتائج</div>';
+            resultsDiv.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('خطأ في البحث:', error);
+    }
+});
+
+// New Purchase Modal
+function openNewPurchaseModal() {
+    document.getElementById('newPurchaseModal').classList.remove('hidden');
+}
+
+function closeNewPurchaseModal() {
+    document.getElementById('newPurchaseModal').classList.add('hidden');
+}
+
+async function createPurchaseOrder(e) {
+    e.preventDefault();
+    const formData = new FormData(document.getElementById('purchaseForm'));
+    
+    try {
+        const response = await fetch('/purchases/new/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value
+            }
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            alert(data.message);
+            closeNewPurchaseModal();
+            location.reload();
+        } else {
+            alert('خطأ: ' + data.error);
+        }
+    } catch (error) {
+        alert('خطأ في إنشاء الطلب: ' + error);
+    }
+}
+
+// Quick create supplier
+async function createSupplierQuick() {
+    const name = document.getElementById('quickSupplierName').value.trim();
+    const email = document.getElementById('quickSupplierEmail').value.trim();
+    const phone = document.getElementById('quickSupplierPhone').value.trim();
+
+    if (!name) {
+        alert('اسم المورد مطلوب');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('phone', phone);
+
+    try {
+        const response = await fetch('/suppliers/quick-create/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value
+            }
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            const select = document.querySelector('select[name="supplier_id"]');
+            const option = document.createElement('option');
+            option.value = data.supplier.id;
+            option.textContent = data.supplier.name;
+            option.selected = true;
+            select.appendChild(option);
+
+            document.getElementById('quickSupplierName').value = '';
+            document.getElementById('quickSupplierEmail').value = '';
+            document.getElementById('quickSupplierPhone').value = '';
+        } else {
+            alert(data.error || 'حدث خطأ أثناء إضافة المورد');
+        }
+    } catch (error) {
+        alert('تعذر إضافة المورد: ' + error);
+    }
+}
+
+// Advanced Filter Modal
+function openAdvancedFilter() {
+    document.getElementById('advancedFilterModal').classList.remove('hidden');
+}
+
+function closeAdvancedFilter() {
+    document.getElementById('advancedFilterModal').classList.add('hidden');
+}
+
+function applyAdvancedFilter(e) {
+    e.preventDefault();
+    const form = document.getElementById('filterForm');
+    const params = new URLSearchParams(window.location.search);
+
+    const supplier = form.supplier.value;
+    const dateFrom = form.date_from.value;
+    const dateTo = form.date_to.value;
+    const amountMin = form.amount_min.value;
+    const amountMax = form.amount_max.value;
+
+    if (supplier) {
+        params.set('supplier', supplier);
+    } else {
+        params.delete('supplier');
+    }
+    if (dateFrom) {
+        params.set('date_from', dateFrom);
+    } else {
+        params.delete('date_from');
+    }
+    if (dateTo) {
+        params.set('date_to', dateTo);
+    } else {
+        params.delete('date_to');
+    }
+    if (amountMin) {
+        params.set('amount_min', amountMin);
+    } else {
+        params.delete('amount_min');
+    }
+    if (amountMax) {
+        params.set('amount_max', amountMax);
+    } else {
+        params.delete('amount_max');
+    }
+
+    window.location.search = params.toString();
+}
+</script>
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</body></html>

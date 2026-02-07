@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>إدارة العملاء - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "Noto Sans Arabic", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope','Noto Sans Arabic',sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1)); color: #e2e8f0; }
+        header, aside, main, section { background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1)); }
+        h1, h2, h3, h4, h5, h6 { color: #fff !important; }
+        label { color: #9ca3af !important; }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+            color: #fff !important;
+        }
+        .bg-white, .bg-slate-50, .bg-background-light { background-color: #1f2937 !important; }
+        .border-gray-200, .border-[#dbe0e6], .border-[#f0f3f4] { border-color: #334155 !important; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen">
+<div class="flex h-screen overflow-hidden">
+    <aside class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-l border-[#f0f3f4] dark:border-slate-800 flex flex-col justify-between p-4 h-full">
+        <div class="flex flex-col gap-8">
+            <div class="flex items-center gap-3 px-2">
+                <div class="bg-primary rounded-lg p-2 text-white">
+                    <span class="material-symbols-outlined text-2xl">grid_view</span>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-[#111618] dark:text-white text-base font-bold leading-tight">نظام ERP</h1>
+                    <p class="text-[#617f89] text-xs font-normal">إدارة المؤسسة الشاملة</p>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-1">
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-sm font-medium">لوحة القيادة</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/sales/">
+                    <span class="material-symbols-outlined">point_of_sale</span>
+                    <span class="text-sm font-medium">المبيعات</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary" href="/customers/">
+                    <span class="material-symbols-outlined">groups</span>
+                    <span class="text-sm font-bold">العملاء</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/inventory/">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                    <span class="text-sm font-medium">المخزون</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/warehouses/">
+                    <span class="material-symbols-outlined">warehouse</span>
+                    <span class="text-sm font-medium">المستودعات</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/reports/">
+                    <span class="material-symbols-outlined">bar_chart</span>
+                    <span class="text-sm font-medium">التقارير</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/settings/system/">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">الإعدادات</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-6">
+        <div class="flex flex-col gap-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">إدارة العملاء</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">إدارة قاعدة العملاء والتعاملات</p>
+                </div>
+                <a href="/customers/create/" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">add</span>
+                    عميل جديد
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-slate-900 border border-[#f0f3f4] dark:border-slate-800 rounded-xl p-4">
+                    <p class="text-xs text-slate-400">إجمالي العملاء</p>
+                    <p class="text-2xl font-bold">{{ total_customers }}</p>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-[#f0f3f4] dark:border-slate-800 rounded-xl p-4">
+                    <p class="text-xs text-slate-400">العملاء النشطون</p>
+                    <p class="text-2xl font-bold">{{ active_customers }}</p>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-[#f0f3f4] dark:border-slate-800 rounded-xl p-4">
+                    <p class="text-xs text-slate-400">عملاء هذا الشهر</p>
+                    <p class="text-2xl font-bold">{{ new_customers_this_month }}</p>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-[#f0f3f4] dark:border-slate-800 rounded-xl p-4">
+                    <p class="text-xs text-slate-400">إجمالي الأرصدة</p>
+                    <p class="text-2xl font-bold">{{ total_balance|floatformat:2 }} ر.س</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-xl border border-[#f0f3f4] dark:border-slate-800 overflow-hidden shadow-sm">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-background-light dark:bg-background-dark/30 border-b border-primary/10">
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">العميل</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">البريد</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">الهاتف</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">الطلبات</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">الرصيد</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">الحالة</th>
+                                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-primary/5">
+                            {% if customers %}
+                                {% for customer in customers %}
+                                <tr class="hover:bg-primary/5 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900 dark:text-white">{{ customer.name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{{ customer.email|default:"-" }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{{ customer.phone|default:"-" }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{{ customer.total_orders }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900 dark:text-white">{{ customer.balance|floatformat:2 }} ر.س</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {% if customer.is_active %}
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">
+                                                <span class="size-1.5 rounded-full bg-primary"></span>
+                                                نشط
+                                            </span>
+                                        {% else %}
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gray-500/10 text-gray-400 border border-gray-500/20">
+                                                <span class="size-1.5 rounded-full bg-gray-400"></span>
+                                                غير نشط
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center gap-2">
+                                            <a class="p-1 text-slate-400 hover:text-primary transition-colors" href="/customers/{{ customer.id }}/edit/"><span class="material-symbols-outlined">edit</span></a>
+                                            <a class="p-1 text-slate-400 hover:text-red-500 transition-colors" href="/customers/{{ customer.id }}/delete/"><span class="material-symbols-outlined">delete</span></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="7" class="px-6 py-6 text-sm text-slate-500 dark:text-slate-400">لا توجد عملاء لعرضهم.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<footer class="mt-auto px-10 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+    <div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+        <p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+        <div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+            <a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+            <a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+            <a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</body></html>

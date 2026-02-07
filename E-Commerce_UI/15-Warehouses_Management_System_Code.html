@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html class="dark" dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>المستودعات - نظام ERP</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#11a4d4",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "system-ui", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+        }
+        .material-symbols-outlined { 
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; 
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+            color: #e2e8f0;
+        }
+        header, aside, main, section {
+            background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+        }
+        h1, h2, h3, h4, h5, h6 { color: #fff !important; }
+        label { color: #9ca3af !important; }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+            color: #fff !important;
+        }
+        .bg-white, .bg-slate-50, .bg-background-light { background-color: #1f2937 !important; }
+        .border-gray-200, .border-[#dbe0e6], .border-[#f0f3f4] { border-color: #334155 !important; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
+<div class="flex h-screen overflow-hidden">
+    <aside class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-l border-[#f0f3f4] dark:border-slate-800 flex flex-col justify-between p-4 h-full">
+        <div class="flex flex-col gap-8">
+            <div class="flex items-center gap-3 px-2">
+                <div class="bg-primary rounded-lg p-2 text-white">
+                    <span class="material-symbols-outlined text-2xl">grid_view</span>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-[#111618] dark:text-white text-base font-bold leading-tight">نظام ERP</h1>
+                    <p class="text-[#617f89] text-xs font-normal">إدارة المؤسسة الشاملة</p>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-1">
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-sm font-medium">لوحة القيادة</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/inventory/">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                    <span class="text-sm font-medium">المخزون</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary" href="/warehouses/">
+                    <span class="material-symbols-outlined filled-icon">warehouse</span>
+                    <span class="text-sm font-bold">المستودعات</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/reports/">
+                    <span class="material-symbols-outlined">bar_chart</span>
+                    <span class="text-sm font-medium">التقارير</span>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617f89] hover:bg-[#f0f3f4] dark:hover:bg-slate-800 transition-colors" href="/settings/system/">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">الإعدادات</span>
+                </a>
+            </nav>
+        </div>
+        <a class="flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary/90 text-white rounded-lg py-3 px-4 font-bold text-sm transition-all shadow-sm" href="/warehouses/create/">
+            <span class="material-symbols-outlined text-[20px]">add_circle</span>
+            <span>إضافة مستودع</span>
+        </a>
+    </aside>
+
+    <div class="flex flex-col flex-1 overflow-hidden">
+        <header class="h-16 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-6 z-10">
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">warehouse</span>
+                    <h2 class="text-lg font-bold text-white">إدارة المستودعات</h2>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <a class="p-2 rounded-lg bg-slate-700 text-white relative hover:bg-slate-600 transition-colors" href="/notifications/">
+                    <span class="material-symbols-outlined text-[22px]">notifications</span>
+                    <span class="absolute top-1.5 left-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-slate-800"></span>
+                </a>
+                <a class="p-2 rounded-lg bg-slate-700 text-white hover:bg-slate-600 transition-colors" href="/help/">
+                    <span class="material-symbols-outlined text-[22px]">chat_bubble</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-900">
+            {% if messages %}
+                <div class="space-y-2">
+                    {% for message in messages %}
+                        <div class="{% if message.tags == 'error' %}bg-red-500{% elif message.tags == 'success' %}bg-green-500{% else %}bg-blue-500{% endif %} text-white px-4 py-3 rounded-lg shadow-sm flex items-center gap-2">
+                            <span class="material-symbols-outlined">
+                                {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}check_circle{% else %}info{% endif %}
+                            </span>
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-3xl font-black tracking-tight text-white">قائمة المستودعات</h3>
+                    <p class="text-slate-400 text-sm mt-1">إدارة مواقع التخزين والطاقة الاستيعابية لكل مستودع.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a class="bg-primary text-white font-bold py-2.5 px-6 rounded-lg text-sm flex items-center gap-2 shadow-sm hover:shadow-md transition-all hover:bg-primary/90" href="{% url 'warehouse_create' %}">
+                        <span class="material-symbols-outlined text-[18px]">add</span>
+                        إضافة مستودع
+                    </a>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-sm">إجمالي المستودعات</p>
+                            <p class="text-2xl font-bold text-white mt-1">{{ total_warehouses }}</p>
+                        </div>
+                        <div class="bg-blue-500/20 p-3 rounded-lg">
+                            <span class="material-symbols-outlined text-blue-400 text-3xl">warehouse</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-sm">المستودعات النشطة</p>
+                            <p class="text-2xl font-bold text-white mt-1">{{ active_warehouses }}</p>
+                        </div>
+                        <div class="bg-green-500/20 p-3 rounded-lg">
+                            <span class="material-symbols-outlined text-green-400 text-3xl">check_circle</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-800 rounded-lg border border-slate-700 p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-400 text-sm">المستودعات غير النشطة</p>
+                            <p class="text-2xl font-bold text-white mt-1">{{ inactive_warehouses }}</p>
+                        </div>
+                        <div class="bg-red-500/20 p-3 rounded-lg">
+                            <span class="material-symbols-outlined text-red-400 text-3xl">cancel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filter Form -->
+            <form method="get" class="bg-slate-800 rounded-lg border border-slate-700 p-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-slate-300 text-sm font-medium mb-2">البحث</label>
+                        <input type="text" name="search" value="{{ search_query }}" placeholder="ابحث عن مستودع أو موقع..." class="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 text-sm font-medium mb-2">الحالة</label>
+                        <select name="status" class="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="all" {% if status_filter == 'all' %}selected{% endif %}>الكل</option>
+                            <option value="active" {% if status_filter == 'active' %}selected{% endif %}>نشط</option>
+                            <option value="inactive" {% if status_filter == 'inactive' %}selected{% endif %}>غير نشط</option>
+                            <option value="maintenance" {% if status_filter == 'maintenance' %}selected{% endif %}>صيانة</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end gap-2">
+                        <button type="submit" class="flex-1 bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-primary/90 transition-colors">
+                            <span class="flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">search</span>
+                                بحث
+                            </span>
+                        </button>
+                        <a href="{% url 'warehouses' %}" class="bg-slate-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-slate-600 transition-colors">
+                            إعادة تعيين
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right">
+                        <thead>
+                            <tr class="bg-slate-900/50 border-b border-slate-700">
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-200">اسم المستودع</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-200">الموقع</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-200">السعة</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-200">الحالة</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-200">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700">
+                            {% if warehouses %}
+                                {% for warehouse in warehouses %}
+                                    <tr class="hover:bg-slate-700/30 transition-colors">
+                                        <td class="px-6 py-4 text-slate-100 font-medium">{{ warehouse.name }}</td>
+                                        <td class="px-6 py-4 text-slate-300">{{ warehouse.location }}</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <div class="flex-1 bg-slate-700 rounded-full h-2 max-w-[100px]">
+                                                    <div class="{% if warehouse.capacity >= 80 %}bg-green-500{% elif warehouse.capacity >= 50 %}bg-amber-500{% else %}bg-red-500{% endif %} h-2 rounded-full" style="width: {{ warehouse.capacity }}%"></div>
+                                                </div>
+                                                <span class="text-slate-200 text-sm font-medium">{{ warehouse.capacity|floatformat:0 }}%</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {% if warehouse.status == 'active' %}
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-500/20 text-green-400 border border-green-500/30">نشط</span>
+                                            {% elif warehouse.status == 'inactive' %}
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30">غير نشط</span>
+                                            {% elif warehouse.status == 'maintenance' %}
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">صيانة</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <a class="p-1.5 hover:bg-primary/10 text-primary rounded-md transition-colors" href="{% url 'warehouse_edit' warehouse.pk %}" title="تعديل">
+                                                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                                                </a>
+                                                <a class="p-1.5 hover:bg-slate-600 text-slate-300 rounded-md transition-colors" href="{% url 'warehouse_view' warehouse.pk %}" title="عرض التفاصيل">
+                                                    <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                                </a>
+                                                <a class="p-1.5 hover:bg-red-500/10 text-red-400 rounded-md transition-colors" href="{% url 'warehouse_delete' warehouse.pk %}" onclick="return confirm('هل أنت متأكد من حذف هذا المستودع؟')" title="حذف">
+                                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-slate-400">
+                                        <div class="flex flex-col items-center gap-3">
+                                            <span class="material-symbols-outlined text-5xl text-slate-600">inventory_2</span>
+                                            <p class="text-lg">لا توجد مستودعات</p>
+                                            <a href="{% url 'warehouse_create' %}" class="text-primary hover:underline">إضافة مستودع جديد</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<footer class="mt-auto px-10 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
+<div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
+<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+</div>
+</div>
+</footer>
+</body>
+</html>
+

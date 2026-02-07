@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة صفحات النظام</title>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}" />
+</head>
+<body class="page">
+    <header class="page__header">
+        <div class="container header__inner">
+            <div>
+                <p class="eyebrow">E-Commerce ERP</p>
+                <h1 class="title">لوحة صفحات النظام</h1>
+                <p class="subtitle">ادخل مباشرةً إلى جميع واجهات النظام وتجارب الاستخدام.</p>
+            </div>
+            <div class="header__meta">
+                <span class="badge" data-current-year></span>
+                <a class="btn btn--primary" href="/admin/">لوحة التحكم الإدارية</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="page__content">
+        <section class="container">
+            <div class="search">
+                <label class="search__field">
+                    <span class="search__label">بحث سريع</span>
+                    <input type="search" placeholder="ابحث عن صفحة..." data-search-input />
+                </label>
+                <div class="search__stats" data-search-count>15 صفحات متاحة</div>
+            </div>
+        </section>
+
+        <section class="container grid" data-search-list>
+            {% for page in pages %}
+            <article class="card" data-search-card>
+                <div class="card__body">
+                    <h2 class="card__title">{{ page.name }}</h2>
+                    <p class="card__subtitle">رابط مباشر لواجهة {{ page.name }}.</p>
+                </div>
+                <div class="card__footer">
+                    <a class="btn" href="{{ page.url }}">فتح الصفحة</a>
+                    <span class="chip">{{ page.path }}</span>
+                </div>
+            </article>
+            {% endfor %}
+        </section>
+    </main>
+
+    <footer class="page__footer">
+        <div class="container footer__inner">
+            <p>© <span data-current-year></span> منصة التجارة الإلكترونية</p>
+            <a href="/">لوحة التحكم الرئيسية</a>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
