@@ -142,15 +142,15 @@ E-Commerce_WebApp/
 
 ## Sales Management
 
-![docs/screenshots/sales.png]
+![docs/screenshots/sales.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/sales.png?raw=true)
 
 ## Users & Permissions
 
-![docs/screenshots/users.png]
+![docs/screenshots/users.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/settings.png?raw=true)
 
 ## System Settings
 
-![docs/screenshots/settings.png]
+![docs/screenshots/settings.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/users.png?raw=true)
 
 > 🌐 Want to explore the full system?
 >
