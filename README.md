@@ -129,39 +129,36 @@ E-Commerce_WebApp/
 
 ---
 
-# 📷 Screenshots
+# 📷 Project Preview
 
 ## Dashboard
 
 docs/screenshots/dashboard.png
 
----
-
 ## Inventory Management
 
 docs/screenshots/inventory.png
-
----
 
 ## Sales Management
 
 docs/screenshots/sales.png
 
----
-
 ## Users & Permissions
 
 docs/screenshots/users.png
-
----
 
 ## System Settings
 
 docs/screenshots/settings.png
 
-```text
-There are more waiting for you, go to: https://e-commerce-webapp-ay2l.onrender.com/ and take a live look😉
-```
+> 🌐 Want to explore the full system?
+>
+> Visit the live demo:
+>
+> https://e-commerce-webapp-ay2l.onrender.com/
+>
+> ⚠️ Note: The application is hosted on Render's free tier, so the initial load may take up to 50 seconds.
+``
 
 ---
 
