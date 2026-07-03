@@ -138,7 +138,7 @@ E-Commerce_WebApp/
 
 ## Inventory Management
 
-![docs/screenshots/inventory.png]
+![docs/screenshots/inventory.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/inventory.png?raw=true)
 
 ## Sales Management
 
