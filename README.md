@@ -8,8 +8,8 @@ A modern Arabic-first ERP & E-Commerce Management Platform built with Django, de
 
 ```text
 https://e-commerce-webapp-ay2l.onrender.com/
-NOTE⚠️: This is free hosted web app so you will experience 50 second or more delay while using it.
 ```
+> NOTE⚠️: This is free hosted web app so you will experience 50 second or more delay while using it.
 
 ---
 
