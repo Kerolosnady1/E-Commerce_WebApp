@@ -1,196 +1,368 @@
-# ERP E‑Commerce Arkanzax
+# 🚀 Arkanzax ERP E-Commerce System
 
-An Arabic-first ERP interface for e‑commerce operations, built on Django with a comprehensive set of settings pages, dashboards, and management screens. The UI emphasizes a unified dark theme, consistent component styling, and interactive controls across all major sections of the system.
+A modern Arabic-first ERP & E-Commerce Management Platform built with Django, designed to help businesses manage sales, inventory, customers, permissions, notifications, and operational settings through a unified and professional interface.
 
-## Overview
+## 🌐 Live Demo
 
-This project contains:
+**Demo URL:**
 
-- **Static UI pages** under E-Commerce_UI for design, layout, and interaction prototypes.
-- **Django templates** under templates for server-rendered pages.
-- **Static assets** under static for CSS/JS.
-- **SQLite database** at db.sqlite3 (development).
+```text
+https://e-commerce-webapp-ay2l.onrender.com/
+NOTE⚠️: This is free hosted web app so you will experience 50 second or more delay while using it.
+```
 
-The system includes core operational modules (sales, customers, inventory, tax, security, notifications) and multiple settings modules (general settings, language & time, account management, print templates, etc.).
+---
 
-## Key UX / UI Features
+# 📖 Overview
 
-- **Unified dark theme** using:
-  - rgb(15 23 42 / var(--tw-bg-opacity, 1))
+Arkanzax ERP is a business management system focused on e-commerce operations, providing a centralized platform for managing different areas of a business from a single dashboard.
 
-- Dashboard
-- Sales
-- Users & Permissions
-- Security & Permissions
+The system includes:
+
+- Dashboard & Analytics
+- Sales Management
+- Customer Management
+- Inventory Management
+- User Roles & Permissions
+- Security Management
 - Notifications Center
+- Tax Management
 - Print Templates
-- General Settings
-- Language & Time
+- Language & Localization Settings
+- General System Settings
 
-## Project Structure
+The project follows a scalable Django architecture and provides a modern dark-themed user experience optimized for business workflows.
 
-- ecommerce/ — Project configuration (settings, URLs, WSGI/ASGI)
-- static/ — CSS/JS assets
-- templates/ — Django HTML templates
+---
 
-## Requirements
+# ✨ Features
 
-- Python 3.10+
-- pip
+## 📊 Dashboard
 
-1. Create and activate a virtual environment
-2. Install dependencies:
-   - pip install -r requirements.txt
+- Business overview
+- Analytics widgets
+- Quick navigation
+- Operational monitoring
 
-### 1) Create virtual environment
+## 💰 Sales Management
 
-- python -m venv .venv
-- python3 -m venv .venv
+- Manage sales records
+- Track business transactions
+- Customer order management
 
-### 2) Activate virtual environment
+## 📦 Inventory Management
 
-- Windows (PowerShell):
-  - .\.venv\Scripts\Activate.ps1
-- Windows (CMD):
-  - .\.venv\Scripts\activate.bat
-- Linux/macOS:
-  - source .venv/bin/activate
+- Product management
+- Inventory tracking
+- Stock monitoring
 
-### 3) Install dependencies
+## 👥 Customer Management
 
-- Windows/Linux/macOS:
-  - pip install -r requirements.txt
+- Customer records
+- Customer information management
+- Sales history review
 
-### 4) Run migrations and create admin
+## 🔐 Users & Permissions
 
-- Windows/Linux/macOS:
-  - python manage.py migrate
-  - python manage.py createsuperuser
+- Role-Based Access Control (RBAC)
+- User management
+- Permission assignment
+- Security controls
 
-### 5) Run the server
+## 🔔 Notifications Center
 
-- Windows/Linux/macOS:
-  - python manage.py runserver
+- System alerts
+- Business notifications
+- User notifications
 
-## One‑Click Run Scripts
+## ⚙️ Settings System
 
-From the project root, use the script that matches your OS:
+- General settings
+- Language & time settings
+- Print templates
+- System configurations
+- Account settings
 
-- Windows (PowerShell):
-  - scripts/run_dev.ps1
-- Windows (CMD):
-  - scripts/run_dev.bat
-- Linux/macOS:
-  - ./scripts/run_dev.sh
+---
 
-These scripts will:
+# 🛠️ Tech Stack
 
-- Create the virtual environment if missing
-- Install requirements
-- Run migrations
-- Start the Django development server
+## Backend
 
-## Quick Start (SQLite - Recommended for local dev)
+- Python
+- Django
 
-1. Create and activate a virtual environment
-2. Install dependencies:
+## Frontend
 
-- pip install -r requirements.txt
+- HTML5
+- CSS3
+- JavaScript
 
-3. Run migrations:
+## Database
 
-- python manage.py migrate
+- SQLite (Development)
+- MySQL (Production)
 
-4. Create an admin user:
+## Tools
 
-- python manage.py createsuperuser
+- Git
+- GitHub
+- Render
 
-5. Run the server:
+---
 
-- python manage.py runserver
+# 📁 Project Structure
 
-6. Open in browser:
+```text
+E-Commerce_WebApp/
+│
+├── ecommerce/           # Project configuration
+├── core/                # Core application logic
+├── templates/           # Django templates
+├── static/              # Static assets
+├── scripts/             # Automation scripts
+├── E-Commerce_UI/       # UI prototypes
+├── requirements.txt
+├── manage.py
+└── README.md
+```
 
-- http://127.0.0.1:8000/
+---
 
-## MySQL (Optional)
+# 📷 Screenshots
 
-If you want to use MySQL instead of SQLite, set the following environment variables before running migrations:
+## Dashboard
 
-- USE_MYSQL=1
-- MYSQL_DATABASE=ecommerce_db
-- MYSQL_USER=root
-- MYSQL_PASSWORD=your_password
-- MYSQL_HOST=127.0.0.1
-- MYSQL_PORT=3306
+docs/screenshots/dashboard.png
 
-Then run:
+---
 
-- python manage.py migrate
-- python manage.py createsuperuser
-- python manage.py runserver
+## Inventory Management
 
-## Environment Variables (.env)
+docs/screenshots/inventory.png
 
-You can store your environment values in a .env file (not committed). Example:
+---
 
-- USE_MYSQL=1
-- MYSQL_DATABASE=ecommerce_db
-- MYSQL_USER=root
-- MYSQL_PASSWORD=your_password
-- MYSQL_HOST=127.0.0.1
-- MYSQL_PORT=3306
+## Sales Management
 
-## Run (Development)
+docs/screenshots/sales.png
 
-- Start the Django server:
-  - python manage.py runserver
-- Open in browser:
-  - http://127.0.0.1:8000/
+---
 
-## Production Deployment Example
+## Users & Permissions
 
-1. **Install dependencies**
+docs/screenshots/users.png
+
+---
+
+## System Settings
+
+docs/screenshots/settings.png
+
+```text
+There are more waiting for you, go to: https://e-commerce-webapp-ay2l.onrender.com/ and take a live look😉
+```
+
+---
+
+# 🚀 Installation
+
+## 1. Clone Repository
+
+```bash
+git clone https://github.com/Kerolosnady1/E-Commerce_WebApp.git
+
+cd E-Commerce_WebApp
+```
+
+## 2. Create Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+## 3. Activate Virtual Environment
+
+### Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+source .venv/bin/activate
+```
+
+## 4. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. **Configure environment**
-
-- انسخ `.env.example` إلى `.env` وعدل القيم (خاصة SECRET_KEY, DB info, ALLOWED_HOSTS)
-
-3. **Apply migrations**
+## 5. Run Migrations
 
 ```bash
-python manage.py migrate --settings=settings_production
+python manage.py migrate
 ```
 
-4. **Collect static files**
+## 6. Create Super User
 
 ```bash
-python manage.py collectstatic --settings=settings_production
+python manage.py createsuperuser
 ```
 
-5. **Create superuser**
+## 7. Run Development Server
 
 ```bash
-python manage.py createsuperuser --settings=settings_production
+python manage.py runserver
 ```
 
-6. **Run with Gunicorn (Linux/macOS)**
+Open:
 
-```bash
-gunicorn ecommerce.wsgi:application --bind 0.0.0.0:8000 --env DJANGO_SETTINGS_MODULE=settings_production
+```text
+http://127.0.0.1:8000/
+or
+http://localhost:8000/
 ```
-
-7. **(اختياري) إعداد Nginx لعكس الطلبات إلى Gunicorn**
-8. **تأكد من صلاحيات staticfiles/ و mediafiles/**
-
-> يمكنك استخدام أي سيرفر ويب يدعم WSGI (مثل uWSGI أو mod_wsgi)
 
 ---
 
--- The primary design system is the dark theme; keep new components aligned with the same palette.
--- When editing static UI pages, maintain the same typography and component spacing patterns.
--- Use consistent button behaviors (save/reset/preview/toggle) for a cohesive UX.
+# 🗄️ Database Support
+
+## SQLite (Default)
+
+The project uses SQLite by default for development.
+
+## MySQL (Optional)
+
+Set the following environment variables:
+
+```env
+USE_MYSQL=1
+
+MYSQL_DATABASE=ecommerce_db
+MYSQL_USER=root
+MYSQL_PASSWORD=your_password
+MYSQL_HOST=127.0.0.1
+MYSQL_PORT=3306
+```
+
+Then run:
+
+```bash
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+---
+
+# ⚡ Environment Variables
+
+Create a `.env` file:
+
+```env
+SECRET_KEY=your_secret_key
+
+DEBUG=False
+
+USE_MYSQL=1
+
+MYSQL_DATABASE=ecommerce_db
+MYSQL_USER=root
+MYSQL_PASSWORD=your_password
+MYSQL_HOST=127.0.0.1
+MYSQL_PORT=3306
+```
+
+---
+
+# 🎯 Key Highlights
+
+- Arabic-First ERP Design
+- Modern Dark Theme UI
+- Business-Oriented Workflow
+- Inventory Management System
+- Sales Management Module
+- Customer Management Module
+- User Permissions & Security Controls
+- Django-Based Architecture
+- Production Deployment Ready
+- Responsive Interface
+
+---
+
+# 📈 Future Improvements
+
+- REST API Development
+- Mobile Application Support
+- Docker Support
+- CI/CD Integration
+- Advanced Analytics
+- Multi-Tenant Architecture
+- Real-Time Notifications
+- Reporting System
+- Data Export Features
+
+---
+
+# 🧪 Testing
+
+Run tests using:
+
+```bash
+python manage.py test
+```
+
+---
+
+# 🚀 Deployment
+
+The application can be deployed on:
+
+- Render
+- Railway
+- Azure App Service
+- DigitalOcean
+- AWS
+- VPS Servers
+
+---
+
+# 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome.
+
+1. Fork the project
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Author
+
+### Kerolos Nady
+
+GitHub:
+https://github.com/Kerolosnady1
+
+LinkedIn:
+https://www.linkedin.com/in/kerolos-farag-3a8378311
+
+---
+
+# ⭐ Support
+
+If you found this project useful, consider giving it a star ⭐ on GitHub.
+
+It helps showcase the project and supports future improvements.

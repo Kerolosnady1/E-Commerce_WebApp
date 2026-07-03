@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-USE_MYSQL = os.getenv('USE_MYSQL', '1') == '1'
+USE_MYSQL = os.getenv('USE_MYSQL', '0') == '1'
 if USE_MYSQL:
     try:
         import MySQLdb  # noqa: F401
