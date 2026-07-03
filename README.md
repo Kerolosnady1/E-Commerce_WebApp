@@ -133,7 +133,8 @@ E-Commerce_WebApp/
 
 ## Dashboard
 
-![docs/screenshots/dashboard.png]
+![docs/screenshots/dashboard.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/dashboard.png?raw=true)
+
 
 ## Inventory Management
 
