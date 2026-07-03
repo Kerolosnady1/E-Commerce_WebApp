@@ -133,23 +133,23 @@ E-Commerce_WebApp/
 
 ## Dashboard
 
-docs/screenshots/dashboard.png
+![docs/screenshots/dashboard.png]
 
 ## Inventory Management
 
-docs/screenshots/inventory.png
+![docs/screenshots/inventory.png]
 
 ## Sales Management
 
-docs/screenshots/sales.png
+![docs/screenshots/sales.png]
 
 ## Users & Permissions
 
-docs/screenshots/users.png
+![docs/screenshots/users.png]
 
 ## System Settings
 
-docs/screenshots/settings.png
+![docs/screenshots/settings.png]
 
 > 🌐 Want to explore the full system?
 >
