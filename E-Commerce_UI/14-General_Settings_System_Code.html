@@ -81,7 +81,7 @@
         </style>
 </head>
     <body class="bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] text-slate-100 min-h-screen overflow-hidden">
-<header class="h-16 bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] border-b border-slate-200 dark:border-slate-800 flex items-center px-8 shrink-0 relative z-20">
+<header class="h-16 bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] border-b border-slate-200 dark:border-slate-800 flex items-center flex-wrap gap-y-3 px-8 shrink-0 relative z-20">
 <div class="flex items-center justify-between w-full">
 <div class="flex items-center gap-4">
 <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
@@ -104,7 +104,8 @@
 </div>
 </header>
 <main class="settings-container flex overflow-hidden">
-<aside class="w-72 border-l border-slate-200 dark:border-slate-800 bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] overflow-y-auto custom-scrollbar">
+{% include '_mobile_drawer.html' %}
+<aside class="hidden lg:flex w-72 border-l border-slate-200 dark:border-slate-800 bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] overflow-y-auto custom-scrollbar">
 <div class="p-6">
 <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-4">قائمة الإعدادات</h3>
 <nav class="space-y-1">

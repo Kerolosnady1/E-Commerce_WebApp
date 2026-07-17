@@ -57,7 +57,7 @@
 <body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white min-h-screen">
 <div class="flex flex-col min-h-screen">
 <!-- TopNavBar -->
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#dbe0e6] dark:border-[#2d3748] bg-white dark:bg-[#1a202c] px-6 py-3 sticky top-0 z-50">
+<header class="flex items-center justify-between flex-wrap gap-y-3 border-b border-solid border-[#dbe0e6] dark:border-[#2d3748] bg-white dark:bg-[#1a202c] px-6 py-3 sticky top-0 z-50">
 <div class="flex items-center gap-8">
 <div class="flex items-center gap-3 text-primary">
 <div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
@@ -65,7 +65,7 @@
 </div>
 <h2 class="text-[#111418] dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">نظام ERP المتكامل</h2>
 </div>
-<form method="get" class="flex flex-col min-w-40 h-10 max-w-64">
+<form method="get" class="flex flex-col hidden lg:flex h-10 max-w-64">
 <div class="flex w-full flex-1 items-stretch rounded-lg h-full relative">
 <button type="submit" class="text-[#617289] absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer hover:text-primary">
 <span class="material-symbols-outlined text-lg">search</span>
@@ -99,6 +99,7 @@
 </div>
 </header>
 <main class="flex-1 px-4 lg:px-10 py-8 max-w-[1440px] mx-auto w-full">
+{% include '_mobile_drawer.html' %}
 <!-- Page Heading -->
 <div class="flex flex-wrap justify-between items-end gap-4 mb-6">
 <div class="flex flex-col gap-1">

@@ -55,7 +55,7 @@
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
 <div class="flex h-screen overflow-hidden">
-    <aside class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-l border-[#f0f3f4] dark:border-slate-800 flex flex-col justify-between p-4 h-full">
+    <aside class="hidden lg:flex w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-l border-[#f0f3f4] dark:border-slate-800 flex-col justify-between p-4 h-full">
         <div class="flex flex-col gap-8">
             <div class="flex items-center gap-3 px-2">
                 <div class="bg-primary rounded-lg p-2 text-white">
@@ -96,7 +96,7 @@
     </aside>
 
     <div class="flex flex-col flex-1 overflow-hidden">
-        <header class="h-16 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-6 z-10">
+        <header class="h-16 bg-slate-800 border-b border-slate-700 flex items-center flex-wrap gap-y-3 justify-between px-6 z-10">
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">warehouse</span>
@@ -114,7 +114,8 @@
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-900">
+        <main class="flex-1 overflow-y-auto p-3 lg:p-6 space-y-6 bg-slate-900">
+{% include '_mobile_drawer.html' %}
             {% if messages %}
                 <div class="space-y-2">
                     {% for message in messages %}

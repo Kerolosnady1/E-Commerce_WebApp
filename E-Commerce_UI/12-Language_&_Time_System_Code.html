@@ -84,7 +84,7 @@
 </head>
 <body class="bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] text-slate-100 font-display">
 <!-- Top Navigation Bar -->
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#dbe0e6] dark:border-[#343d48] bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] px-10 py-3 sticky top-0 z-50">
+<header class="flex items-center justify-between flex-wrap gap-y-3 border-b border-solid border-[#dbe0e6] dark:border-[#343d48] bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] px-4 lg:px-10 py-3 sticky top-0 z-50">
 <div class="flex items-center gap-8">
 <div class="flex items-center gap-4 text-primary">
 <div class="size-8">
@@ -94,7 +94,7 @@
 </div>
 <h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">نظام ERP الموحد</h2>
 </div>
-<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<label class="flex flex-col hidden lg:flex min-w-40 !h-10 max-w-64">
 <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
 <div class="text-[#617289] flex border-none bg-[#f0f2f4] dark:bg-[#1c2632] items-center justify-center pr-4 rounded-r-lg">
 <span class="material-symbols-outlined">search</span>
@@ -127,8 +127,9 @@
 </div>
 </header>
 <main class="flex min-h-[calc(100vh-64px)] w-full">
+{% include '_mobile_drawer.html' %}
 <!-- Side Navigation Bar -->
-<aside class="w-80 border-l border-solid border-[#f0f2f4] dark:border-[#343d48] bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] p-6 hidden lg:flex flex-col gap-8">
+<aside class="hidden lg:flex w-80 border-l border-solid border-[#f0f2f4] dark:border-[#343d48] bg-[rgb(15_23_42/var(--tw-bg-opacity,1))] p-6 flex-col gap-8">
 <div class="flex flex-col">
 <h1 class="text-[#111418] dark:text-white text-base font-bold leading-normal mb-1">إعدادات النظام</h1>
 <p class="text-[#617289] text-sm font-normal leading-normal">إدارة التفضيلات العامة والمستخدمين</p>

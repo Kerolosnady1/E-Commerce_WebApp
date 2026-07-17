@@ -38,6 +38,7 @@
     </script>
 </head>
 <body class="bg-slate-900">
+    {% include '_navbar.html' %}
     <div class="min-h-screen">
         <div class="bg-gradient-to-r from-primary to-blue-600 text-white p-6 mb-6">
             <div class="max-w-7xl mx-auto">
@@ -71,7 +72,7 @@
                             <option value="inactive" {% if status_filter == 'inactive' %}selected{% endif %}>غير نشط</option>
                         </select>
                     </div>
-                    <div class="flex items-end gap-3">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
                         <button type="submit" class="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
                             <span class="material-symbols-outlined text-sm align-middle ml-2">search</span>
                             بحث
@@ -86,7 +87,7 @@
 
             <div class="bg-[#1a222c] rounded-xl border border-[#2a333c] overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full">
+                    <table class="w-full whitespace-nowrap min-w-max">
                         <thead>
                             <tr class="bg-slate-800 border-b border-slate-700">
                                 <th class="px-6 py-4 text-right text-sm font-bold text-slate-300">الموظف</th>

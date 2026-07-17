@@ -89,7 +89,7 @@ body {
     flex-direction: column;
     gap: 0.5rem;
     flex: 1;
-    min-width: 220px;
+    min-width: min(100%, 220px);
 }
 
 .search__field input {
@@ -107,7 +107,7 @@ body {
 .grid {
     display: grid;
     gap: 1.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
 }
 
 .card {

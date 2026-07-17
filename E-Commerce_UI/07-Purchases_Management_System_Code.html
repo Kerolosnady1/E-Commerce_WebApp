@@ -118,7 +118,7 @@
 </header>
 <div class="max-w-[1440px] mx-auto w-full flex flex-1 overflow-hidden">
 <!-- Sidebar Navigation -->
-<aside class="w-64 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 hidden xl:flex flex-col py-6 px-4 shrink-0">
+<aside class="hidden lg:flex w-64 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 xl:flex flex-col py-6 px-4 shrink-0">
 <div class="mb-8 px-2">
 <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">القائمة الرئيسية</p>
 <div class="space-y-1">
@@ -158,7 +158,8 @@
 </div>
 </aside>
 <!-- Main Content Area -->
-<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6 md:p-8">
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-3 lg:p-6 md:p-8">
+{% include '_mobile_drawer.html' %}
 <!-- Page Heading -->
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
 <div>

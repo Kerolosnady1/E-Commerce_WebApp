@@ -30,7 +30,8 @@
     </style>
 </head>
 <body class="bg-background-dark text-slate-100">
-    <div class="min-h-screen p-8">
+    {% include '_navbar.html' %}
+    <div class="min-h-screen p-4 sm:p-8">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <div class="mb-8">
@@ -38,7 +39,7 @@
                     <span class="material-symbols-outlined">arrow_back</span>
                     العودة إلى الحسابات
                 </a>
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
                         <h1 class="text-4xl font-bold text-white">خطة الاشتراك</h1>
                         <p class="text-slate-400 mt-2">إدارة اشتراكك وترقية خطتك</p>
@@ -51,7 +52,7 @@
 
             <!-- Current Subscription Card -->
             <div class="bg-surface-dark border border-border-dark rounded-2xl p-8 mb-8">
-                <div class="flex items-center justify-between border-b border-border-dark pb-6 mb-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border-dark pb-6 mb-6">
                     <h2 class="text-white text-2xl font-bold flex items-center gap-3">
                         <span class="material-symbols-outlined text-primary text-3xl">credit_card</span>
                         اشتراكك الحالي
@@ -188,7 +189,7 @@
             </div>
 
             <!-- Actions -->
-            <div class="mt-8 flex gap-4">
+            <div class="mt-8 flex flex-col sm:flex-row gap-4">
                 {% if subscription.auto_renew %}
                 <button onclick="pauseAutoRenewal()" class="px-6 py-3 bg-border-dark text-white rounded-xl font-medium hover:bg-slate-700 transition-colors border border-border-dark">
                     <span class="material-symbols-outlined text-sm ml-2 align-middle">pause</span>

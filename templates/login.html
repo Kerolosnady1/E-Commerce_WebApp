@@ -23,7 +23,9 @@
         body { font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     </style>
 </head>
-<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4 transition-colors">
+<body class="bg-slate-900 min-h-screen flex flex-col transition-colors">
+    {% include '_navbar.html' %}
+    <main class="flex-1 flex items-center justify-center p-4">
     <div class="w-full max-w-md">
         <!-- Logo & Title -->
         <div class="text-center mb-8">
@@ -71,6 +73,7 @@
             </div>
         </div>
     </div>
+    </main>
 </body>
 </html>
 

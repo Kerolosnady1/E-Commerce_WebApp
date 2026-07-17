@@ -1,0 +1,91 @@
+<!-- Floating Mobile Menu Button (Visible only on small screens < 1024px) -->
+<button id="ui-mobile-btn" type="button" class="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary hover:bg-primary/90 text-white rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 border border-primary/20">
+    <span class="material-symbols-outlined" id="ui-menu-icon" style="font-size: 32px; display: block;">menu</span>
+</button>
+
+<!-- Mobile Menu Backdrop -->
+<div id="ui-mobile-backdrop" class="fixed inset-0 bg-slate-950/60 z-[45] hidden transition-opacity opacity-0 lg:hidden backdrop-blur-sm"></div>
+
+<!-- Mobile Drawer (Slides in from the right in RTL, or left/top) -->
+<div id="ui-mobile-menu" class="fixed inset-y-0 right-0 w-72 bg-slate-900/95 backdrop-blur-md border-l border-slate-800/80 shadow-2xl z-[50] transition-all duration-300 ease-in-out transform translate-x-full lg:hidden overflow-y-auto">
+    <div class="p-6 border-b border-slate-800/80 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-primary/20 border border-primary/30 rounded-lg flex items-center justify-center text-primary shadow-lg shadow-primary/10">
+                <span class="material-symbols-outlined">enterprise</span>
+            </div>
+            <span class="text-lg font-bold text-white tracking-wide">نظام ERP</span>
+        </div>
+        <button id="ui-close-drawer-btn" class="text-slate-400 hover:text-white transition-colors">
+            <span class="material-symbols-outlined" style="font-size: 28px;">close</span>
+        </button>
+    </div>
+    
+    <nav class="px-4 py-6 space-y-1">
+        <a href="/" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-primary/20 transition-all">
+            <span class="material-symbols-outlined text-slate-400">dashboard</span> لوحة القيادة
+        </a>
+        <a href="/sales/" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-primary/20 transition-all">
+            <span class="material-symbols-outlined text-slate-400">point_of_sale</span> المبيعات
+        </a>
+        <a href="/customers/" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-primary/20 transition-all">
+            <span class="material-symbols-outlined text-slate-400">groups</span> العملاء
+        </a>
+        <a href="/inventory/" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-primary/20 transition-all">
+            <span class="material-symbols-outlined text-slate-400">inventory_2</span> المخزون
+        </a>
+        <a href="/warehouses/" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-primary/20 transition-all">
+            <span class="material-symbols-outlined text-slate-400">warehouse</span> المستودعات
+        </a>
+        <a href="/reports/" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-primary/20 transition-all">
+            <span class="material-symbols-outlined text-slate-400">bar_chart</span> التقارير
+        </a>
+        <a href="/settings/system/" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-base font-medium text-slate-300 hover:text-white hover:bg-primary/20 transition-all">
+            <span class="material-symbols-outlined text-slate-400">settings</span> الإعدادات
+        </a>
+    </nav>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuBtn = document.getElementById('ui-mobile-btn');
+        const closeBtn = document.getElementById('ui-close-drawer-btn');
+        const mobileMenu = document.getElementById('ui-mobile-menu');
+        const backdrop = document.getElementById('ui-mobile-backdrop');
+        
+        if(!menuBtn || !mobileMenu || !backdrop) return;
+        
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            
+            if (isMenuOpen) {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => { backdrop.classList.remove('opacity-0'); }, 10);
+                mobileMenu.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                backdrop.classList.add('opacity-0');
+                mobileMenu.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+                setTimeout(() => { backdrop.classList.add('hidden'); }, 300);
+            }
+        }
+
+        menuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleMenu();
+        });
+        
+        if(closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleMenu();
+            });
+        }
+        
+        backdrop.addEventListener('click', function() {
+            if (isMenuOpen) toggleMenu();
+        });
+    });
+</script>

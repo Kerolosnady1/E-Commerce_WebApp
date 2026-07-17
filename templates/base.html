@@ -73,26 +73,7 @@
 </head>
 <body class="bg-background-dark text-slate-100 min-h-screen transition-colors">
     
-    <!-- Header / Navbar -->
-    <header class="bg-surface-dark border-b border-border-dark sticky top-0 z-30 transition-colors">
-        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-4">
-                    <div class="p-2 bg-primary/20 rounded-lg">
-                        <span class="material-icons text-primary">dashboard</span>
-                    </div>
-                    <h1 class="text-xl font-bold text-white">نظام ERP</h1>
-                </div>
-                <nav class="hidden md:flex items-center gap-6">
-                    <a href="/" class="text-slate-400 hover:text-primary transition-colors">الرئيسية</a>
-                    <a href="/invoices/" class="text-slate-400 hover:text-primary transition-colors">الفواتير</a>
-                    <a href="/customers/" class="text-slate-400 hover:text-primary transition-colors">العملاء</a>
-                    <a href="/settings/general/" class="text-slate-400 hover:text-primary transition-colors">الإعدادات</a>
-                </nav>
-                <div class="flex items-center gap-3"></div>
-            </div>
-        </div>
-    </header>
+    {% include '_navbar.html' %}
     
     <!-- Main Content -->
     <main class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -117,9 +98,9 @@
         </div>
     </footer>
     
-    <!-- Scripts -->
+   <!-- Scripts -->
     <script>
-        // Show notification helper
+        // سيب الدالة دي زي ما هي لأنها بتاعة التنبيهات في النظام
         function showNotification(message, type = 'info') {
             const notif = document.createElement('div');
             notif.className = 'fixed bottom-4 right-4 px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3 transition-all font-semibold animate-in fade-in slide-in-from-right-4';
@@ -143,6 +124,8 @@
                 setTimeout(() => notif.remove(), 300);
             }, 3000);
         }
+
+        // Code moved to _navbar.html
     </script>
     
     {% block extra_js %}{% endblock %}

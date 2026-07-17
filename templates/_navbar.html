@@ -1,0 +1,171 @@
+<!-- Header / Navbar -->
+<header class="bg-[#111722] border-b border-[#232f48] sticky top-0 z-30 transition-colors">
+    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            
+            <!-- الـ Logo والعنوان -->
+            <div class="flex items-center gap-4">
+                <div class="p-2 bg-[#11a4d4]/20 rounded-lg">
+                    <span class="material-icons text-[#11a4d4] material-symbols-outlined" style="font-size: 24px;">dashboard</span>
+                </div>
+                <h1 class="text-xl font-bold text-white">نظام ERP</h1>
+            </div>
+
+            <!-- القائمة الأساسية للشاشات الكبيرة -->
+            <nav class="hidden lg:flex items-center gap-4 xl:gap-6">
+                <a href="/" class="text-slate-400 hover:text-[#11a4d4] transition-colors text-sm xl:text-base">الرئيسية</a>
+                <a href="/invoices/" class="text-slate-400 hover:text-[#11a4d4] transition-colors text-sm xl:text-base">الفواتير</a>
+                <a href="/customers/" class="text-slate-400 hover:text-[#11a4d4] transition-colors text-sm xl:text-base">العملاء</a>
+                <a href="/products/" class="text-slate-400 hover:text-[#11a4d4] transition-colors text-sm xl:text-base">المنتجات</a>
+                <a href="/warehouses/" class="text-slate-400 hover:text-[#11a4d4] transition-colors text-sm xl:text-base">المستودعات</a>
+                <a href="/suppliers/" class="text-slate-400 hover:text-[#11a4d4] transition-colors text-sm xl:text-base">الموردين</a>
+                <a href="/employees/" class="text-slate-400 hover:text-[#11a4d4] transition-colors text-sm xl:text-base">الموظفين</a>
+                <a href="/settings/general/" class="text-slate-400 hover:text-[#11a4d4] transition-colors text-sm xl:text-base">الإعدادات</a>
+            </nav>
+
+            <!-- زرار المنيو للموبايل والتابلت (مظبوط عشان يظهر إجباري في الشاشات الصغيرة) -->
+            <div class="block lg:hidden">
+                <button id="mobile-menu-btn" type="button" class="p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none transition-colors relative z-50">
+                    <span class="material-symbols-outlined" id="menu-icon" style="font-size: 28px; display: block;">menu</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Mobile Menu Backdrop -->
+    <div id="mobile-menu-backdrop" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity opacity-0 lg:hidden"></div>
+
+    <!-- قائمة الموبايل المنسدلة -->
+    <div id="mobile-menu" class="fixed inset-x-0 top-16 bg-[#1b2333] border-b border-[#232f48] shadow-xl z-40 transition-all duration-300 ease-in-out transform -translate-y-full opacity-0 lg:hidden overflow-y-auto max-h-[calc(100vh-4rem)]">
+        <div class="px-4 py-4 space-y-1">
+            <a href="/" class="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-[#11a4d4]/20 transition-colors">
+                <span class="material-symbols-outlined text-slate-400" style="font-size: 24px;">home</span> الرئيسية
+            </a>
+            <a href="/invoices/" class="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-[#11a4d4]/20 transition-colors">
+                <span class="material-symbols-outlined text-slate-400" style="font-size: 24px;">receipt_long</span> الفواتير
+            </a>
+            <a href="/customers/" class="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-[#11a4d4]/20 transition-colors">
+                <span class="material-symbols-outlined text-slate-400" style="font-size: 24px;">people</span> العملاء
+            </a>
+            <a href="/products/" class="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-[#11a4d4]/20 transition-colors">
+                <span class="material-symbols-outlined text-slate-400" style="font-size: 24px;">inventory_2</span> المنتجات
+            </a>
+            <a href="/warehouses/" class="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-[#11a4d4]/20 transition-colors">
+                <span class="material-symbols-outlined text-slate-400" style="font-size: 24px;">warehouse</span> المستودعات
+            </a>
+            <a href="/suppliers/" class="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-[#11a4d4]/20 transition-colors">
+                <span class="material-symbols-outlined text-slate-400" style="font-size: 24px;">local_shipping</span> الموردين
+            </a>
+            <a href="/employees/" class="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-[#11a4d4]/20 transition-colors">
+                <span class="material-symbols-outlined text-slate-400" style="font-size: 24px;">badge</span> الموظفين
+            </a>
+            <a href="/settings/general/" class="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-[#11a4d4]/20 transition-colors">
+                <span class="material-symbols-outlined text-slate-400" style="font-size: 24px;">settings</span> الإعدادات
+            </a>
+            <a href="/help/" class="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-[#11a4d4]/20 transition-colors mt-4 pt-4 border-t border-[#232f48]">
+                <span class="material-symbols-outlined text-slate-400" style="font-size: 24px;">help</span> المساعدة والدليل
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // ده الكود الجديد والنظيف اللي هيشغل المنيو بشكل سليم مع انيميشن
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const backdrop = document.getElementById('mobile-menu-backdrop');
+            
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                
+                if (isMenuOpen) {
+                    // Open Menu
+                    if(backdrop) {
+                        backdrop.classList.remove('hidden');
+                        setTimeout(() => { backdrop.classList.remove('opacity-0'); }, 10);
+                    }
+                    if(mobileMenu) mobileMenu.classList.remove('-translate-y-full', 'opacity-0');
+                    if(menuIcon) menuIcon.textContent = 'close';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    // Close Menu
+                    if(backdrop) backdrop.classList.add('opacity-0');
+                    if(mobileMenu) mobileMenu.classList.add('-translate-y-full', 'opacity-0');
+                    if(menuIcon) menuIcon.textContent = 'menu';
+                    document.body.style.overflow = '';
+                    
+                    if(backdrop) {
+                        setTimeout(() => { backdrop.classList.add('hidden'); }, 300);
+                    }
+                }
+            }
+
+            if (menuBtn) {
+                menuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleMenu();
+                });
+            }
+            if(backdrop) {
+                backdrop.addEventListener('click', function() {
+                    if (isMenuOpen) toggleMenu();
+                });
+            }
+        });
+    </script>
+</header>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (window._navbarInitialized) return;
+        window._navbarInitialized = true;
+        
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const backdrop = document.getElementById('mobile-menu-backdrop');
+        
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            
+            if (isMenuOpen) {
+                if(backdrop) {
+                    backdrop.classList.remove('hidden');
+                    setTimeout(() => { backdrop.classList.remove('opacity-0'); }, 10);
+                }
+                if(mobileMenu) {
+                    mobileMenu.classList.remove('-translate-y-full', 'opacity-0');
+                }
+                if(menuIcon) menuIcon.textContent = 'close';
+                document.body.style.overflow = 'hidden';
+            } else {
+                if(backdrop) backdrop.classList.add('opacity-0');
+                if(mobileMenu) mobileMenu.classList.add('-translate-y-full', 'opacity-0');
+                if(menuIcon) menuIcon.textContent = 'menu';
+                document.body.style.overflow = '';
+                
+                if(backdrop) {
+                    setTimeout(() => { backdrop.classList.add('hidden'); }, 300);
+                }
+            }
+        }
+
+        if (menuBtn) {
+            menuBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleMenu();
+            });
+        }
+        
+        if (backdrop) {
+            backdrop.addEventListener('click', function() {
+                if (isMenuOpen) toggleMenu();
+            });
+        }
+    });
+</script>

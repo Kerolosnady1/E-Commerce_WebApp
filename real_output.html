@@ -45,7 +45,7 @@
 </head>
 <body style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
 <div class="flex h-screen overflow-hidden">
-<aside class="hidden lg:flex w-72 flex-shrink-0 bg-[#0f172a] text-slate-300 flex flex-col border-l border-slate-800">
+<aside class="w-72 flex-shrink-0 bg-[#0f172a] text-slate-300 flex flex-col hidden lg:flex border-l border-slate-800">
 <div class="p-8 flex items-center gap-3">
 <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-900/20">
 <span class="material-symbols-outlined">enterprise</span>
@@ -83,24 +83,21 @@
 </nav>
 <div class="p-6 bg-slate-900/50">
 <div class="flex items-center gap-3 p-3 bg-slate-800 rounded-2xl">
-{% if request.user.profile.avatar %}
-<img alt="{{ request.user.get_full_name|default:request.user.username }}" class="w-10 h-10 rounded-full border border-slate-600 object-cover" src="{{ request.user.profile.avatar.url }}"/>
-{% else %}
+
 <div class="w-10 h-10 rounded-full border border-slate-600 bg-primary/10 flex items-center justify-center text-primary font-bold">
-{{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+
 </div>
-{% endif %}
+
 <div class="flex-1 min-w-0">
-<p class="text-sm font-semibold text-white truncate">{{ request.user.get_full_name|default:request.user.username }}</p>
-<p class="text-xs text-slate-400 truncate">{{ request.user.profile.role|default:'مستخدم' }}</p>
+<p class="text-sm font-semibold text-white truncate"></p>
+<p class="text-xs text-slate-400 truncate">مستخدم</p>
 </div>
 <a class="text-slate-500 hover:text-white" href="/settings/system/"><span class="material-symbols-outlined text-sm">settings</span></a>
 </div>
 </div>
 </aside>
 <main class="flex-1 overflow-y-auto relative" style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
-{% include '_mobile_drawer.html' %}
-<header class="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-slate-200 px-8 py-5 flex items-center flex-wrap gap-y-3 justify-between">
+<header class="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-slate-200 px-8 py-5 flex items-center justify-between">
 <div>
 <h1 class="text-2xl font-bold text-slate-900">لوحة التحكم الاستراتيجية</h1>
 <p class="text-sm text-slate-500 mt-0.5">مرحباً بك، إليك آخر تحديثات نظامك اليوم</p>
@@ -167,7 +164,7 @@
 </div>
 <p class="text-blue-100 text-sm font-medium opacity-90">إجمالي الإيرادات (الشهر الحالي)</p>
 <div class="flex items-baseline gap-2 mt-2">
-<h2 class="text-4xl font-bold">{{ sales_this_month|floatformat:0 }}</h2>
+<h2 class="text-4xl font-bold">0</h2>
 <span class="text-lg opacity-80">ر.س</span>
 </div>
 <div class="mt-8 pt-6 border-t border-white/10 flex items-center gap-4">
@@ -189,14 +186,14 @@
                             </div>
 </div>
 <p class="text-slate-300 text-sm font-medium">عدد الطلبات المنفذة</p>
-<h2 class="text-4xl font-bold text-white mt-2">{{ total_invoices }}</h2>
+<h2 class="text-4xl font-bold text-white mt-2">0</h2>
 <div class="mt-8 flex items-center gap-2">
 <div class="flex -space-x-reverse space-x-2">
 <div class="w-8 h-8 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[10px] font-bold text-primary">A</div>
 <div class="w-8 h-8 rounded-full border-2 border-white bg-green-100 flex items-center justify-center text-[10px] font-bold text-secondary">B</div>
 <div class="w-8 h-8 rounded-full border-2 border-white bg-amber-100 flex items-center justify-center text-[10px] font-bold text-amber-600">C</div>
 </div>
-<span class="text-xs text-slate-300 mr-2">+{{ new_customers_this_month }} عميل جديد هذا الشهر</span>
+<span class="text-xs text-slate-300 mr-2">+0 عميل جديد هذا الشهر</span>
 </div>
 </div>
 <div class="rounded-3xl p-8 border border-red-100 shadow-sm" style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
@@ -209,7 +206,7 @@
                             </span>
 </div>
 <p class="text-slate-300 text-sm font-medium">منتجات منخفضة المخزون</p>
-<h2 class="text-4xl font-bold text-white mt-2">{{ low_stock_items }}</h2>
+<h2 class="text-4xl font-bold text-white mt-2">0</h2>
 <div class="mt-8">
 <a class="w-full py-2.5 bg-red-50 text-red-600 rounded-xl text-sm font-bold hover:bg-red-100 transition-colors text-center block" href="/inventory/?stock_status=low">
                                 عرض قائمة النواقص
@@ -238,17 +235,9 @@
 <div class="border-t border-slate-100 w-full"></div>
 <div class="border-t border-slate-200 w-full"></div>
 </div>
-{% if monthly_sales %}
-    {% for item in monthly_sales %}
-    <div class="flex-1 flex flex-col items-center group relative">
-        <div class="w-full rounded-t-xl transition-all group-hover:bg-primary/20" style="height: {{ item.height }}%; background-color: {% if item.height > 80 %}#10b981{% elif item.height > 60 %}#1e40af{% else %}#e2e8f0{% endif %};"></div>
-        <span class="mt-4 text-xs font-medium text-slate-400">{{ item.month_name }}</span>
-        <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{{ item.total|floatformat:0 }} ر.س</div>
-    </div>
-    {% endfor %}
-{% else %}
+
     <div class="flex-1 flex items-center justify-center text-slate-400">لا توجد بيانات مبيعات حتى الآن</div>
-{% endif %}
+
 </div>
 </div>
 <div class="rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col" style="background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));">
@@ -257,24 +246,9 @@
 <a class="text-primary text-xs font-bold hover:underline" href="/sales/">عرض الكل</a>
 </div>
 <div class="flex-1 space-y-6">
-{% if recent_invoices %}
-    {% for invoice in recent_invoices %}
-    <a class="flex items-center justify-between group cursor-pointer" href="/invoices/{{ invoice.id }}/">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 bg-slate-600 rounded-2xl flex items-center justify-center text-slate-300 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <span class="material-symbols-outlined">receipt_long</span>
-            </div>
-            <div>
-                <p class="text-sm font-bold text-white">فاتورة #{{ invoice.number }}</p>
-                <p class="text-[11px] text-slate-400">{{ invoice.issued_date }} • {{ invoice.customer.name }}</p>
-            </div>
-        </div>
-        <p class="text-sm font-bold text-white">{{ invoice.total|floatformat:2 }} ر.س</p>
-    </a>
-    {% endfor %}
-{% else %}
+
     <div class="text-sm text-slate-300">لا توجد عمليات حديثة حتى الآن.</div>
-{% endif %}
+
 </div>
 <a class="mt-8 py-3 w-full bg-primary text-white rounded-2xl text-sm font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all text-center" href="/download-statement/">
                             تحميل كشف الحساب
@@ -304,39 +278,11 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-700">
-{% if low_stock_list %}
-    {% for item in low_stock_list %}
-    <tr>
-        <td class="px-8 py-5">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
-                    <span class="material-symbols-outlined text-slate-400">image</span>
-                </div>
-                <span class="text-sm font-bold text-white">{{ item.product.name }}</span>
-            </div>
-        </td>
-        <td class="px-8 py-5 text-sm text-slate-300">{{ item.product.category.name|default:"بدون تصنيف" }}</td>
-        <td class="px-8 py-5 text-sm font-bold text-red-600">{{ item.quantity }} قطع</td>
-        <td class="px-8 py-5 text-sm text-slate-300">{{ item.reorder_level }} قطع</td>
-        <td class="px-8 py-5">
-            {% if item.quantity == 0 %}
-                <span class="px-2.5 py-1 bg-red-50 text-red-600 text-[11px] font-bold rounded-full border border-red-100">نفاد</span>
-            {% elif item.quantity <= item.reorder_level %}
-                <span class="px-2.5 py-1 bg-amber-50 text-amber-600 text-[11px] font-bold rounded-full border border-amber-100">تحذير</span>
-            {% else %}
-                <span class="px-2.5 py-1 bg-green-50 text-green-600 text-[11px] font-bold rounded-full border border-green-100">جيد</span>
-            {% endif %}
-        </td>
-        <td class="px-8 py-5 text-left">
-            <a class="text-primary hover:bg-blue-50 p-2 rounded-lg transition-colors inline-flex" href="/inventory/{{ item.id }}/update/"><span class="material-symbols-outlined">add_circle</span></a>
-        </td>
-    </tr>
-    {% endfor %}
-{% else %}
+
     <tr>
         <td class="px-8 py-5 text-sm text-slate-300" colspan="6">لا توجد منتجات منخفضة المخزون حالياً.</td>
     </tr>
-{% endif %}
+
 </tbody>
 </table>
 </div>
@@ -368,9 +314,9 @@
 <div class="flex justify-between items-center max-w-[1440px] mx-auto w-full">
 <p class="text-xs text-slate-500 dark:text-slate-400">© 2026 نظام ERP المتكامل. جميع الحقوق محفوظة.</p>
 <div class="flex gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
-<a class="hover:text-primary" href="{% url 'privacy_policy' %}">سياسة الخصوصية</a>
-<a class="hover:text-primary" href="{% url 'terms_of_service' %}">شروط الخدمة</a>
-<a class="hover:text-primary" href="{% url 'support_page' %}">الدعم الفني</a>
+<a class="hover:text-primary" href="/privacy-policy/">سياسة الخصوصية</a>
+<a class="hover:text-primary" href="/terms-of-service/">شروط الخدمة</a>
+<a class="hover:text-primary" href="/support/">الدعم الفني</a>
 </div>
 </div>
 </footer>

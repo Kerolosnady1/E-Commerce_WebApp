@@ -43,7 +43,7 @@
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen">
 <div class="flex h-screen overflow-hidden">
-    <aside class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-l border-[#f0f3f4] dark:border-slate-800 flex flex-col justify-between p-4 h-full">
+    <aside class="hidden lg:flex w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-l border-[#f0f3f4] dark:border-slate-800 flex-col justify-between p-4 h-full">
         <div class="flex flex-col gap-8">
             <div class="flex items-center gap-3 px-2">
                 <div class="bg-primary rounded-lg p-2 text-white">
@@ -87,7 +87,8 @@
         </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto p-6">
+    <main class="flex-1 overflow-y-auto p-3 lg:p-6">
+{% include '_mobile_drawer.html' %}
         <div class="flex flex-col gap-6">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>

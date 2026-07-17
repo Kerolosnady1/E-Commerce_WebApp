@@ -57,7 +57,7 @@
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
 <div class="flex h-screen overflow-hidden">
 <!-- Sidebar Navigation -->
-<aside class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-l border-[#f0f3f4] dark:border-slate-800 flex flex-col justify-between p-4 h-full">
+<aside class="hidden lg:flex w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-l border-[#f0f3f4] dark:border-slate-800 flex-col justify-between p-4 h-full">
 <div class="flex flex-col gap-8">
 <!-- Logo/Branding -->
 <div class="flex items-center gap-3 px-2">
@@ -102,7 +102,7 @@
 <!-- Main Content Area -->
 <div class="flex flex-col flex-1 overflow-hidden">
 <!-- Top Navigation Bar -->
-<header class="h-16 bg-white dark:bg-slate-900 border-b border-[#f0f3f4] dark:border-slate-800 flex items-center justify-between px-6 z-10">
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-[#f0f3f4] dark:border-slate-800 flex items-center flex-wrap gap-y-3 justify-between px-6 z-10">
 <div class="flex items-center gap-6">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary">package_2</span>
@@ -148,7 +148,8 @@
 </div>
 </header>
 <!-- Scrollable Page Content -->
-<main class="flex-1 overflow-y-auto p-6 space-y-6">
+<main class="flex-1 overflow-y-auto p-3 lg:p-6 space-y-6">
+{% include '_mobile_drawer.html' %}
 <!-- Breadcrumbs & Heading -->
 <div class="space-y-1">
 <nav class="flex items-center gap-2 text-xs text-[#617f89] font-medium">

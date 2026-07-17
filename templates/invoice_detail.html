@@ -17,9 +17,10 @@
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen">
+    {% include '_navbar.html' %}
     <!-- Header Actions (No Print) -->
-    <div class="no-print bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="no-print bg-slate-900 border-b border-slate-700 sticky top-16 z-40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div class="flex items-center gap-4">
                 <a href="/sales/" class="text-blue-400 hover:text-blue-300 flex items-center gap-2">
                     <span class="material-symbols-outlined">arrow_forward</span>
@@ -46,7 +47,7 @@
         <div class="bg-slate-800 text-slate-100 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
             <!-- Invoice Header -->
             <div class="bg-gradient-to-l from-blue-600 to-blue-700 text-white p-8">
-                <div class="flex justify-between items-start">
+                <div class="flex flex-col sm:flex-row justify-between items-start gap-6">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
                             <span class="material-symbols-outlined text-5xl">receipt_long</span>
@@ -77,7 +78,7 @@
             </div>
 
             <!-- Customer & Company Info -->
-            <div class="grid grid-cols-2 gap-8 p-8 border-b border-slate-700">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 p-4 sm:p-8 border-b border-slate-700">
                 <div>
                     <h3 class="text-sm font-bold text-slate-400 uppercase mb-3 flex items-center gap-2">
                         <span class="material-symbols-outlined text-lg">business</span>
@@ -107,8 +108,9 @@
             </div>
 
             <!-- Items Table -->
-            <div class="p-8">
-                <table class="w-full">
+            <div class="p-4 sm:p-8">
+                <div class="overflow-x-auto">
+                <table class="w-full whitespace-nowrap min-w-max">
                     <thead>
                         <tr class="border-b-2 border-slate-700">
                             <th class="text-right py-4 px-4 text-sm font-bold text-slate-300 uppercase">#</th>
@@ -144,6 +146,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                </div>
             </div>
 
             <!-- Totals -->
@@ -204,7 +207,7 @@
                 <span class="material-symbols-outlined">info</span>
                 معلومات إضافية
             </h3>
-            <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div>
                     <span class="text-slate-400">تاريخ الإنشاء:</span>
                     <span class="font-medium">{{ invoice.created_at|date:"Y-m-d H:i" }}</span>
