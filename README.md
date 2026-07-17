@@ -8,8 +8,8 @@ A modern Arabic-first ERP & E-Commerce Management Platform built with Django, de
 
 ```text
 https://e-commerce-webapp-ay2l.onrender.com/
-NOTE⚠️: This is free hosted web app so you will experience 50 second or more delay while using it.
 ```
+> NOTE⚠️: This is free hosted web app so you will experience 50 second or more delay while using it.
 
 ---
 
@@ -133,23 +133,24 @@ E-Commerce_WebApp/
 
 ## Dashboard
 
-![docs/screenshots/dashboard.png]
+![docs/screenshots/dashboard.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/dashboard.png?raw=true)
+
 
 ## Inventory Management
 
-![docs/screenshots/inventory.png]
+![docs/screenshots/inventory.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/inventory.png?raw=true)
 
 ## Sales Management
 
-![docs/screenshots/sales.png]
+![docs/screenshots/sales.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/sales.png?raw=true)
 
 ## Users & Permissions
 
-![docs/screenshots/users.png]
+![docs/screenshots/users.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/settings.png?raw=true)
 
 ## System Settings
 
-![docs/screenshots/settings.png]
+![docs/screenshots/settings.png](https://github.com/Kerolosnady1/E-Commerce_WebApp/blob/master/docs/screenshots/users.png?raw=true)
 
 > 🌐 Want to explore the full system?
 >
